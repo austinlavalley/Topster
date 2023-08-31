@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct GridModel {
-    var rows: Int = 8
-    var columns: Int = 1
+    var rows: Int = 4
+    var columns: Int = 4
 }
 
 struct CollageView: View {
@@ -55,7 +55,6 @@ struct Grid: View {
         ScrollView(.vertical) {
             LazyVGrid(columns: generateGridColumns(), spacing: 8) {
                 ForEach(0..<(gridModel.rows * gridModel.columns), id: \.self) { index in
-                    //                Color.blue.frame(minWidth: 12, maxWidth: .infinity, minHeight: 24, maxHeight: .infinity)
                     tile()
                 }
             }
