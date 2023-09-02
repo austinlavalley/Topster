@@ -14,6 +14,7 @@
 		D92B6F1D2A9BBFA300A7CCBD /* FortyTwoGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F1C2A9BBFA300A7CCBD /* FortyTwoGridView.swift */; };
 		D92B6F1F2A9E9A5200A7CCBD /* FortyGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F1E2A9E9A5200A7CCBD /* FortyGridView.swift */; };
 		D92B6F212A9E9BF700A7CCBD /* CollageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F202A9E9BF600A7CCBD /* CollageView.swift */; };
+		D92B6F432AA380F700A7CCBD /* FortyScrollGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F422AA380F600A7CCBD /* FortyScrollGridView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		D92B6F1C2A9BBFA300A7CCBD /* FortyTwoGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FortyTwoGridView.swift; sourceTree = "<group>"; };
 		D92B6F1E2A9E9A5200A7CCBD /* FortyGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FortyGridView.swift; sourceTree = "<group>"; };
 		D92B6F202A9E9BF600A7CCBD /* CollageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollageView.swift; sourceTree = "<group>"; };
+		D92B6F422AA380F600A7CCBD /* FortyScrollGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FortyScrollGridView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				D92B6F1C2A9BBFA300A7CCBD /* FortyTwoGridView.swift */,
 				D92B6F1E2A9E9A5200A7CCBD /* FortyGridView.swift */,
 				D92B6F202A9E9BF600A7CCBD /* CollageView.swift */,
+				D92B6F422AA380F600A7CCBD /* FortyScrollGridView.swift */,
 				D92B6F122A9BBF9400A7CCBD /* Assets.xcassets */,
 				D92B6F142A9BBF9400A7CCBD /* Preview Content */,
 			);
@@ -150,6 +153,7 @@
 				D92B6F1D2A9BBFA300A7CCBD /* FortyTwoGridView.swift in Sources */,
 				D92B6F0F2A9BBF9300A7CCBD /* TopsterApp.swift in Sources */,
 				D92B6F212A9E9BF700A7CCBD /* CollageView.swift in Sources */,
+				D92B6F432AA380F700A7CCBD /* FortyScrollGridView.swift in Sources */,
 				D92B6F1F2A9E9A5200A7CCBD /* FortyGridView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

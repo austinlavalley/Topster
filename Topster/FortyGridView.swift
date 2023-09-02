@@ -25,8 +25,10 @@ struct FortyGridView: View {
     
     
     let largeGridLayout: [GridItem] = [
-        GridItem(.fixed(UIScreen.main.bounds.width / 2 - 12), spacing: 4),
-        GridItem(.fixed(UIScreen.main.bounds.width / 2 - 12), spacing: 4),
+        GridItem(.fixed(UIScreen.main.bounds.width / 3 - 8), spacing: 4),
+        GridItem(.fixed(UIScreen.main.bounds.width / 3 - 8), spacing: 4),
+        GridItem(.fixed(UIScreen.main.bounds.width / 3 - 8), spacing: 4),
+
     ]
     
     let medGridLayout: [GridItem] = [
@@ -79,9 +81,9 @@ struct FortyGridView: View {
                 
                 LazyVGrid(columns: largeGridLayout, spacing: 4) {
                     // Larger Tiles (1st row)
-                    ForEach(1...10, id: \.self) { index in
+                    ForEach(6...15, id: \.self) { index in
                         Color.green
-                            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 168, maxHeight: .infinity)
+                            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 120, maxHeight: .infinity)
                             .overlay(
                                 Text("\(index)")
                                     .foregroundColor(.white)
