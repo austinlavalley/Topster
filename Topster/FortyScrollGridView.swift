@@ -9,9 +9,13 @@ import SwiftUI
 
 struct FortyScrollGridView: View {
     
+//    @State private var artists: [Artist] = []
+    
     var body: some View {
         VStack {
-            Text("Grid Example")
+//            List(artists) { artist in
+//                Text(artist.name)
+//            }
             
             ScrollView(.horizontal) {
                 HStack {
@@ -34,7 +38,9 @@ struct FortyScrollGridView: View {
                 }
             }
         }
+        .scrollIndicators(.hidden)
         .padding()
+
     }
 }
 

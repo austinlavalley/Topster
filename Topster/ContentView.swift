@@ -9,15 +9,28 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-            
-            FortyTwoGridView()
-        }
-        .padding()
+//        TabView {
+//            FortyTwoGridView()
+//                .tabItem {
+//                    Text("42 grid")
+//                }
+//
+//            FortyGridView()
+//                .tabItem {
+//                    Text("40 grid")
+//                }
+//
+//            CollageView()
+//                .tabItem {
+//                    Text("Collage")
+//                }
+//
+//            FortyScrollGridView()
+//                .tabItem {
+//                    Text("40 scroll")
+//                }
+//        }
+        TopArtistsNetwork()
     }
 }
 
