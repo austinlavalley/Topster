@@ -17,6 +17,9 @@
 		D92B6F432AA380F700A7CCBD /* FortyScrollGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F422AA380F600A7CCBD /* FortyScrollGridView.swift */; };
 		D9B8B4012AB3AE6600A4613A /* TopTracksNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */; };
 		D9B8B4032AB3B41700A4613A /* TopArtistsNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4022AB3B41700A4613A /* TopArtistsNetwork.swift */; };
+		D9B8B4082AB4FB0800A4613A /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4072AB4FB0800A4613A /* Artist.swift */; };
+		D9B8B40A2AB4FB2800A4613A /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4092AB4FB2800A4613A /* Track.swift */; };
+		D9B8B40C2AB4FCB800A4613A /* ArtistSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B40B2AB4FCB800A4613A /* ArtistSearchView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +34,9 @@
 		D92B6F422AA380F600A7CCBD /* FortyScrollGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FortyScrollGridView.swift; sourceTree = "<group>"; };
 		D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopTracksNetwork.swift; sourceTree = "<group>"; };
 		D9B8B4022AB3B41700A4613A /* TopArtistsNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopArtistsNetwork.swift; sourceTree = "<group>"; };
+		D9B8B4072AB4FB0800A4613A /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
+		D9B8B4092AB4FB2800A4613A /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
+		D9B8B40B2AB4FCB800A4613A /* ArtistSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistSearchView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +69,7 @@
 		D92B6F0D2A9BBF9300A7CCBD /* Topster */ = {
 			isa = PBXGroup;
 			children = (
+				D9B8B4062AB4FAFD00A4613A /* Models */,
 				D92B6F0E2A9BBF9300A7CCBD /* TopsterApp.swift */,
 				D92B6F102A9BBF9300A7CCBD /* ContentView.swift */,
 				D92B6F1C2A9BBFA300A7CCBD /* FortyTwoGridView.swift */,
@@ -71,6 +78,7 @@
 				D92B6F422AA380F600A7CCBD /* FortyScrollGridView.swift */,
 				D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */,
 				D9B8B4022AB3B41700A4613A /* TopArtistsNetwork.swift */,
+				D9B8B40B2AB4FCB800A4613A /* ArtistSearchView.swift */,
 				D92B6F122A9BBF9400A7CCBD /* Assets.xcassets */,
 				D92B6F142A9BBF9400A7CCBD /* Preview Content */,
 			);
@@ -83,6 +91,15 @@
 				D92B6F152A9BBF9400A7CCBD /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		D9B8B4062AB4FAFD00A4613A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D9B8B4072AB4FB0800A4613A /* Artist.swift */,
+				D9B8B4092AB4FB2800A4613A /* Track.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -156,10 +173,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D92B6F112A9BBF9300A7CCBD /* ContentView.swift in Sources */,
+				D9B8B40A2AB4FB2800A4613A /* Track.swift in Sources */,
 				D9B8B4032AB3B41700A4613A /* TopArtistsNetwork.swift in Sources */,
 				D92B6F1D2A9BBFA300A7CCBD /* FortyTwoGridView.swift in Sources */,
+				D9B8B4082AB4FB0800A4613A /* Artist.swift in Sources */,
 				D92B6F0F2A9BBF9300A7CCBD /* TopsterApp.swift in Sources */,
 				D9B8B4012AB3AE6600A4613A /* TopTracksNetwork.swift in Sources */,
+				D9B8B40C2AB4FCB800A4613A /* ArtistSearchView.swift in Sources */,
 				D92B6F212A9E9BF700A7CCBD /* CollageView.swift in Sources */,
 				D92B6F432AA380F700A7CCBD /* FortyScrollGridView.swift in Sources */,
 				D92B6F1F2A9E9A5200A7CCBD /* FortyGridView.swift in Sources */,

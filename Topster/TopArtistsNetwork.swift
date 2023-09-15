@@ -9,18 +9,19 @@ import SwiftUI
 
 struct TopArtistsNetwork: View {
     @State private var topArtists: [Artist] = []
+    
 
     var body: some View {
         NavigationView {
             List(topArtists, id: \.name) { artist in
-                Text(artist.name)
+//                Text(artist.name)
             }
             .navigationBarTitle("Top Artists")
-            .onAppear(perform: loadData)
+            .onAppear(perform: fetchTopArtists)
         }
     }
 
-    func loadData() {
+    func fetchTopArtists() {
         guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=4a4a5193d0fbc4584f64f7032c91d277&format=json") else {
             return
         }
@@ -43,18 +44,7 @@ struct TopArtistsNetwork: View {
 }
 
 
-struct ArtistInfo: Codable {
-    let artists: Artists
-}
 
-struct Artists: Codable {
-    let artist: [Artist]
-}
-
-struct Artist: Codable {
-    let name: String
-    let playcount: String
-}
 
 
 struct TopArtistsNetwork_Previews: PreviewProvider {
