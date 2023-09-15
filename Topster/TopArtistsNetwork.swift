@@ -14,7 +14,7 @@ struct TopArtistsNetwork: View {
     var body: some View {
         NavigationView {
             List(topArtists, id: \.name) { artist in
-//                Text(artist.name)
+                Text(artist.name ?? "default value")
             }
             .navigationBarTitle("Top Artists")
             .onAppear(perform: fetchTopArtists)

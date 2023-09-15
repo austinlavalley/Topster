@@ -15,8 +15,12 @@ struct Artists: Codable {
     let artist: [Artist]
 }
 
-//struct Artist: Codable {
+struct Artist: Codable {
 //    let name: String
 //    let url: String
 //    let playcount: String
-//}
+    
+        let name, listeners, mbid: String?
+        let url: String?
+        let streamable: String?
+}

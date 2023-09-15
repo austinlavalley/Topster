@@ -24,7 +24,7 @@ struct ArtistSearchView: View {
                     Text(result.name ?? "ehe")
                 }
                 .navigationBarTitle("Search")
-                //            .onAppear(perform: fetchTopArtists)
+//                .onAppear(perform: search)
             }
         }
         .onChange(of: searchText) { _ in
@@ -72,11 +72,12 @@ struct Artistmatches: Codable {
     let artist: [Artist]
 }
 
-struct Artist: Codable {
-    let name, listeners, mbid: String?
-    let url: String?
-    let streamable: String?
-}
+//struct Artist: Codable {
+//    let name, listeners, mbid: String?
+//    let url: String?
+//    let streamable: String?
+////    let image: [Image]?
+//}
 
 // MARK: - Image
 //struct Image: {
