@@ -24,7 +24,6 @@ struct ArtistSearchView: View {
                     Text(result.name ?? "ehe")
                 }
                 .navigationBarTitle("Search")
-//                .onAppear(perform: search)
             }
         }
         .onChange(of: searchText) { _ in
@@ -40,10 +39,9 @@ struct ArtistSearchView: View {
         URLSession.shared.dataTask(with: url) { data, _, error in
             if let data = data {
                 do {
-                    print(data.description)
                     let decoder = JSONDecoder()
                     let results = try decoder.decode(SearchResults.self, from: data)
-                    print(results.results.artistmatches.artist)
+//                    print(results.results.artistmatches.artist)
                     DispatchQueue.main.async {
                         self.searchResults = results.results.artistmatches.artist
                     }
