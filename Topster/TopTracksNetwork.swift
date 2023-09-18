@@ -8,39 +8,51 @@
 import SwiftUI
 
 struct TopTracksNetwork: View {
-    @State private var tracks: [Track] = []
+    @State private var topTracks: [Track] = []
 
     var body: some View {
         NavigationView {
-            List(tracks, id: \.name) { track in
-                NavigationLink(destination: Text("\(track.artist.name)")) {
-                    Text(track.name)
-                }
-            }
-            .navigationBarTitle("Track List")
-            .onAppear(perform: loadData)
-        }
-    }
-
-    func loadData() {
-        guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=4a4a5193d0fbc4584f64f7032c91d277&format=json") else {
-            return
-        }
-
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            if let data = data {
-                do {
-                    let decoder = JSONDecoder()
-                    let trackInfo = try decoder.decode(TrackInfo.self, from: data)
-                    DispatchQueue.main.async {
-                        self.tracks = trackInfo.tracks.track
+            VStack {
+                
+                Button("Fetch top tracks") {
+                    Networker().returnTopTracks { result in
+                        
+                        switch result {
+                        case .success(let returnedTracks):
+                            self.topTracks = returnedTracks
+                        case .failure(let error):
+                            print("Error fetching top tracks: \(error)")
+                        }
                     }
-                } catch {
-                    print("Error decoding JSON: \(error)")
                 }
+                
+                List(topTracks, id: \.name) { track in
+                    Text("\(track.artist.name) - \(track.name)")
+                }
+                .navigationBarTitle("Track List")
             }
-        }.resume()
+        }
     }
+
+//    func loadData() {
+//        guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=4a4a5193d0fbc4584f64f7032c91d277&format=json") else {
+//            return
+//        }
+//
+//        URLSession.shared.dataTask(with: url) { data, _, error in
+//            if let data = data {
+//                do {
+//                    let decoder = JSONDecoder()
+//                    let trackInfo = try decoder.decode(TrackInfo.self, from: data)
+//                    DispatchQueue.main.async {
+//                        self.tracks = trackInfo.tracks.track
+//                    }
+//                } catch {
+//                    print("Error decoding JSON: \(error)")
+//                }
+//            }
+//        }.resume()
+//    }
 }
 
 

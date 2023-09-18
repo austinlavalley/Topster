@@ -13,12 +13,9 @@ class Networker {
     
     func returnTopArtists(completion: @escaping (Result<[Artist], Error>) -> Void) {
         guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=4a4a5193d0fbc4584f64f7032c91d277&format=json")
-        else {
-            return
-        }
-                
+        else { return }
+        
         URLSession.shared.dataTask(with: url) { data, _, error in
-            
             var topArtists: [Artist] = []
             
             if let data = data {
@@ -32,13 +29,35 @@ class Networker {
                 }
             }
             
-            
             DispatchQueue.main.async {
                 completion(.success(topArtists))
             }
-            
         }.resume()
+    }
+    
+    
+    func returnTopTracks(completion: @escaping (Result<[Track], Error>) -> Void) {
+        guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=4a4a5193d0fbc4584f64f7032c91d277&format=json")
+        else { return }
         
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            var topTracks: [Track] = []
+            
+            if let data = data {
+                do {
+                    let decoder = JSONDecoder()
+                    let trackInfo = try decoder.decode(TrackInfo.self, from: data)
+
+                    topTracks = trackInfo.tracks.track
+                } catch {
+                    print("Error decoding JSON: \(error)")
+                }
+            }
+            
+            DispatchQueue.main.async {
+                completion(.success(topTracks))
+            }
+        }.resume()
     }
     
 }

@@ -14,32 +14,23 @@ struct TopArtistsNetwork: View {
     
     var body: some View {
         NavigationView {
+            
             VStack {
-                
-                VStack {
-                    Button("Fetch Top Artists") {
-                        Networker().returnTopArtists { result in
-                            switch result {
-                            case .success(let artists):
-                                self.topArtists = artists // Assign the result to the @State property
-                            case .failure(let error):
-                                print("Error fetching top artists: \(error)")
-                            }
+                Button("Fetch Top Artists") {
+                    Networker().returnTopArtists { result in
+                        
+                        switch result {
+                        case .success(let returnedArtists):
+                            self.topArtists = returnedArtists // Assign the result to the @State property
+                        case .failure(let error):
+                            print("Error fetching top artists: \(error)")
                         }
-                    }
-                    
-                    Text("Top Artists:")
-                    List(topArtists, id: \.name) { artist in
-                        Text(artist.name ?? "n/a")
                     }
                 }
                 
-                
-//                List(topArtists, id: \.name) { artist in
-//                    Text(artist.name ?? "default value")
-//                }
-//                .navigationBarTitle("Top Artists")
-//                .onAppear(perform: fetchTopArtists)
+                List(topArtists, id: \.name) { artist in
+                    Text(artist.name ?? "n/a")
+                }
             }
         }
     }
@@ -54,7 +45,7 @@ struct TopArtistsNetwork: View {
 //                do {
 //                    let decoder = JSONDecoder()
 //                    let artistInfo = try decoder.decode(ArtistInfo.self, from: data)
-////                    print(artistInfo.artists)
+
 //                    DispatchQueue.main.async {
 //                        self.topArtists = artistInfo.artists.artist
 //                    }

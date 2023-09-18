@@ -30,7 +30,7 @@ struct ContentView: View {
 //                    Text("40 scroll")
 //                }
 //        }
-        ArtistSearchView()
+        TopTracksNetwork()
     }
 }
 

@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct TrackInfo: Codable {
     let tracks: Tracks
 }
