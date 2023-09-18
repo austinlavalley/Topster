@@ -20,6 +20,7 @@
 		D9B8B4082AB4FB0800A4613A /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4072AB4FB0800A4613A /* Artist.swift */; };
 		D9B8B40A2AB4FB2800A4613A /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4092AB4FB2800A4613A /* Track.swift */; };
 		D9B8B40C2AB4FCB800A4613A /* ArtistSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B40B2AB4FCB800A4613A /* ArtistSearchView.swift */; };
+		D9B8B40E2AB8BED300A4613A /* Networker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B40D2AB8BED300A4613A /* Networker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		D9B8B4072AB4FB0800A4613A /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
 		D9B8B4092AB4FB2800A4613A /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		D9B8B40B2AB4FCB800A4613A /* ArtistSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistSearchView.swift; sourceTree = "<group>"; };
+		D9B8B40D2AB8BED300A4613A /* Networker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 				D92B6F422AA380F600A7CCBD /* FortyScrollGridView.swift */,
 				D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */,
 				D9B8B4022AB3B41700A4613A /* TopArtistsNetwork.swift */,
+				D9B8B40D2AB8BED300A4613A /* Networker.swift */,
 				D9B8B40B2AB4FCB800A4613A /* ArtistSearchView.swift */,
 				D92B6F122A9BBF9400A7CCBD /* Assets.xcassets */,
 				D92B6F142A9BBF9400A7CCBD /* Preview Content */,
@@ -173,6 +176,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D92B6F112A9BBF9300A7CCBD /* ContentView.swift in Sources */,
+				D9B8B40E2AB8BED300A4613A /* Networker.swift in Sources */,
 				D9B8B40A2AB4FB2800A4613A /* Track.swift in Sources */,
 				D9B8B4032AB3B41700A4613A /* TopArtistsNetwork.swift in Sources */,
 				D92B6F1D2A9BBFA300A7CCBD /* FortyTwoGridView.swift in Sources */,
