@@ -19,48 +19,33 @@ struct ArtistSearchView: View {
                 HStack {
                     TextField("Search", text: $searchText)
                     Button("serach") {
-                        Networker().searchArtists(query: searchText) { result in
-                            
-                            switch result {
-                            case .success(let returnedArtists):
-                                self.searchResults = returnedArtists
-                            case .failure(let error):
-                                print("Error fetching top artists: \(error)")
-                            }
-                        }
+                        searchForArtists()
                     }
                 }
                 List(searchResults, id: \.name) { result in
-                    Text(result.name ?? "ehe")
+                    Text(result.name ?? "n/a")
+//                    Text("\(result.name ?? "n/a") - \(result.listeners ?? "0")")
                 }
                 .navigationBarTitle("Search")
             }
         }
-//        .onChange(of: searchText) { _ in
-//            search()
-//        }
+        .onChange(of: searchText) { _ in
+            searchForArtists()
+        }
     }
-
-//    func search() {
-//        guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=artist.search&artist=\(searchText)&api_key=4a4a5193d0fbc4584f64f7032c91d277&format=json") else {
-//            return
-//        }
-//
-//        URLSession.shared.dataTask(with: url) { data, _, error in
-//            if let data = data {
-//                do {
-//                    let decoder = JSONDecoder()
-//                    let results = try decoder.decode(SearchResults.self, from: data)
-////                    print(results.results.artistmatches.artist)
-//                    DispatchQueue.main.async {
-//                        self.searchResults = results.results.artistmatches.artist
-//                    }
-//                } catch {
-//                    print("Error decoding JSON: \(error)")
-//                }
-//            }
-//        }.resume()
-//    }
+    
+    
+    private func searchForArtists() {
+        Networker().searchArtists(query: searchText) { result in
+            
+            switch result {
+            case .success(let returnedArtists):
+                self.searchResults = returnedArtists
+            case .failure(let error):
+                print("Error fetching top artists: \(error)")
+            }
+        }
+    }
 }
 
 // MARK: - SearchResults
