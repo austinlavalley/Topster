@@ -60,4 +60,29 @@ class Networker {
         }.resume()
     }
     
+    
+    func searchArtists(query: String, completion: @escaping (Result<[Artist], Error>) -> Void) {
+        guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=artist.search&artist=\(query)&api_key=4a4a5193d0fbc4584f64f7032c91d277&format=json") else { return }
+
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            
+            var searchResults: [Artist] = []
+            
+            if let data = data {
+                do {
+                    let decoder = JSONDecoder()
+                    let results = try decoder.decode(SearchResults.self, from: data)
+                    
+                    searchResults = results.results.artistmatches.artist
+                } catch {
+                    print("Error decoding JSON: \(error)")
+                }
+            }
+            
+            DispatchQueue.main.async {
+                completion(.success(searchResults))
+            }
+        }.resume()
+    }
+    
 }
