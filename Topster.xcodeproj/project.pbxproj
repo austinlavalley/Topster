@@ -15,6 +15,7 @@
 		D92B6F1F2A9E9A5200A7CCBD /* FortyGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F1E2A9E9A5200A7CCBD /* FortyGridView.swift */; };
 		D92B6F212A9E9BF700A7CCBD /* CollageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F202A9E9BF600A7CCBD /* CollageView.swift */; };
 		D92B6F432AA380F700A7CCBD /* FortyScrollGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F422AA380F600A7CCBD /* FortyScrollGridView.swift */; };
+		D99642542ABB50B6004CEA01 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99642532ABB50B6004CEA01 /* SearchResults.swift */; };
 		D9B8B4012AB3AE6600A4613A /* TopTracksNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */; };
 		D9B8B4032AB3B41700A4613A /* TopArtistsNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4022AB3B41700A4613A /* TopArtistsNetwork.swift */; };
 		D9B8B4082AB4FB0800A4613A /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4072AB4FB0800A4613A /* Artist.swift */; };
@@ -33,6 +34,7 @@
 		D92B6F1E2A9E9A5200A7CCBD /* FortyGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FortyGridView.swift; sourceTree = "<group>"; };
 		D92B6F202A9E9BF600A7CCBD /* CollageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollageView.swift; sourceTree = "<group>"; };
 		D92B6F422AA380F600A7CCBD /* FortyScrollGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FortyScrollGridView.swift; sourceTree = "<group>"; };
+		D99642532ABB50B6004CEA01 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopTracksNetwork.swift; sourceTree = "<group>"; };
 		D9B8B4022AB3B41700A4613A /* TopArtistsNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopArtistsNetwork.swift; sourceTree = "<group>"; };
 		D9B8B4072AB4FB0800A4613A /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 			children = (
 				D9B8B4072AB4FB0800A4613A /* Artist.swift */,
 				D9B8B4092AB4FB2800A4613A /* Track.swift */,
+				D99642532ABB50B6004CEA01 /* SearchResults.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -180,6 +183,7 @@
 				D9B8B40A2AB4FB2800A4613A /* Track.swift in Sources */,
 				D9B8B4032AB3B41700A4613A /* TopArtistsNetwork.swift in Sources */,
 				D92B6F1D2A9BBFA300A7CCBD /* FortyTwoGridView.swift in Sources */,
+				D99642542ABB50B6004CEA01 /* SearchResults.swift in Sources */,
 				D9B8B4082AB4FB0800A4613A /* Artist.swift in Sources */,
 				D92B6F0F2A9BBF9300A7CCBD /* TopsterApp.swift in Sources */,
 				D9B8B4012AB3AE6600A4613A /* TopTracksNetwork.swift in Sources */,

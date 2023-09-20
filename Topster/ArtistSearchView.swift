@@ -48,42 +48,6 @@ struct ArtistSearchView: View {
     }
 }
 
-// MARK: - SearchResults
-struct SearchResults: Codable {
-    let results: Results
-}
-
-// MARK: - Results
-struct Results: Codable {
-    let opensearchQuery: OpensearchQuery?
-    let opensearchTotalResults, opensearchStartIndex, opensearchItemsPerPage: String?
-    let artistmatches: Artistmatches
-}
-
-// MARK: - Artistmatches
-struct Artistmatches: Codable {
-    let artist: [Artist]
-}
-
-//struct Artist: Codable {
-//    let name, listeners, mbid: String?
-//    let url: String?
-//    let streamable: String?
-////    let image: [Image]?
-//}
-
-// MARK: - Image
-//struct Image: {
-//    let text: String
-//    let size: String
-//}
-
-// MARK: - OpensearchQuery
-struct OpensearchQuery: Codable {
-    let text, role, searchTerms, startPage: String?
-}
-
-
 
 
 
