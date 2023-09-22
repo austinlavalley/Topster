@@ -23,4 +23,6 @@ struct Artist: Codable {
         let name, listeners, mbid: String?
         let url: String?
         let streamable: String?
+        let image: [Image]?
+
 }

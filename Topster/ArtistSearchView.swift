@@ -23,11 +23,26 @@ struct ArtistSearchView: View {
                     }
                 }
                 List(searchResults, id: \.name) { result in
-                    Text(result.name ?? "n/a")
-//                    Text("\(result.name ?? "n/a") - \(result.listeners ?? "0")")
+                    HStack {
+//                        Text(result.image?.count.description ?? "nahf")
+//                        Text(result.image?.description ?? "ugh")
+//                        Text(result.image?.first?.text ?? "nah")
+                        AsyncImage(url: URL(string: result.image?.first?.text ?? "")) { image in
+                            image
+                                .resizable()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(width: 96, height: 96)
+
+                        
+//                        Image(from: result.image?.first.text)
+                        //                    Text("\(result.name ?? "n/a") - \(result.listeners ?? "0")")
+                    }
                 }
                 .navigationBarTitle("Search")
             }
+            .padding()
         }
         .onChange(of: searchText) { _ in
             searchForArtists()
