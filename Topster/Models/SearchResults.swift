@@ -17,13 +17,34 @@ struct SearchResults: Codable {
 struct Results: Codable {
     let opensearchQuery: OpensearchQuery?
     let opensearchTotalResults, opensearchStartIndex, opensearchItemsPerPage: String?
-    let artistmatches: Artistmatches
+    let artistmatches: Artistmatches?
+    let albummatches: Albummatches?
+    
 }
 
 // MARK: - Artistmatches
 struct Artistmatches: Codable {
     let artist: [Artist]
 }
+
+// MARK: - Albummatches
+struct Albummatches: Codable {
+    let album: [Album]?
+}
+
+// MARK: - Album
+struct Album: Codable {
+    let name, artist: String?
+    let url: String?
+    let image: [Image]?
+    let streamable, mbid: String?
+}
+
+
+
+
+
+
 
 // MARK: - Image
 struct Image: Codable {
@@ -35,8 +56,6 @@ struct Image: Codable {
         case size = "size"
     }
 }
-
-
 
 // MARK: - OpensearchQuery
 struct OpensearchQuery: Codable {
