@@ -9,17 +9,14 @@ import SwiftUI
 
 struct FortyScrollGridView: View {
     
-//    @State private var artists: [Artist] = []
-    
+    @State private var showSearchSheet = false
+            
     var body: some View {
         VStack {
-//            List(artists) { artist in
-//                Text(artist.name)
-//            }
             
             ScrollView(.horizontal) {
                 HStack {
-                    FortyScrollGrid1()
+                    FortyScrollGrid1(showSearchSheet: $showSearchSheet)
                 }
             }
             ScrollView(.horizontal) {
@@ -40,18 +37,27 @@ struct FortyScrollGridView: View {
         }
         .scrollIndicators(.hidden)
         .padding()
+        
+        .sheet(isPresented: $showSearchSheet) { AlbumSearchView() }
 
     }
 }
 
 struct FortyScrollGrid1: View {
+    
+    @Binding var showSearchSheet: Bool
+    
     var body: some View {
         ForEach(1...5, id: \.self) { index in
             Rectangle()
                 .frame(width: 144, height: 144)
         }
+        .onTapGesture {
+            showSearchSheet.toggle()
+        }
     }
 }
+
 
 struct FortyScrollGrid2: View {
     var body: some View {
