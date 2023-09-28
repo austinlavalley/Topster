@@ -12,6 +12,7 @@ struct AlbumSearchView: View {
     @State private var searchResults: [Album] = []
     @State private var searchText: String = ""
     
+    private var threeColumnGrid = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
         NavigationView {
@@ -22,20 +23,17 @@ struct AlbumSearchView: View {
                         searchForArtists()
                     }
                 }
-                List(searchResults, id: \.name) { result in
-                    HStack {
-//                        Text(result.name ?? "")
-
-                        AsyncImage(url: URL(string: result.image?.first(where: { $0.size == "large" })?.text ?? "")) { image in
-                            image
-                                .resizable()
-                        } placeholder: {
-                            ProgressView()
+                ScrollView {
+                    LazyVGrid(columns: threeColumnGrid) {
+                        ForEach(searchResults, id: \.name) { result in
+                            AsyncImage(url: URL(string: result.image?.first(where: { $0.size == "large" })?.text ?? "")) { image in
+                                image
+                                    .resizable()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .frame(width: 96, height: 96)
                         }
-                        .frame(width: 96, height: 96)
-
-                        
-                        //                    Text("\(result.name ?? "n/a") - \(result.listeners ?? "0")")
                     }
                 }
                 .navigationBarTitle("Search")

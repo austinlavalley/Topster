@@ -34,6 +34,8 @@ struct Albummatches: Codable {
 
 // MARK: - Album
 struct Album: Codable {
+//    var id = UUID().uuidString
+    
     let name, artist: String?
     let url: String?
     let image: [Image]?

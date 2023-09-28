@@ -21,17 +21,17 @@ struct FortyScrollGridView: View {
             }
             ScrollView(.horizontal) {
                 HStack {
-                    FortyScrollGrid2()
+                    FortyScrollGrid2(showSearchSheet: $showSearchSheet)
                 }
             }
             ScrollView(.horizontal) {
                 HStack {
-                    FortyScrollGrid3()
+                    FortyScrollGrid3(showSearchSheet: $showSearchSheet)
                 }
             }
             ScrollView(.horizontal) {
                 HStack {
-                    FortyScrollGrid4()
+                    FortyScrollGrid4(showSearchSheet: $showSearchSheet)
                 }
             }
         }
@@ -60,31 +60,49 @@ struct FortyScrollGrid1: View {
 
 
 struct FortyScrollGrid2: View {
+    
+    @Binding var showSearchSheet: Bool
+
     var body: some View {
         ForEach(6...17, id: \.self) { index in
             Rectangle()
                 .frame(width: 120, height: 120)
                 .opacity(0.8)
         }
+        .onTapGesture {
+            showSearchSheet.toggle()
+        }
     }
 }
 
 struct FortyScrollGrid3: View {
+    
+    @Binding var showSearchSheet: Bool
+
     var body: some View {
         ForEach(18...31, id: \.self) { index in
             Rectangle()
                 .frame(width: 96, height: 96)
                 .opacity(0.5)
         }
+        .onTapGesture {
+            showSearchSheet.toggle()
+        }
     }
 }
 
 struct FortyScrollGrid4: View {
+    
+    @Binding var showSearchSheet: Bool
+
     var body: some View {
         ForEach(32...40, id: \.self) { index in
             Rectangle()
                 .frame(width: 72, height: 72)
                 .opacity(0.3)
+        }
+        .onTapGesture {
+            showSearchSheet.toggle()
         }
     }
 }

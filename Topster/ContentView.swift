@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-//        TabView {
+        TabView {
 //            FortyTwoGridView()
 //                .tabItem {
 //                    Text("42 grid")
@@ -24,13 +24,12 @@ struct ContentView: View {
 //                .tabItem {
 //                    Text("Collage")
 //                }
-//
-//            FortyScrollGridView()
-//                .tabItem {
-//                    Text("40 scroll")
-//                }
-//        }
-        TopTracksNetwork()
+
+            FortyScrollGridView()
+                .tabItem {
+                    Text("40 scroll")
+                }
+        }
     }
 }
 
