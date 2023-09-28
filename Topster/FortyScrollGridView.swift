@@ -9,37 +9,38 @@ import SwiftUI
 
 struct FortyScrollGridView: View {
     
-    @State private var showSearchSheet = false
+//    @State private var showSearchSheet = false
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+
             
     var body: some View {
         VStack {
             
             ScrollView(.horizontal) {
                 HStack {
-                    FortyScrollGrid1(showSearchSheet: $showSearchSheet)
+                    FortyScrollGrid1(showSearchSheet: $vm.showSearchSheet)
                 }
             }
             ScrollView(.horizontal) {
                 HStack {
-                    FortyScrollGrid2(showSearchSheet: $showSearchSheet)
+                    FortyScrollGrid2(showSearchSheet: $vm.showSearchSheet)
                 }
             }
             ScrollView(.horizontal) {
                 HStack {
-                    FortyScrollGrid3(showSearchSheet: $showSearchSheet)
+                    FortyScrollGrid3(showSearchSheet: $vm.showSearchSheet)
                 }
             }
             ScrollView(.horizontal) {
                 HStack {
-                    FortyScrollGrid4(showSearchSheet: $showSearchSheet)
+                    FortyScrollGrid4(showSearchSheet: $vm.showSearchSheet)
                 }
             }
         }
         .scrollIndicators(.hidden)
         .padding()
         
-        .sheet(isPresented: $showSearchSheet) { AlbumSearchView() }
-
+        .sheet(isPresented: $vm.showSearchSheet) { AlbumSearchView() }
     }
 }
 
@@ -56,6 +57,8 @@ struct FortyScrollGrid1: View {
             showSearchSheet.toggle()
         }
     }
+    
+
 }
 
 
@@ -111,6 +114,7 @@ struct FortyScrollGrid4: View {
 struct FortyScrollGridView_Previews: PreviewProvider {
     static var previews: some View {
         FortyScrollGridView()
+            .environmentObject(FortyScrollGridViewModel())
     }
 }
 

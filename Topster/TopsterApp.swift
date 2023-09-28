@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct TopsterApp: App {
+    @StateObject private var vm = FortyScrollGridViewModel()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(vm)
         }
     }
 }

@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+    
     var body: some View {
         TabView {
 //            FortyTwoGridView()
@@ -36,5 +39,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environmentObject(FortyScrollGridViewModel())
     }
 }

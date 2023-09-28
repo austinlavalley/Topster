@@ -9,6 +9,9 @@ import Foundation
 import SwiftUI
 
 struct AlbumSearchView: View {
+    
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+
     @State private var searchResults: [Album] = []
     @State private var searchText: String = ""
     
@@ -19,7 +22,7 @@ struct AlbumSearchView: View {
             VStack {
                 HStack {
                     TextField("Search", text: $searchText)
-                    Button("serach") {
+                    Button("Search") {
                         searchForArtists()
                     }
                 }
@@ -29,10 +32,15 @@ struct AlbumSearchView: View {
                             AsyncImage(url: URL(string: result.image?.first(where: { $0.size == "large" })?.text ?? "")) { image in
                                 image
                                     .resizable()
+                                    .onTapGesture {
+                                        print(result.name ?? "No album name")
+                                        // need to do something to close this sheet
+                                        vm.showSearchSheet = false
+                                    }
                             } placeholder: {
                                 ProgressView()
                             }
-                            .frame(width: 96, height: 96)
+                            .frame(width: 120, height: 120)
                         }
                     }
                 }
@@ -40,9 +48,9 @@ struct AlbumSearchView: View {
             }
             .padding()
         }
-        .onChange(of: searchText) { _ in
-            searchForArtists()
-        }
+//        .onChange(of: searchText) { _ in
+//            searchForArtists()
+//        }
     }
     
     
@@ -63,5 +71,6 @@ struct AlbumSearchView: View {
 struct AlbumSearchView_Previews: PreviewProvider {
     static var previews: some View {
         AlbumSearchView()
+            .environmentObject(FortyScrollGridViewModel())
     }
 }
