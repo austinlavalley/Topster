@@ -31,6 +31,9 @@ class FortyScrollGridViewModel: ObservableObject {
 //            favoriteAlbums.append(album)
 //        }
 //    }
+    func addAlbumToFavorites(album: Album) {
+        favoriteAlbums.append(album)
+    }
     
     
 }

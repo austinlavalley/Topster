@@ -70,8 +70,8 @@ struct AlbumSquare: View {
             image
                 .resizable()
                 .onTapGesture {
-                    print(album.name ?? "No album name")
-
+//                    print(album.name ?? "No album name")
+                    vm.addAlbumToFavorites(album: album)
                     vm.showSearchSheet = false
                 }
         } placeholder: {
