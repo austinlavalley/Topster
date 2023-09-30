@@ -15,12 +15,10 @@ struct FortyScrollGridView: View {
     var body: some View {
         VStack {
             
-            Text(vm.favoriteAlbums.count.description)
             ScrollView(.horizontal) {
                 HStack {
-                    ForEach(vm.favoriteAlbums, id: \.name) {_ in
-                        Rectangle()
-                            .frame(width: 144, height: 144)
+                    ForEach(vm.favoriteAlbums, id: \.name) { favorite in
+                        AlbumSquare(album: favorite)
                     }
                 }
             }
