@@ -9,7 +9,6 @@ import SwiftUI
 
 struct FortyScrollGridView: View {
     
-//    @State private var showSearchSheet = false
     @EnvironmentObject private var vm: FortyScrollGridViewModel
 
             
@@ -44,6 +43,7 @@ struct FortyScrollGridView: View {
     }
 }
 
+
 struct FortyScrollGrid1: View {
     
     @Binding var showSearchSheet: Bool
@@ -57,8 +57,6 @@ struct FortyScrollGrid1: View {
             showSearchSheet.toggle()
         }
     }
-    
-
 }
 
 

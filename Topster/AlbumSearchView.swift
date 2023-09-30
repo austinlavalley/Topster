@@ -29,18 +29,8 @@ struct AlbumSearchView: View {
                 ScrollView {
                     LazyVGrid(columns: threeColumnGrid) {
                         ForEach(searchResults, id: \.name) { result in
-                            AsyncImage(url: URL(string: result.image?.first(where: { $0.size == "large" })?.text ?? "")) { image in
-                                image
-                                    .resizable()
-                                    .onTapGesture {
-                                        print(result.name ?? "No album name")
-                                        // need to do something to close this sheet
-                                        vm.showSearchSheet = false
-                                    }
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            .frame(width: 120, height: 120)
+                            AlbumSquare(album: result)
+                                .frame(width: 120, height: 120)
                         }
                     }
                 }
@@ -54,6 +44,7 @@ struct AlbumSearchView: View {
     }
     
     
+    
     private func searchForArtists() {
         Networker().searchAlbums(query: searchText) { result in
             
@@ -64,6 +55,30 @@ struct AlbumSearchView: View {
                 print("Error fetching top artists: \(error)")
             }
         }
+    }
+}
+
+
+struct AlbumSquare: View {
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+    let album: Album // Your album model
+
+    var body: some View {
+        
+//        Text(album.name ?? "no album name")
+        AsyncImage(url: URL(string: album.image?.first(where: { $0.size == "large" })?.text ?? "")) { image in
+            image
+                .resizable()
+                .onTapGesture {
+                    print(album.name ?? "No album name")
+
+                    vm.showSearchSheet = false
+                }
+        } placeholder: {
+            ProgressView()
+        }
+        // Display the album cover and other information here
+        // You can also add a tap gesture to allow the user to remove the album from favorites
     }
 }
 
