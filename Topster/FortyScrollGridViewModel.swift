@@ -20,8 +20,19 @@ class FortyScrollGridViewModel: ObservableObject {
     
     
     @Published var favoriteAlbums: [Album] = [] // Your data structure for favorite albums
-
     
+    func addAlbumToFavorites(album: Album) {
+        favoriteAlbums.append(album)
+    }
+    
+    
+    
+    
+    
+//    @Published var favoriteAlbums: [Album: Int] = [:]
+//
+//
+//
 //    func addAlbumToFavorites(_ album: Album, at index: Int) {
 //        // Check if an album with the same index already exists, and if so, update it
 //        if let existingIndex = favoriteAlbums.firstIndex(where: { $0.index == index }) {
@@ -31,9 +42,6 @@ class FortyScrollGridViewModel: ObservableObject {
 //            favoriteAlbums.append(album)
 //        }
 //    }
-    func addAlbumToFavorites(album: Album) {
-        favoriteAlbums.append(album)
-    }
     
     
 }

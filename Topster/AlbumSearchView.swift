@@ -66,7 +66,7 @@ struct AlbumSquare: View {
     var body: some View {
         
 //        Text(album.name ?? "no album name")
-        AsyncImage(url: URL(string: album.image?.first(where: { $0.size == "large" })?.text ?? "")) { image in
+        AsyncImage(url: URL(string: album.image.first(where: { $0.size == "large" })?.text ?? "")) { image in
             image
                 .resizable()
                 .onTapGesture {

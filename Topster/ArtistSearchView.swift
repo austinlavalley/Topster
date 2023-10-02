@@ -25,15 +25,6 @@ struct ArtistSearchView: View {
                 List(searchResults, id: \.name) { result in
                     HStack {
                         Text(result.name ?? "")
-
-//                        AsyncImage(url: URL(string: result.image?.first?.text ?? "")) { image in
-//                            image
-//                                .resizable()
-//                        } placeholder: {
-//                            ProgressView()
-//                        }
-//                        .frame(width: 96, height: 96)
-
                         
                         //                    Text("\(result.name ?? "n/a") - \(result.listeners ?? "0")")
                     }

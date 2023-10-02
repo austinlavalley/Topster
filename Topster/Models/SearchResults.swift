@@ -29,19 +29,10 @@ struct Artistmatches: Codable {
 
 // MARK: - Albummatches
 struct Albummatches: Codable {
-    let album: [Album]?
+    let album: [Album]
 }
 
-// MARK: - Album
-struct Album: Codable {
 
-//    var index: Int // Index of the album in the grid
-    
-    let name, artist: String?
-    let url: String?
-    let image: [Image]?
-    let streamable, mbid: String?
-}
 
 
 

@@ -21,9 +21,11 @@ class Networker {
             if let data = data {
                 do {
                     let decoder = JSONDecoder()
-                    let artistInfo = try decoder.decode(ArtistInfo.self, from: data)
+                    let artistResponse = try decoder.decode(ArtistResponse.self, from: data)
+//                    let artistResponse = try decoder.decode([Artist].self, from: data)
 
-                    topArtists = artistInfo.artists.artist
+//                    topArtists = artistResponse
+                    topArtists = artistResponse.artists.artist
                 } catch {
                     print("Error decoding JSON: \(error)")
                 }
