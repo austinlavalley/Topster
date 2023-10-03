@@ -12,8 +12,10 @@ import SwiftUI
 class FortyScrollGridViewModel: ObservableObject {
     
     @Published var showSearchSheet = false
+    @Published var selectedGridID: Int?
     
-    func toggleSheet() {
+    func toggleSheet(at gridID: Int?) {
+        if gridID != nil { selectedGridID = gridID }
         showSearchSheet.toggle()
     }
     
@@ -21,8 +23,14 @@ class FortyScrollGridViewModel: ObservableObject {
     
     @Published var favoriteAlbums: [Album] = [] // Your data structure for favorite albums
     
+//    func addAlbumToFavorites(album: Album) {
+//        favoriteAlbums.append(album)
+//    }
+    
     func addAlbumToFavorites(album: Album) {
-        favoriteAlbums.append(album)
+        var newAlbum = album
+        newAlbum.gridPosition = selectedGridID
+        favoriteAlbums.append(newAlbum)
     }
     
     

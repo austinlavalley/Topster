@@ -15,6 +15,7 @@ struct AlbumSearchView: View {
     @State private var searchResults: [Album] = []
     @State private var searchText: String = ""
     
+    
     private var threeColumnGrid = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
@@ -29,7 +30,7 @@ struct AlbumSearchView: View {
                 ScrollView {
                     LazyVGrid(columns: threeColumnGrid) {
                         ForEach(searchResults, id: \.name) { result in
-                            AlbumSquare(album: result)
+                            AlbumSquare(album: result, chosenID: nil)
                                 .frame(width: 120, height: 120)
                         }
                     }
@@ -62,6 +63,7 @@ struct AlbumSearchView: View {
 struct AlbumSquare: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     let album: Album // Your album model
+    let chosenID: Int?
 
     var body: some View {
         
@@ -71,8 +73,9 @@ struct AlbumSquare: View {
                 .resizable()
                 .onTapGesture {
 //                    print(album.name ?? "No album name")
+                    vm.toggleSheet(at: nil)
                     vm.addAlbumToFavorites(album: album)
-                    vm.showSearchSheet = false
+//                    vm.showSearchSheet = false
                 }
         } placeholder: {
             ProgressView()

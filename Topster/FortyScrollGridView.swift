@@ -17,9 +17,14 @@ struct FortyScrollGridView: View {
             
             ScrollView(.horizontal) {
                 HStack {
-                    ForEach(vm.favoriteAlbums, id: \.name) { favorite in
-                        AlbumSquare(album: favorite)
+//                    ForEach(vm.favoriteAlbums, id: \.name) { favorite in
+//                        AlbumSquare(album: favorite)
+//                            .frame(width: 144, height: 144)
+//                    }
+                    ForEach(vm.favoriteAlbums.sorted(by: { $0.gridPosition ?? 0 < $1.gridPosition ?? 0})) { album in
+                        AlbumSquare(album: album, chosenID: nil)
                     }
+                    
                 }
             }
             
@@ -47,23 +52,27 @@ struct FortyScrollGridView: View {
         .scrollIndicators(.hidden)
         .padding()
         
-        .sheet(isPresented: $vm.showSearchSheet) { AlbumSearchView() }
+        .sheet(isPresented: $vm.showSearchSheet) {
+            AlbumSearchView()
+        }
     }
 }
 
 
 struct FortyScrollGrid1: View {
     
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
     @Binding var showSearchSheet: Bool
     
     var body: some View {
         ForEach(1...5, id: \.self) { index in
             Rectangle()
                 .frame(width: 144, height: 144)
+                .onTapGesture {
+                    vm.toggleSheet(at: index)
+                }
         }
-        .onTapGesture {
-            showSearchSheet.toggle()
-        }
+
     }
 }
 
