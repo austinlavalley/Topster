@@ -68,6 +68,7 @@ struct AlbumSquare: View {
     var body: some View {
         
 //        Text(album.name ?? "no album name")
+        Text(album.gridPosition?.description ?? "")
         AsyncImage(url: URL(string: album.image.first(where: { $0.size == "large" })?.text ?? "")) { image in
             image
                 .resizable()
