@@ -27,6 +27,10 @@ struct FortyScrollGridView: View {
                         if album != nil {
                             AlbumSquare(album: album!, chosenID: nil)
                                 .frame(width: 144, height: 144)
+                        } else {
+                            Rectangle()
+                                .foregroundColor(.blue)
+                                .frame(width: 144, height: 144)
                         }
                     }
                 }
