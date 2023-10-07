@@ -16,24 +16,20 @@ struct FortyScrollGridView: View {
         VStack {
             
             ScrollView(.horizontal) {
-                HStack {
+//                HStack {
+//
 
-//                    ForEach(vm.favoriteAlbums.sorted(by: { $0.gridPosition ?? 0 < $1.gridPosition ?? 0}).prefix(2)) { album in
-//                        AlbumSquare(album: album, chosenID: nil)
-//                            .frame(width: 144, height: 144)
+//                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }), id: \.key) { key, album in
+//                        if album != nil {
+//                            AlbumSquare(album: album!, chosenID: nil)
+//                                .frame(width: 144, height: 144)
+//                        } else {
+//                            Rectangle()
+//                                .foregroundColor(.blue)
+//                                .frame(width: 144, height: 144)
+//                        }
 //                    }
-                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }), id: \.key) { key, album in
-//                        Text(album?.name ?? "nah")
-                        if album != nil {
-                            AlbumSquare(album: album!, chosenID: nil)
-                                .frame(width: 144, height: 144)
-                        } else {
-                            Rectangle()
-                                .foregroundColor(.blue)
-                                .frame(width: 144, height: 144)
-                        }
-                    }
-                }
+//                }
             }
             
             ScrollView(.horizontal) {
@@ -41,6 +37,7 @@ struct FortyScrollGridView: View {
                     FortyScrollGrid1(showSearchSheet: $vm.showSearchSheet)
                 }
             }
+                   
             ScrollView(.horizontal) {
                 HStack {
                     FortyScrollGrid2(showSearchSheet: $vm.showSearchSheet)
@@ -73,20 +70,18 @@ struct FortyScrollGrid1: View {
     @Binding var showSearchSheet: Bool
     
     var body: some View {
-//        ForEach(1...5, id: \.self) { index in
-//            Rectangle()
-//                .frame(width: 144, height: 144)
-//                .onTapGesture {
-//                    vm.toggleSheet(at: index)
-//                }
-//        }
-        ForEach(vm.favoriteAlbums.sorted(by: { $0.gridPosition ?? 0 < $1.gridPosition ?? 0}).prefix(2)) { album in
-            AlbumSquare(album: album, chosenID: nil)
-                .frame(width: 144, height: 144)
-                .onTapGesture {
-                    vm.toggleSheet(at: album.gridPosition)
-                }
+        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }), id: \.key) { key, album in
+//                        Text(album?.name ?? "nah")
+            if album != nil {
+                AlbumSquare(album: album!, chosenID: nil)
+//                    .frame(width: 144, height: 144)
+            } else {
+                Rectangle()
+                    .foregroundColor(.blue)
+//                    .frame(width: 144, height: 144)
+            }
         }
+        .frame(width: 144, height: 144)
 
     }
 }

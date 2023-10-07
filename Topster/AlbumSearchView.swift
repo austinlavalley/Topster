@@ -31,7 +31,8 @@ struct AlbumSearchView: View {
                     LazyVGrid(columns: threeColumnGrid) {
                         ForEach(searchResults, id: \.name) { result in
                             AlbumSquare(album: result, chosenID: nil)
-                                .frame(width: 120, height: 120)
+//                                .frame(width: UIScreen.main.bounds.width/3.33333, height: UIScreen.main.bounds.width/3.33333)
+//                                .frame(minWidth: 96)
                         }
                     }
                 }
@@ -68,7 +69,7 @@ struct AlbumSquare: View {
     var body: some View {
         
 //        Text(album.name ?? "no album name")
-        Text(album.gridPosition?.description ?? "")
+//        Text(album.gridPosition?.description ?? "")
         AsyncImage(url: URL(string: album.image.first(where: { $0.size == "large" })?.text ?? "")) { image in
             image
                 .resizable()
