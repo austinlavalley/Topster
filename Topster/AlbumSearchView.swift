@@ -30,9 +30,8 @@ struct AlbumSearchView: View {
                 ScrollView {
                     LazyVGrid(columns: threeColumnGrid) {
                         ForEach(searchResults, id: \.name) { result in
-                            AlbumSquare(album: result, chosenID: nil)
-//                                .frame(width: UIScreen.main.bounds.width/3.33333, height: UIScreen.main.bounds.width/3.33333)
-//                                .frame(minWidth: 96)
+                            SearchAlbumSquare(album: result)
+                                .frame(width: UIScreen.main.bounds.width/3.33333, height: UIScreen.main.bounds.width/3.33333)
                         }
                     }
                 }
@@ -61,29 +60,22 @@ struct AlbumSearchView: View {
 }
 
 
-struct AlbumSquare: View {
+struct SearchAlbumSquare: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     let album: Album // Your album model
-    let chosenID: Int?
 
     var body: some View {
-        
-//        Text(album.name ?? "no album name")
-//        Text(album.gridPosition?.description ?? "")
+
         AsyncImage(url: URL(string: album.image.first(where: { $0.size == "large" })?.text ?? "")) { image in
             image
                 .resizable()
                 .onTapGesture {
-//                    print(album.name ?? "No album name")
-                    vm.toggleSheet(at: nil)
+                    vm.toggleSheet()
                     vm.addAlbumToFavorites(album: album)
-//                    vm.showSearchSheet = false
                 }
         } placeholder: {
             ProgressView()
         }
-        // Display the album cover and other information here
-        // You can also add a tap gesture to allow the user to remove the album from favorites
     }
 }
 

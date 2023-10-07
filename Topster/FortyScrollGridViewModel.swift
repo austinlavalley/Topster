@@ -14,10 +14,9 @@ class FortyScrollGridViewModel: ObservableObject {
     @Published var showSearchSheet = false
     @Published var selectedGridID: Int?
     
-//    let blankAlbum = Album(name: "Not Real", artist: <#T##String#>, url: <#T##String#>, image: <#T##[Image]#>, streamable: <#T##String#>, mbid: <#T##String#>)
     
-    func toggleSheet(at gridID: Int?) {
-        if gridID != nil { selectedGridID = gridID }
+    func toggleSheet() {//at gridID: Int?) {
+//        if gridID != nil { selectedGridID = gridID }
         showSearchSheet.toggle()
     }
     
@@ -33,7 +32,7 @@ class FortyScrollGridViewModel: ObservableObject {
     }
     
     
-    @Published var FortyGridDict: [Int: Album?] = [1: nil, 2: nil, 3: nil]
+    @Published var FortyGridDict: [Int: Album?] = [1: nil, 2: nil, 3: nil, 4: nil, 5: nil]
     
 
     
