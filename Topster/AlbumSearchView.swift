@@ -66,8 +66,6 @@ struct SearchAlbumSquare: View {
     let album: Album // Your album model
 
     var body: some View {
-
-        // by this point we should know in the vm WHICH square we are editing/have selected. just need to assign the tapped album to the respective index in the dictionary
         
         AsyncImage(url: URL(string: album.image.first(where: { $0.size == "large" })?.text ?? "")) { image in
             image

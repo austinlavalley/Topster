@@ -72,9 +72,6 @@ struct FortyScrollGrid1: View {
             }
         }
         .frame(width: 144, height: 144)
-//        .onTapGesture {
-//            vm.toggleSheet()
-//        }
     }
 }
 
@@ -83,11 +80,9 @@ struct FortyScrollGrid1: View {
 struct AlbumSquare: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     let album: Album
+
     
-    // here is where need to send to vm WHICH square we are tapping on/initiating
-
     var body: some View {
-
         AsyncImage(url: URL(string: album.image.first(where: { $0.size == "large" })?.text ?? "")) { image in
             image
                 .resizable()

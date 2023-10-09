@@ -15,24 +15,24 @@ class FortyScrollGridViewModel: ObservableObject {
     @Published var selectedGridID: Int?
     
     
-    func toggleSheet() {//at gridID: Int?) {
-//        if gridID != nil { selectedGridID = gridID }
+    func toggleSheet() {
         showSearchSheet.toggle()
     }
     
     
     
-    @Published var favoriteAlbums: [Album] = [] // Your data structure for favorite albums
+    
+    
+    
+    @Published var FortyGridDict: [Int: Album?] = [1: nil, 2: nil, 3: nil, 4: nil, 5: nil]
     
     func addAlbumToFavorites(album: Album, at index: Int) {
         var newAlbum = album
         newAlbum.gridPosition = selectedGridID
-        favoriteAlbums.append(newAlbum)
         FortyGridDict[index] = newAlbum
     }
     
     
-    @Published var FortyGridDict: [Int: Album?] = [1: nil, 2: nil, 3: nil, 4: nil, 5: nil]
     
 
     
