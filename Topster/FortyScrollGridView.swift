@@ -15,6 +15,8 @@ struct FortyScrollGridView: View {
     var body: some View {
         VStack {
             
+            Text(vm.selectedGridID?.description ?? "")
+            
             ScrollView(.horizontal) {
                 HStack {
                     FortyScrollGrid1(showSearchSheet: $vm.showSearchSheet)
@@ -56,21 +58,33 @@ struct FortyScrollGrid1: View {
         ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }), id: \.key) { key, album in
             if album != nil {
                 AlbumSquare(album: album!)
+                    .onTapGesture {
+                        vm.selectedGridID = key
+                        vm.toggleSheet()
+                    }
             } else {
                 Rectangle()
                     .foregroundColor(.blue)
+                    .onTapGesture {
+                        vm.selectedGridID = key
+                        vm.toggleSheet()
+                    }
             }
         }
         .frame(width: 144, height: 144)
-        .onTapGesture {
-            vm.toggleSheet()
-        }
+//        .onTapGesture {
+//            vm.toggleSheet()
+//        }
     }
 }
 
+
+// ALBUMSQAURE FOR MAIN GRID VIEW
 struct AlbumSquare: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
-    let album: Album // Your album model
+    let album: Album
+    
+    // here is where need to send to vm WHICH square we are tapping on/initiating
 
     var body: some View {
 

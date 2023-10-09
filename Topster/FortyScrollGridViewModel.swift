@@ -24,11 +24,11 @@ class FortyScrollGridViewModel: ObservableObject {
     
     @Published var favoriteAlbums: [Album] = [] // Your data structure for favorite albums
     
-    func addAlbumToFavorites(album: Album) {
+    func addAlbumToFavorites(album: Album, at index: Int) {
         var newAlbum = album
         newAlbum.gridPosition = selectedGridID
         favoriteAlbums.append(newAlbum)
-        FortyGridDict[1] = newAlbum
+        FortyGridDict[index] = newAlbum
     }
     
     

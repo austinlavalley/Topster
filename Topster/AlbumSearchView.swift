@@ -60,18 +60,21 @@ struct AlbumSearchView: View {
 }
 
 
+// ALBUMSQUARE THAT DISPLAYS SEARCH VIEW
 struct SearchAlbumSquare: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     let album: Album // Your album model
 
     var body: some View {
 
+        // by this point we should know in the vm WHICH square we are editing/have selected. just need to assign the tapped album to the respective index in the dictionary
+        
         AsyncImage(url: URL(string: album.image.first(where: { $0.size == "large" })?.text ?? "")) { image in
             image
                 .resizable()
                 .onTapGesture {
                     vm.toggleSheet()
-                    vm.addAlbumToFavorites(album: album)
+                    vm.addAlbumToFavorites(album: album, at: vm.selectedGridID ?? 0)
                 }
         } placeholder: {
             ProgressView()
