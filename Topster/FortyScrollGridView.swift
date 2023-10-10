@@ -23,11 +23,11 @@ struct FortyScrollGridView: View {
                 }
             }
                    
-//            ScrollView(.horizontal) {
-//                HStack {
-//                    FortyScrollGrid2(showSearchSheet: $vm.showSearchSheet)
-//                }
-//            }
+            ScrollView(.horizontal) {
+                HStack {
+                    FortyScrollGrid2(showSearchSheet: $vm.showSearchSheet)
+                }
+            }
 //            ScrollView(.horizontal) {
 //                HStack {
 //                    FortyScrollGrid3(showSearchSheet: $vm.showSearchSheet)
@@ -48,6 +48,21 @@ struct FortyScrollGridView: View {
     }
 }
 
+// ALBUMSQAURE FOR MAIN GRID VIEW
+struct AlbumSquare: View {
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+    let album: Album
+
+    
+    var body: some View {
+        AsyncImage(url: URL(string: album.image.first(where: { $0.size == "large" })?.text ?? "")) { image in
+            image
+                .resizable()
+        } placeholder: {
+            ProgressView()
+        }
+    }
+}
 
 struct FortyScrollGrid1: View {
     
@@ -55,7 +70,7 @@ struct FortyScrollGrid1: View {
     @Binding var showSearchSheet: Bool
     
     var body: some View {
-        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }), id: \.key) { key, album in
+        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5), id: \.key) { key, album in
             if album != nil {
                 AlbumSquare(album: album!)
                     .onTapGesture {
@@ -76,38 +91,33 @@ struct FortyScrollGrid1: View {
 }
 
 
-// ALBUMSQAURE FOR MAIN GRID VIEW
-struct AlbumSquare: View {
-    @EnvironmentObject private var vm: FortyScrollGridViewModel
-    let album: Album
+struct FortyScrollGrid2: View {
 
-    
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+    @Binding var showSearchSheet: Bool
+
+    // 6 -17
     var body: some View {
-        AsyncImage(url: URL(string: album.image.first(where: { $0.size == "large" })?.text ?? "")) { image in
-            image
-                .resizable()
-        } placeholder: {
-            ProgressView()
+        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(5), id: \.key) { key, album in
+            if album != nil {
+                AlbumSquare(album: album!)
+                    .onTapGesture {
+                        vm.selectedGridID = key
+                        vm.toggleSheet()
+                    }
+            } else {
+                Rectangle()
+                    .foregroundColor(.blue)
+                    .onTapGesture {
+                        vm.selectedGridID = key
+                        vm.toggleSheet()
+                    }
+            }
         }
+        .frame(width: 120, height: 120)
     }
 }
 
-//struct FortyScrollGrid2: View {
-//
-//    @Binding var showSearchSheet: Bool
-//
-//    var body: some View {
-//        ForEach(6...17, id: \.self) { index in
-//            Rectangle()
-//                .frame(width: 120, height: 120)
-//                .opacity(0.8)
-//        }
-//        .onTapGesture {
-//            showSearchSheet.toggle()
-//        }
-//    }
-//}
-//
 //struct FortyScrollGrid3: View {
 //
 //    @Binding var showSearchSheet: Bool
