@@ -28,11 +28,13 @@ struct FortyScrollGridView: View {
                     FortyScrollGrid2(showSearchSheet: $vm.showSearchSheet)
                 }
             }
-//            ScrollView(.horizontal) {
-//                HStack {
-//                    FortyScrollGrid3(showSearchSheet: $vm.showSearchSheet)
-//                }
-//            }
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    FortyScrollGrid3(showSearchSheet: $vm.showSearchSheet)
+                }
+            }
+            
 //            ScrollView(.horizontal) {
 //                HStack {
 //                    FortyScrollGrid4(showSearchSheet: $vm.showSearchSheet)
@@ -118,22 +120,32 @@ struct FortyScrollGrid2: View {
     }
 }
 
-//struct FortyScrollGrid3: View {
-//
-//    @Binding var showSearchSheet: Bool
-//
-//    var body: some View {
-//        ForEach(18...31, id: \.self) { index in
-//            Rectangle()
-//                .frame(width: 96, height: 96)
-//                .opacity(0.5)
-//        }
-//        .onTapGesture {
-//            showSearchSheet.toggle()
-//        }
-//    }
-//}
-//
+struct FortyScrollGrid3: View {
+    
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+    @Binding var showSearchSheet: Bool
+
+    var body: some View {
+        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(18), id: \.key) { key, album in
+            if album != nil {
+                AlbumSquare(album: album!)
+                    .onTapGesture {
+                        vm.selectedGridID = key
+                        vm.toggleSheet()
+                    }
+            } else {
+                Rectangle()
+                    .foregroundColor(.blue)
+                    .onTapGesture {
+                        vm.selectedGridID = key
+                        vm.toggleSheet()
+                    }
+            }
+        }
+        .frame(width: 96, height: 96)
+    }
+}
+
 //struct FortyScrollGrid4: View {
 //
 //    @Binding var showSearchSheet: Bool
