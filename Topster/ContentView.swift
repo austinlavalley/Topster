@@ -30,7 +30,12 @@ struct ContentView: View {
 
             FortyScrollGridView()
                 .tabItem {
-                    Text("40 scroll")
+                    Text("Current grid")
+                }
+            
+            Text("y0")
+                .tabItem {
+                    Text("Saved grids")
                 }
         }
     }

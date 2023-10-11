@@ -134,7 +134,7 @@ struct FortyScrollGrid3: View {
     @Binding var showSearchSheet: Bool
 
     var body: some View {
-        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(17), id: \.key) { key, album in
+        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(18), id: \.key) { key, album in
             if album != nil {
                 AlbumSquare(album: album!)
                     .onTapGesture {
