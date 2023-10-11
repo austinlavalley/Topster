@@ -35,11 +35,11 @@ struct FortyScrollGridView: View {
                 }
             }
             
-//            ScrollView(.horizontal) {
-//                HStack {
-//                    FortyScrollGrid4(showSearchSheet: $vm.showSearchSheet)
-//                }
-//            }
+            ScrollView(.horizontal) {
+                HStack {
+                    FortyScrollGrid4(showSearchSheet: $vm.showSearchSheet)
+                }
+            }
         }
         .scrollIndicators(.hidden)
         .padding()
@@ -80,12 +80,16 @@ struct FortyScrollGrid1: View {
                         vm.toggleSheet()
                     }
             } else {
-                Rectangle()
-                    .foregroundColor(.blue)
-                    .onTapGesture {
-                        vm.selectedGridID = key
-                        vm.toggleSheet()
-                    }
+                ZStack {
+                    Rectangle()
+                        .foregroundColor(.blue)
+                        .onTapGesture {
+                            vm.selectedGridID = key
+                            vm.toggleSheet()
+                        }
+                    
+                    Text(key.description)
+                }
             }
         }
         .frame(width: 144, height: 144)
@@ -108,12 +112,16 @@ struct FortyScrollGrid2: View {
                         vm.toggleSheet()
                     }
             } else {
-                Rectangle()
-                    .foregroundColor(.blue)
-                    .onTapGesture {
-                        vm.selectedGridID = key
-                        vm.toggleSheet()
-                    }
+                ZStack {
+                    Rectangle()
+                        .foregroundColor(.blue)
+                        .onTapGesture {
+                            vm.selectedGridID = key
+                            vm.toggleSheet()
+                        }
+                    
+                    Text(key.description)
+                }
             }
         }
         .frame(width: 120, height: 120)
@@ -126,7 +134,7 @@ struct FortyScrollGrid3: View {
     @Binding var showSearchSheet: Bool
 
     var body: some View {
-        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(18), id: \.key) { key, album in
+        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(17), id: \.key) { key, album in
             if album != nil {
                 AlbumSquare(album: album!)
                     .onTapGesture {
@@ -134,33 +142,51 @@ struct FortyScrollGrid3: View {
                         vm.toggleSheet()
                     }
             } else {
-                Rectangle()
-                    .foregroundColor(.blue)
-                    .onTapGesture {
-                        vm.selectedGridID = key
-                        vm.toggleSheet()
-                    }
+                ZStack {
+                    Rectangle()
+                        .foregroundColor(.blue)
+                        .onTapGesture {
+                            vm.selectedGridID = key
+                            vm.toggleSheet()
+                        }
+                    
+                    Text(key.description)
+                }
             }
         }
         .frame(width: 96, height: 96)
     }
 }
 
-//struct FortyScrollGrid4: View {
-//
-//    @Binding var showSearchSheet: Bool
-//
-//    var body: some View {
-//        ForEach(32...40, id: \.self) { index in
-//            Rectangle()
-//                .frame(width: 72, height: 72)
-//                .opacity(0.3)
-//        }
-//        .onTapGesture {
-//            showSearchSheet.toggle()
-//        }
-//    }
-//}
+struct FortyScrollGrid4: View {
+
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+    @Binding var showSearchSheet: Bool
+
+    var body: some View {
+        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(40).dropFirst(31), id: \.key) { key, album in
+            if album != nil {
+                AlbumSquare(album: album!)
+                    .onTapGesture {
+                        vm.selectedGridID = key
+                        vm.toggleSheet()
+                    }
+            } else {
+                ZStack {
+                    Rectangle()
+                        .foregroundColor(.blue)
+                        .onTapGesture {
+                            vm.selectedGridID = key
+                            vm.toggleSheet()
+                        }
+                    
+                    Text(key.description)
+                }
+            }
+        }
+        .frame(width: 72, height: 72)
+    }
+}
 
 
 struct FortyScrollGridView_Previews: PreviewProvider {

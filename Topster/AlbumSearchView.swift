@@ -71,7 +71,8 @@ struct SearchAlbumSquare: View {
             image
                 .resizable()
                 .onTapGesture {
-                    vm.toggleSheet()
+//                    vm.toggleSheet()
+                    vm.hideSearchSheet()
                     vm.addAlbumToFavorites(album: album, at: vm.selectedGridID ?? 0)
                 }
         } placeholder: {
