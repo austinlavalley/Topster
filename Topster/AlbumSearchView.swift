@@ -16,15 +16,23 @@ struct AlbumSearchView: View {
     @State private var searchText: String = ""
     
     
+    
+    
     private var threeColumnGrid = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
         NavigationView {
             VStack {
+                
+                Text("ye")
+                Text(vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ album in
+                    album.artist
+                }) ?? "none")
+                
                 HStack {
                     TextField("Search", text: $searchText)
                     Button("Search") {
-                        searchForArtists()
+                        searchForAlbums()
                     }
                 }
                 ScrollView {
@@ -39,14 +47,14 @@ struct AlbumSearchView: View {
             }
             .padding()
         }
-//        .onChange(of: searchText) { _ in
-//            searchForArtists()
-//        }
+        .onChange(of: searchText) { _ in
+            searchForAlbums()
+        }
     }
     
     
     
-    private func searchForArtists() {
+    private func searchForAlbums() {
         Networker().searchAlbums(query: searchText) { result in
             
             switch result {
@@ -63,7 +71,7 @@ struct AlbumSearchView: View {
 // ALBUMSQUARE THAT DISPLAYS SEARCH VIEW
 struct SearchAlbumSquare: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
-    let album: Album // Your album model
+    let album: Album
 
     var body: some View {
         
@@ -71,7 +79,6 @@ struct SearchAlbumSquare: View {
             image
                 .resizable()
                 .onTapGesture {
-//                    vm.toggleSheet()
                     vm.addAlbumToFavorites(album: album, at: vm.selectedGridID ?? 0)
                     vm.hideSearchSheet()
                 }

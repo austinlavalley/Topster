@@ -15,7 +15,7 @@ struct FortyScrollGridView: View {
     var body: some View {
         VStack {
             
-            Text(vm.selectedGridID?.description ?? "")
+//            Text(vm.selectedGridID?.description ?? "")
             
             ScrollView(.horizontal) {
                 HStack {

@@ -110,7 +110,5 @@ class Networker {
                 completion(.success(searchResults))
             }
         }.resume()
-    }
-    
-    
+    }    
 }
