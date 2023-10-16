@@ -24,7 +24,6 @@ struct AlbumSearchView: View {
         NavigationView {
             VStack {
                 
-                Text("ye")
                 Text(vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ album in
                     album.artist
                 }) ?? "none")
@@ -44,6 +43,16 @@ struct AlbumSearchView: View {
                     }
                 }
                 .navigationBarTitle("Search")
+                .toolbar {
+                    if ((vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ _ in })) != nil) {
+                        Button("remove") {
+                            vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
+                            vm.hideSearchSheet()
+                        }
+                    } else {
+                        Text("nah son")
+                    }
+                }
             }
             .padding()
         }

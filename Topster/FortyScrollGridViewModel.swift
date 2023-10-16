@@ -21,7 +21,7 @@ class FortyScrollGridViewModel: ObservableObject {
     
     func hideSearchSheet() {
         showSearchSheet = false
-        selectedGridID = nil
+//        selectedGridID = nil
     }
     
     
@@ -39,7 +39,10 @@ class FortyScrollGridViewModel: ObservableObject {
         FortyGridDict[index] = newAlbum
     }
     
-    
+    func removeAlbumFromGrid(at index: Int) {
+//        FortyGridDict.removeValue(forKey: index)
+        FortyGridDict.updateValue(nil, forKey: index)
+    }
     
 
     

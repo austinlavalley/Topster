@@ -15,8 +15,8 @@ struct FortyScrollGridView: View {
     var body: some View {
         VStack {
             
-//            Text(vm.selectedGridID?.description ?? "")
-            
+            Spacer()
+                        
             ScrollView(.horizontal) {
                 HStack {
                     FortyScrollGrid1(showSearchSheet: $vm.showSearchSheet)
@@ -40,12 +40,16 @@ struct FortyScrollGridView: View {
                     FortyScrollGrid4(showSearchSheet: $vm.showSearchSheet)
                 }
             }
+            
+            Spacer()
+            Spacer()
         }
         .scrollIndicators(.hidden)
         .padding()
         
         .sheet(isPresented: $vm.showSearchSheet) {
             AlbumSearchView()
+                .presentationDetents([.fraction(0.65), .large])
         }
     }
 }
