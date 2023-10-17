@@ -45,16 +45,16 @@ struct FortyScrollGridView: View {
             }
             .scrollIndicators(.hidden)
             .padding()
+            .navigationTitle("dortaur")
             
             .toolbar {
                 ToolbarItem {
                     Menu {
                         Text("yo")
-                        Button("Clear grid") {}
+                        Button("Clear grid") { vm.clearGrid() }
                     } label: {
                         Label("", systemImage: "ellipsis.circle")
                     }
-
                 }
 
             }
