@@ -10,46 +10,59 @@ import SwiftUI
 struct FortyScrollGridView: View {
     
     @EnvironmentObject private var vm: FortyScrollGridViewModel
-
             
     var body: some View {
-        VStack {
-            
-            Spacer()
-                        
-            ScrollView(.horizontal) {
-                HStack {
-                    FortyScrollGrid1(showSearchSheet: $vm.showSearchSheet)
+        NavigationStack {
+            VStack {
+                Spacer()
+                
+                ScrollView(.horizontal) {
+                    HStack {
+                        FortyScrollGrid1(showSearchSheet: $vm.showSearchSheet)
+                    }
                 }
-            }
-                   
-            ScrollView(.horizontal) {
-                HStack {
-                    FortyScrollGrid2(showSearchSheet: $vm.showSearchSheet)
+                
+                ScrollView(.horizontal) {
+                    HStack {
+                        FortyScrollGrid2(showSearchSheet: $vm.showSearchSheet)
+                    }
                 }
+                
+                ScrollView(.horizontal) {
+                    HStack {
+                        FortyScrollGrid3(showSearchSheet: $vm.showSearchSheet)
+                    }
+                }
+                
+                ScrollView(.horizontal) {
+                    HStack {
+                        FortyScrollGrid4(showSearchSheet: $vm.showSearchSheet)
+                    }
+                }
+                
+                Spacer()
+                Spacer()
+            }
+            .scrollIndicators(.hidden)
+            .padding()
+            
+            .toolbar {
+                ToolbarItem {
+                    Menu {
+                        Text("yo")
+                        Button("Clear grid") {}
+                    } label: {
+                        Label("", systemImage: "ellipsis.circle")
+                    }
+
+                }
+
             }
             
-            ScrollView(.horizontal) {
-                HStack {
-                    FortyScrollGrid3(showSearchSheet: $vm.showSearchSheet)
-                }
+            .sheet(isPresented: $vm.showSearchSheet) {
+                AlbumSearchView()
+                    .presentationDetents([.fraction(0.65), .large])
             }
-            
-            ScrollView(.horizontal) {
-                HStack {
-                    FortyScrollGrid4(showSearchSheet: $vm.showSearchSheet)
-                }
-            }
-            
-            Spacer()
-            Spacer()
-        }
-        .scrollIndicators(.hidden)
-        .padding()
-        
-        .sheet(isPresented: $vm.showSearchSheet) {
-            AlbumSearchView()
-                .presentationDetents([.fraction(0.65), .large])
         }
     }
 }
