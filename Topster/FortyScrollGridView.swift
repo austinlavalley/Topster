@@ -18,45 +18,65 @@ struct FortyScrollGridView: View {
                 
                 ScrollView(.horizontal) {
                     HStack {
-                        FortyScrollGrid1(showSearchSheet: $vm.showSearchSheet)
+//                        FortyScrollGrid1(showSearchSheet: $vm.showSearchSheet)
+                        FortyScrollGridMaster(start: 0, end: 5, size: 144)
                     }
                 }
                 
                 ScrollView(.horizontal) {
                     HStack {
-                        FortyScrollGrid2(showSearchSheet: $vm.showSearchSheet)
+//                        FortyScrollGrid2(showSearchSheet: $vm.showSearchSheet)
+                        FortyScrollGridMaster(start: 5, end: 18, size: 120)
                     }
                 }
                 
                 ScrollView(.horizontal) {
                     HStack {
-                        FortyScrollGrid3(showSearchSheet: $vm.showSearchSheet)
+//                        FortyScrollGrid3(showSearchSheet: $vm.showSearchSheet)
+                        FortyScrollGridMaster(start: 18, end: 31, size: 96)
                     }
                 }
                 
                 ScrollView(.horizontal) {
                     HStack {
-                        FortyScrollGrid4(showSearchSheet: $vm.showSearchSheet)
+//                        FortyScrollGrid4(showSearchSheet: $vm.showSearchSheet)
+                        FortyScrollGridMaster(start: 31, end: 40, size: 72)
+
                     }
                 }
                 
                 Spacer()
+                
+                HStack {
+                    Button("Export grid") {}
+                        .frame(maxWidth: .infinity)
+                        .buttonStyle(.bordered)
+                        .background(.red)
+                        .disabled(true)
+                    
+                    Button("Add to saved grids") {}
+                        .frame(maxWidth: .infinity)
+                        .buttonStyle(.bordered)
+
+                }
+                .frame(maxWidth: .infinity)
+                
                 Spacer()
             }
             .scrollIndicators(.hidden)
             .padding()
-            .navigationTitle("dortaur")
+            .navigationTitle("40 Grid")
+            .navigationBarTitleDisplayMode(.inline)
             
             .toolbar {
                 ToolbarItem {
                     Menu {
                         Text("yo")
-                        Button("Clear grid") { vm.clearGrid() }
+                        Button("Reset grid") { vm.clearGrid() }
                     } label: {
                         Label("", systemImage: "ellipsis.circle")
                     }
                 }
-
             }
             
             .sheet(isPresented: $vm.showSearchSheet) {
@@ -67,12 +87,13 @@ struct FortyScrollGridView: View {
     }
 }
 
+
+
 // ALBUMSQAURE FOR MAIN GRID VIEW
 struct AlbumSquare: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     let album: Album
 
-    
     var body: some View {
         AsyncImage(url: URL(string: album.image.first(where: { $0.size == "large" })?.text ?? "")) { image in
             image
@@ -83,13 +104,20 @@ struct AlbumSquare: View {
     }
 }
 
-struct FortyScrollGrid1: View {
+
+
+
+
+
+struct FortyScrollGridMaster: View {
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
     
-    @EnvironmentObject private var vm: FortyScrollGridViewModel
-    @Binding var showSearchSheet: Bool
+    let start: Int
+    let end: Int
+    let size: CGFloat
     
     var body: some View {
-        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5), id: \.key) { key, album in
+        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(end).dropFirst(start), id: \.key) { key, album in
             if album != nil {
                 AlbumSquare(album: album!)
                     .onTapGesture {
@@ -109,99 +137,7 @@ struct FortyScrollGrid1: View {
                 }
             }
         }
-        .frame(width: 144, height: 144)
-    }
-}
-
-
-struct FortyScrollGrid2: View {
-
-    @EnvironmentObject private var vm: FortyScrollGridViewModel
-    @Binding var showSearchSheet: Bool
-
-    // 6 -17
-    var body: some View {
-        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(5), id: \.key) { key, album in
-            if album != nil {
-                AlbumSquare(album: album!)
-                    .onTapGesture {
-                        vm.selectedGridID = key
-                        vm.toggleSheet()
-                    }
-            } else {
-                ZStack {
-                    Rectangle()
-                        .foregroundColor(.blue)
-                        .onTapGesture {
-                            vm.selectedGridID = key
-                            vm.toggleSheet()
-                        }
-                    
-                    Text(key.description)
-                }
-            }
-        }
-        .frame(width: 120, height: 120)
-    }
-}
-
-struct FortyScrollGrid3: View {
-    
-    @EnvironmentObject private var vm: FortyScrollGridViewModel
-    @Binding var showSearchSheet: Bool
-
-    var body: some View {
-        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(18), id: \.key) { key, album in
-            if album != nil {
-                AlbumSquare(album: album!)
-                    .onTapGesture {
-                        vm.selectedGridID = key
-                        vm.toggleSheet()
-                    }
-            } else {
-                ZStack {
-                    Rectangle()
-                        .foregroundColor(.blue)
-                        .onTapGesture {
-                            vm.selectedGridID = key
-                            vm.toggleSheet()
-                        }
-                    
-                    Text(key.description)
-                }
-            }
-        }
-        .frame(width: 96, height: 96)
-    }
-}
-
-struct FortyScrollGrid4: View {
-
-    @EnvironmentObject private var vm: FortyScrollGridViewModel
-    @Binding var showSearchSheet: Bool
-
-    var body: some View {
-        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(40).dropFirst(31), id: \.key) { key, album in
-            if album != nil {
-                AlbumSquare(album: album!)
-                    .onTapGesture {
-                        vm.selectedGridID = key
-                        vm.toggleSheet()
-                    }
-            } else {
-                ZStack {
-                    Rectangle()
-                        .foregroundColor(.blue)
-                        .onTapGesture {
-                            vm.selectedGridID = key
-                            vm.toggleSheet()
-                        }
-                    
-                    Text(key.description)
-                }
-            }
-        }
-        .frame(width: 72, height: 72)
+        .frame(width: size, height: size)
     }
 }
 
