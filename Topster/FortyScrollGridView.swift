@@ -75,11 +75,17 @@ struct FortyScrollGridView: View {
                 }
             }
             
+            
             .sheet(isPresented: $vm.showSearchSheet) {
                 AlbumSearchView()
                     .presentationDetents([.fraction(0.65), .large])
             }
         }
+        .confirmationDialog("Remove album", isPresented: $vm.pressShowRemove, actions: {
+            Button("yes", role: .destructive) {
+                vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
+            }
+        })
     }
 }
 
@@ -119,6 +125,12 @@ struct FortyScrollGridMaster: View {
                     .onTapGesture {
                         vm.selectedGridID = key
                         vm.toggleSheet()
+                    }
+                    .onLongPressGesture {
+                        if ((vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ _ in })) != nil) {
+//                            vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
+                            vm.pressShowRemove.toggle()
+                        }
                     }
             } else {
                 ZStack {

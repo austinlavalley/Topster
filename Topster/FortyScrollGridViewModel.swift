@@ -14,6 +14,8 @@ class FortyScrollGridViewModel: ObservableObject {
     @Published var showSearchSheet = false
     @Published var selectedGridID: Int?
     
+    @Published var pressShowRemove = false
+    
     
     func toggleSheet() {
         showSearchSheet.toggle()

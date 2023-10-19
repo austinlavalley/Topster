@@ -53,9 +53,7 @@ struct AlbumSearchView: View {
                         vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
                         vm.hideSearchSheet()
                     }
-                } else {
-                    Text("nah son")
-                }
+                } 
             }
         }
         .onChange(of: searchText) { _ in
