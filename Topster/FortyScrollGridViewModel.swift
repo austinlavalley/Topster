@@ -46,10 +46,6 @@ class FortyScrollGridViewModel: ObservableObject {
     
     
     func clearGrid() {
-//        for key in FortyGridDict.keys {
-//            FortyGridDict[key] = nil
-//        }
-        
         for key in FortyGridDict.keys {
             FortyGridDict.updateValue(nil, forKey: key)
         }

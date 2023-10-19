@@ -18,28 +18,24 @@ struct FortyScrollGridView: View {
                 
                 ScrollView(.horizontal) {
                     HStack {
-//                        FortyScrollGrid1(showSearchSheet: $vm.showSearchSheet)
                         FortyScrollGridMaster(start: 0, end: 5, size: 144)
                     }
                 }
                 
                 ScrollView(.horizontal) {
                     HStack {
-//                        FortyScrollGrid2(showSearchSheet: $vm.showSearchSheet)
                         FortyScrollGridMaster(start: 5, end: 18, size: 120)
                     }
                 }
                 
                 ScrollView(.horizontal) {
                     HStack {
-//                        FortyScrollGrid3(showSearchSheet: $vm.showSearchSheet)
                         FortyScrollGridMaster(start: 18, end: 31, size: 96)
                     }
                 }
                 
                 ScrollView(.horizontal) {
                     HStack {
-//                        FortyScrollGrid4(showSearchSheet: $vm.showSearchSheet)
                         FortyScrollGridMaster(start: 31, end: 40, size: 72)
 
                     }
@@ -65,8 +61,8 @@ struct FortyScrollGridView: View {
             }
             .scrollIndicators(.hidden)
             .padding()
-            .navigationTitle("40 Grid")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Top 40 Chart")
             
             .toolbar {
                 ToolbarItem {

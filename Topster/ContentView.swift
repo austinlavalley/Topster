@@ -13,20 +13,6 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-//            FortyTwoGridView()
-//                .tabItem {
-//                    Text("42 grid")
-//                }
-//
-//            FortyGridView()
-//                .tabItem {
-//                    Text("40 grid")
-//                }
-//
-//            CollageView()
-//                .tabItem {
-//                    Text("Collage")
-//                }
 
             FortyScrollGridView()
                 .tabItem {
