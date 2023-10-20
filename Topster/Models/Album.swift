@@ -15,7 +15,6 @@ struct Album: Codable, Identifiable {
     let image: [Image]
     let streamable, mbid: String
     
-    var gridPosition: Int?
 
     
     enum CodingKeys: String, CodingKey {
