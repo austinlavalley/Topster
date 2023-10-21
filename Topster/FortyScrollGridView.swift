@@ -16,6 +16,8 @@ struct FortyScrollGridView: View {
             VStack {
                 Spacer()
                 
+                Text(vm.pressShowRemove.description)
+                
                 ScrollView(.horizontal) {
                     HStack {
                         FortyScrollGridMaster(start: 0, end: 5, size: 144)
@@ -128,7 +130,6 @@ struct FortyScrollGridMaster: View {
                     }
                     .onLongPressGesture {
                         if ((vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ _ in })) != nil) {
-//                            vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
                             vm.pressShowRemove.toggle()
                         }
                     }

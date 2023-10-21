@@ -7,17 +7,13 @@ struct FortyTwoGridView: View {
     let largeGridLayout: [GridItem] = [
         GridItem(.fixed(UIScreen.main.bounds.width / 2 - 12), spacing: 4),
         GridItem(.fixed(UIScreen.main.bounds.width / 2 - 12), spacing: 4),
-//        GridItem(.fixed(360 / 2), spacing: 4),
-//        GridItem(.fixed(360 / 2), spacing: 4),
     ]
     
     let medGridLayout: [GridItem] = [
         GridItem(.fixed(UIScreen.main.bounds.width / 3 - 8), spacing: 2.6666666667),
         GridItem(.fixed(UIScreen.main.bounds.width / 3 - 8), spacing: 2.6666666667),
         GridItem(.fixed(UIScreen.main.bounds.width / 3 - 8), spacing: 2.6666666667),
-//        GridItem(.fixed(360 / 3), spacing: 2.6666666667),
-//        GridItem(.fixed(360 / 3), spacing: 2.6666666667),
-//        GridItem(.fixed(360 / 3), spacing: 2.6666666667),
+
     ]
     
     let smallGridLayout: [GridItem] = [
@@ -26,10 +22,6 @@ struct FortyTwoGridView: View {
         GridItem(.fixed(UIScreen.main.bounds.width / 4 - 6), spacing: 2),
         GridItem(.fixed(UIScreen.main.bounds.width / 4 - 6), spacing: 2),
 
-//        GridItem(.fixed(360 / 4), spacing: 2),
-//        GridItem(.fixed(360 / 4), spacing: 2),
-//        GridItem(.fixed(360 / 4), spacing: 2),
-//        GridItem(.fixed(360 / 4), spacing: 2),
     ]
     
     var body: some View {

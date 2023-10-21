@@ -41,10 +41,6 @@ class FortyScrollGridViewModel: ObservableObject {
     
     // assigns album to main grid dict at the currently selected grid id
     func addAlbumToGrid(album: Album, at index: Int) {
-//        var newAlbum = album
-//        newAlbum.gridPosition = selectedGridID
-//        FortyGridDict[index] = newAlbum
-        
         FortyGridDict[index] = album
     }
     

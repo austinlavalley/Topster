@@ -25,6 +25,7 @@
 		D9B8B40A2AB4FB2800A4613A /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4092AB4FB2800A4613A /* Track.swift */; };
 		D9B8B40C2AB4FCB800A4613A /* ArtistSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B40B2AB4FCB800A4613A /* ArtistSearchView.swift */; };
 		D9B8B40E2AB8BED300A4613A /* Networker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B40D2AB8BED300A4613A /* Networker.swift */; };
+		D9DAD16E2AE423FE003CD6B6 /* DraggableGridSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		D9B8B4092AB4FB2800A4613A /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		D9B8B40B2AB4FCB800A4613A /* ArtistSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistSearchView.swift; sourceTree = "<group>"; };
 		D9B8B40D2AB8BED300A4613A /* Networker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networker.swift; sourceTree = "<group>"; };
+		D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableGridSetup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 				D92B6F1E2A9E9A5200A7CCBD /* FortyGridView.swift */,
 				D92B6F202A9E9BF600A7CCBD /* CollageView.swift */,
 				D92B6F422AA380F600A7CCBD /* FortyScrollGridView.swift */,
+				D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */,
 				D93AD4BD2AC64226001D2BA3 /* FortyScrollGridViewModel.swift */,
 				D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */,
 				D9B8B4022AB3B41700A4613A /* TopArtistsNetwork.swift */,
@@ -198,6 +201,7 @@
 				D9B8B4082AB4FB0800A4613A /* Artist.swift in Sources */,
 				D92B6F0F2A9BBF9300A7CCBD /* TopsterApp.swift in Sources */,
 				D9B8B4012AB3AE6600A4613A /* TopTracksNetwork.swift in Sources */,
+				D9DAD16E2AE423FE003CD6B6 /* DraggableGridSetup.swift in Sources */,
 				D9B8B40C2AB4FCB800A4613A /* ArtistSearchView.swift in Sources */,
 				D92B6F212A9E9BF700A7CCBD /* CollageView.swift in Sources */,
 				D92B6F432AA380F700A7CCBD /* FortyScrollGridView.swift in Sources */,

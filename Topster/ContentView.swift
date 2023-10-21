@@ -14,7 +14,8 @@ struct ContentView: View {
     var body: some View {
         TabView {
 
-            FortyScrollGridView()
+//            FortyScrollGridView()
+            DraggableGridSetup()
                 .tabItem {
                     Text("Current grid")
                 }
