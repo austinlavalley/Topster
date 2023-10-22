@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Foundation
 
 struct ShakeyDelete: View {
     @State private var scale: CGFloat = 1.0
@@ -16,15 +15,39 @@ struct ShakeyDelete: View {
 
     var body: some View {
         VStack {
-            Text("AH")
-                .font(Font.system(size: 50))
-                .offset(x: start ? 30 : 0)
-                .padding()
+            Text("Tappable Object")
+                .scaleEffect(scale)
+                .rotationEffect(Angle(degrees: deleting ? 5 : 0))
+                .gesture(
+                    LongPressGesture(minimumDuration: 1.0)
+                        .onChanged { _ in
+                            // Start the deletion animation
+                            withAnimation(Animation.spring()) {
+                                scale = 1.5
+                                deleting = true
+                            }
+                        }
+                        .onEnded { _ in
+                            // End the deletion animation
+                            withAnimation {
+                                scale = 1.0
+                                deleting = false
+                            }
+                        }
+                )
+                .opacity(deleting ? 0.0 : 1.0)
             
-            Button("Shake") {
-                start = true
-                withAnimation(Animation.spring(response: 0.2, dampingFraction: 0.2, blendDuration: 0.2)) {
-                    start = false
+            VStack {
+                Text("AH")
+                    .font(Font.system(size: 50))
+                    .offset(x: start ? 30 : 0)
+                    .padding()
+                
+                Button("Shake") {
+                    start = true
+                    withAnimation(Animation.spring(response: 0.2, dampingFraction: 0.2, blendDuration: 0.2)) {
+                        start = false
+                    }
                 }
             }
         }

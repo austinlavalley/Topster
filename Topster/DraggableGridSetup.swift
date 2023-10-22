@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct DraggableGridSetup: View {
     
     @State private var colors: [Color] = [.red, .blue, .green, .yellow, .purple, .black, .indigo, .cyan, .mint, .brown, .orange]
