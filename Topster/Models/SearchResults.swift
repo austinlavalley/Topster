@@ -41,7 +41,7 @@ struct Albummatches: Codable {
 
 
 // MARK: - Image
-struct Image: Codable {
+struct AlbumImage: Codable {
     let text: String?
     let size: String?
     

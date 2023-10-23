@@ -16,7 +16,7 @@ struct FortyScrollGridView: View {
             VStack {
                 Spacer()
                 
-                Text(vm.pressShowRemove.description)
+//                Text(vm.pressShowRemove.description)
                 
                 ScrollView(.horizontal) {
                     HStack {
@@ -128,11 +128,11 @@ struct FortyScrollGridMaster: View {
                         vm.selectedGridID = key
                         vm.toggleSheet()
                     }
-                    .onLongPressGesture {
-                        if ((vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ _ in })) != nil) {
-                            vm.pressShowRemove.toggle()
-                        }
-                    }
+//                    .onLongPressGesture {
+//                        if ((vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ _ in })) != nil) {
+//                            vm.pressShowRemove.toggle()
+//                        }
+//                    }
             } else {
                 ZStack {
                     Rectangle()
@@ -142,7 +142,7 @@ struct FortyScrollGridMaster: View {
                             vm.toggleSheet()
                         }
                     
-                    Text(key.description)
+                    Image(systemName: "plus").bold().foregroundColor(.secondary)
                 }
             }
         }

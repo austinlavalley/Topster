@@ -12,7 +12,7 @@ struct Album: Codable, Identifiable {
     let id = UUID()
     let name, artist: String
     let url: String
-    let image: [Image]
+    let image: [AlbumImage]
     let streamable, mbid: String
     
 
