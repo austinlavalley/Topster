@@ -55,7 +55,7 @@ class FortyScrollGridViewModel: ObservableObject {
     }
     
     // Create a computed property to save and load the dictionary to/from AppStorage
-    var savedFortyGridDict: [Int: Album?] {
+    var EditableFortyGridDict: [Int: Album?] {
         get {
             return FortyGridDict
         }
@@ -74,21 +74,21 @@ class FortyScrollGridViewModel: ObservableObject {
     
     // assigns album to main grid dict at the currently selected grid id
     func addAlbumToGrid(album: Album, at index: Int) {
-        FortyGridDict[index] = album
-        savedFortyGridDict[index] = album
+//        FortyGridDict[index] = album
+        EditableFortyGridDict[index] = album
     }
     
     
     // resets the given key's value back to nil
     func removeAlbumFromGrid(at index: Int) {
-        FortyGridDict.updateValue(nil, forKey: index)
+        EditableFortyGridDict.updateValue(nil, forKey: index)
     }
     
     
     // iterates through all keys and updates value to nil
     func clearGrid() {
         for key in FortyGridDict.keys {
-            FortyGridDict.updateValue(nil, forKey: key)
+            EditableFortyGridDict.updateValue(nil, forKey: key)
         }
     }
     
