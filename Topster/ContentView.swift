@@ -20,7 +20,7 @@ struct ContentView: View {
                     Text("Current grid")
                 }
             
-            Text("y0")
+            Text(vm.savedGrids.description)
                 .tabItem {
                     Text("Saved grids")
                 }

@@ -52,7 +52,9 @@ struct FortyScrollGridView: View {
                         .background(.red)
                         .disabled(true)
                     
-                    Button("Add to saved grids") {}
+                    Button("Add to saved grids") {
+                        vm.addToSavedGrids(grid: vm.FortyGridDict)
+                    }
                         .frame(maxWidth: .infinity)
                         .buttonStyle(.bordered)
 

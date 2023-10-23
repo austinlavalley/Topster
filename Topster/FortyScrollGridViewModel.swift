@@ -32,10 +32,7 @@ class FortyScrollGridViewModel: ObservableObject {
     
     
     
-    
-    
-    // docs directory, core data, cloud???
-     
+    @Published var savedGrids: [[Int: Album?]] = [[:]]
     
     // main grid control, key is the grid space & value is an optional Album model
     @Published var FortyGridDict: [Int: Album?] = [
@@ -43,13 +40,20 @@ class FortyScrollGridViewModel: ObservableObject {
     ]
     
     // Create an AppStorage property for your dictionary with a default value
-       @AppStorage("FortyGridDict", store: UserDefaults.standard) var storedFortyGridDict: Data?
+    @AppStorage("FortyGridDict") var storedFortyGridDict: Data?
+    @AppStorage("storedSavedGrids") var storedSavedGrids: Data?
+
     
     init() {
         // Load the saved data from AppStorage when initializing the view model
         if let savedData = storedFortyGridDict {
             if let decodedData = try? JSONDecoder().decode([Int: Album?].self, from: savedData) {
                 FortyGridDict = decodedData
+            }
+        }
+        if let storedGrids = storedSavedGrids {
+            if let decodedData = try? JSONDecoder().decode([[Int: Album?]].self, from: storedGrids) {
+                savedGrids = decodedData
             }
         }
     }
@@ -67,6 +71,9 @@ class FortyScrollGridViewModel: ObservableObject {
         }
     }
     
+    func addToSavedGrids(grid: [Int: Album?]) {
+        savedGrids.append(grid)
+    }
     
     
     
