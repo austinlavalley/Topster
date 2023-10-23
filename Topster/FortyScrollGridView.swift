@@ -20,25 +20,25 @@ struct FortyScrollGridView: View {
                 
                 ScrollView(.horizontal) {
                     HStack {
-                        FortyScrollGridMaster(start: 0, end: 5, size: 144)
+                        FortyScrollGridMaster(start: 0, end: 5, size: 144, squareColor: .secondary)
                     }
                 }
                 
                 ScrollView(.horizontal) {
                     HStack {
-                        FortyScrollGridMaster(start: 5, end: 18, size: 120)
+                        FortyScrollGridMaster(start: 5, end: 18, size: 120, squareColor: .secondary.opacity(0.8))
                     }
                 }
                 
                 ScrollView(.horizontal) {
                     HStack {
-                        FortyScrollGridMaster(start: 18, end: 31, size: 96)
+                        FortyScrollGridMaster(start: 18, end: 31, size: 96, squareColor: .secondary.opacity(0.6))
                     }
                 }
                 
                 ScrollView(.horizontal) {
                     HStack {
-                        FortyScrollGridMaster(start: 31, end: 40, size: 72)
+                        FortyScrollGridMaster(start: 31, end: 40, size: 72, squareColor: .secondary.opacity(0.4))
 
                     }
                 }
@@ -119,6 +119,7 @@ struct FortyScrollGridMaster: View {
     let start: Int
     let end: Int
     let size: CGFloat
+    let squareColor: Color
     
     var body: some View {
         ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(end).dropFirst(start), id: \.key) { key, album in
@@ -136,7 +137,7 @@ struct FortyScrollGridMaster: View {
             } else {
                 ZStack {
                     Rectangle()
-                        .foregroundColor(.blue)
+                        .foregroundColor(squareColor)
                         .onTapGesture {
                             vm.selectedGridID = key
                             vm.toggleSheet()
