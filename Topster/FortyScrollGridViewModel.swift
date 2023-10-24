@@ -32,7 +32,7 @@ class FortyScrollGridViewModel: ObservableObject {
     
     
     
-    @Published var savedGrids: [[Int: Album?]] = [[:]]
+    @Published var savedGrids: [ [Int: Album?] ] = [ [1: nil, 2: nil], [11: nil] ]
     
     // main grid control, key is the grid space & value is an optional Album model
     @Published var FortyGridDict: [Int: Album?] = [

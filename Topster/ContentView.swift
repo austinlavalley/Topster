@@ -20,7 +20,7 @@ struct ContentView: View {
                     Text("Current grid")
                 }
             
-            Text(vm.savedGrids.description)
+            SavedGridsListView()
                 .tabItem {
                     Text("Saved grids")
                 }
@@ -32,5 +32,21 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .environmentObject(FortyScrollGridViewModel())
+    }
+}
+
+
+struct SavedGridsListView: View {
+    
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+    
+    var body: some View {
+        VStack {
+            Text(vm.savedGrids.count.description)
+            
+            ForEach(Array(vm.savedGrids.enumerated()), id: \.offset) { index, album in
+                Text(album.description)
+            }
+        }
     }
 }
