@@ -44,8 +44,10 @@ struct SavedGridsListView: View {
         VStack {
             Text(vm.savedGrids.count.description)
             
-            ForEach(Array(vm.savedGrids.enumerated()), id: \.offset) { index, album in
-                Text(album.description)
+            ForEach(Array(vm.savedGrids.enumerated()), id: \.offset) { index, grid in
+                Text(grid.values.first?.map({ album in
+                    album.name
+                }) ?? "no album name?")
             }
         }
     }
