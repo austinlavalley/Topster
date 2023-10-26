@@ -41,13 +41,34 @@ struct SavedGridsListView: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     
     var body: some View {
-        VStack {
-            Text(vm.savedGrids.count.description)
-            
-            ForEach(Array(vm.savedGrids.enumerated()), id: \.offset) { index, grid in
-                Text(grid.values.first?.map({ album in
-                    album.name
-                }) ?? "no album name?")
+        ScrollView {
+            VStack {                
+                //            Button("print album") {
+                //                print(
+                //                    vm.savedGrids.description
+                //                )
+                //            }
+                
+//                ForEach(Array(vm.savedGrids.enumerated()), id: \.offset) { index, grid in
+//                    Text(grid.values.first?.map({ album in
+//                        album.name
+//                    }) ?? "no album name?")
+//                }
+                
+                ForEach(Array(vm.savedGrids.enumerated()), id: \.offset) { index, grid in
+                    
+                    
+                    HStack {
+                        ForEach(grid.sorted(by: { $0.key < $1.key }), id: \.key) { key, album in
+                            if album != nil {
+//                                Text(album?.name ?? "")
+                                AlbumSquare(album: album!)
+                            } 
+                        }
+                    }
+                    
+                    
+                }
             }
         }
     }
