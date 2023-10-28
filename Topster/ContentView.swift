@@ -42,33 +42,33 @@ struct SavedGridsListView: View {
     
     var body: some View {
         ScrollView {
-            VStack {                
-                //            Button("print album") {
-                //                print(
-                //                    vm.savedGrids.description
-                //                )
-                //            }
+            VStack {
                 
-//                ForEach(Array(vm.savedGrids.enumerated()), id: \.offset) { index, grid in
-//                    Text(grid.values.first?.map({ album in
-//                        album.name
-//                    }) ?? "no album name?")
-//                }
-                
+                // for each GRID in the array of saved grids
                 ForEach(Array(vm.savedGrids.enumerated()), id: \.offset) { index, grid in
                     
-                    
-                    HStack {
-                        ForEach(grid.sorted(by: { $0.key < $1.key }), id: \.key) { key, album in
-                            if album != nil {
-//                                Text(album?.name ?? "")
-                                AlbumSquare(album: album!)
-                            } 
+                    ScrollView(.horizontal) {
+                        HStack {
+                            // for each [key: album] pair in each individual grid (i.e, "Fav rock albums", "fav 70s", etc)
+                            ForEach(grid.sorted(by: { $0.key < $1.key }), id: \.key) { key, album in
+                                if album != nil {
+                                    //                                Text(album?.name ?? "")
+                                    AlbumSquare(album: album!)
+                                } else {
+                                    //                                Rectangle().foregroundColor(.gray)
+                                }
+                            }
+                            .frame(width: 96, height: 96)
                         }
+//                        .padding(.horizontal)
+                        
+                        
                     }
-                    
-                    
+                    .padding()
+                    .background(.gray)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
+                .padding(.horizontal)
             }
         }
     }
