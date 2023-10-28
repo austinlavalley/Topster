@@ -10,6 +10,12 @@ import SwiftUI
 struct SavedGridCardPreviewView: View {
     
     let grid: [Int : Album?]
+    let nonNilPairs: [Int: Album?]
+    
+    init(grid: [Int : Album?]) {
+        self.grid = grid
+        self.nonNilPairs = grid.filter({ $0.value != nil })
+    }
     
     @State private var blankAlbumCount = 0
 
@@ -18,11 +24,9 @@ struct SavedGridCardPreviewView: View {
             HStack {
                 // for each [key: album] pair in each individual grid (i.e, "Fav rock albums", "fav 70s", etc)
 //                ForEach(grid.sorted(by: { $0.key < $1.key }), id: \.key) { key, album in
-                ForEach(grid.filter({ $0.value != nil }), id: \.key) { key, album in 
+                ForEach(nonNilPairs.sorted(by: {$0.key < $1.key}), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
-                    } else {
-                        Rectangle().foregroundColor(.gray)
                     }
                 }
                 .frame(width: 96, height: 96)
@@ -37,6 +41,8 @@ struct SavedGridCardPreviewView: View {
 
 
 
+
+// need to iterate through a fixed range (4 or 5) and add albums to the range, detecting if not filled by nonNilPairs, fill in with rectangles. this needs to be an array of something???
 
 
 
