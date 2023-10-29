@@ -32,14 +32,7 @@ class FortyScrollGridViewModel: ObservableObject {
     
     
     
-    @Published var savedGrids: [ [Int: Album?] ] = [
-        [
-            1: Optional(Topster.Album(name: "American Heartbreak", artist: "Zach Bryan", url: "https://www.last.fm/music/Zach+Bryan/American+Heartbreak", image: [Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/34s/07c3b7f594f5513c5f07fa7f8fb81787.png"), size: Optional("small")), Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/64s/07c3b7f594f5513c5f07fa7f8fb81787.png"), size: Optional("medium")), Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/174s/07c3b7f594f5513c5f07fa7f8fb81787.png"), size: Optional("large")), Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/300x300/07c3b7f594f5513c5f07fa7f8fb81787.png"), size: Optional("extralarge"))], streamable: "0", mbid: "")),
-            2: Optional(Topster.Album(name: "Youth", artist: "Matisyahu", url: "https://www.last.fm/music/Matisyahu/Youth", image: [Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/34s/62ee1cffdde64d1e9a3462c307f83bfd.png"), size: Optional("small")), Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/64s/62ee1cffdde64d1e9a3462c307f83bfd.png"), size: Optional("medium")), Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/174s/62ee1cffdde64d1e9a3462c307f83bfd.png"), size: Optional("large")), Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/300x300/62ee1cffdde64d1e9a3462c307f83bfd.png"), size: Optional("extralarge"))], streamable: "0", mbid: "b971671b-a135-4801-b65a-859815fb1813"))],
-        [
-            1: Optional(Topster.Album(name: "some rap songs", artist: "Earl Sweatshirt", url: "https://www.last.fm/music/Earl+Sweatshirt/some+rap+songs", image: [Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/34s/b7b9b1e9d8007ddaeaa9ee8a8e45a4c3.png"), size: Optional("small")), Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/64s/b7b9b1e9d8007ddaeaa9ee8a8e45a4c3.png"), size: Optional("medium")), Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/174s/b7b9b1e9d8007ddaeaa9ee8a8e45a4c3.png"), size: Optional("large")), Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/300x300/b7b9b1e9d8007ddaeaa9ee8a8e45a4c3.png"), size: Optional("extralarge"))], streamable: "0", mbid: ""))
-        ]
-    ]
+    @Published var savedGrids: [ [Int: Album?] ] = []
     
     // main grid control, key is the grid space & value is an optional Album model
     @Published var FortyGridDict: [Int: Album?] = [
@@ -78,8 +71,20 @@ class FortyScrollGridViewModel: ObservableObject {
         }
     }
     
+    var EditableSavedGrids: [ [Int: Album?] ] {
+        get {
+            return savedGrids
+        }
+        set {
+            savedGrids = newValue
+            if let encodedData = try? JSONEncoder().encode(newValue) {
+                storedSavedGrids = encodedData
+            }
+        }
+    }
+    
     func addToSavedGrids(grid: [Int: Album?]) {
-        savedGrids.append(grid)
+        EditableSavedGrids.append(grid)
     }
     
     

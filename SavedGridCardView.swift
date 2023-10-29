@@ -17,8 +17,6 @@ struct SavedGridCardPreviewView: View {
         self.nonNilPairs = grid.filter({ $0.value != nil })
     }
     
-    @State private var blankAlbumCount = 0
-
     var body: some View {
         ScrollView(.horizontal) {
             HStack {
