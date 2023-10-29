@@ -87,6 +87,10 @@ class FortyScrollGridViewModel: ObservableObject {
         EditableSavedGrids.append(grid)
     }
     
+    func removeFromSavedGrids(at index: Int) {
+        EditableSavedGrids.remove(at: index)
+    }
+    
     
     
     
