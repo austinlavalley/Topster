@@ -44,6 +44,9 @@ struct SavedGridCardPreviewView: View {
             
             Button("delete grid") { vm.removeFromSavedGrids(at: currentIndex)}
         }
+        .onTapGesture {
+            vm.FortyGridDict = grid
+        }
     }
 }
 

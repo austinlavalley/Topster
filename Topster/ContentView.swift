@@ -49,6 +49,7 @@ struct SavedGridsListView: View {
                     
                     SavedGridCardPreviewView(grid: grid, currentIndex: index)
                     
+                    
                 }
                 .padding(.horizontal)
             }
