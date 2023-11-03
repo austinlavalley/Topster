@@ -26,6 +26,7 @@
 		D9B8B40C2AB4FCB800A4613A /* ArtistSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B40B2AB4FCB800A4613A /* ArtistSearchView.swift */; };
 		D9B8B40E2AB8BED300A4613A /* Networker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B40D2AB8BED300A4613A /* Networker.swift */; };
 		D9C8CCC02AEDC54400FF0997 /* SavedGridCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C8CCBF2AEDC54400FF0997 /* SavedGridCardView.swift */; };
+		D9C8CCC22AF582E500FF0997 /* SavedGridsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C8CCC12AF582E500FF0997 /* SavedGridsListView.swift */; };
 		D9DAD16E2AE423FE003CD6B6 /* DraggableGridSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */; };
 		D9DAD1702AE57111003CD6B6 /* ShakeyDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DAD16F2AE57111003CD6B6 /* ShakeyDelete.swift */; };
 /* End PBXBuildFile section */
@@ -51,6 +52,7 @@
 		D9B8B40B2AB4FCB800A4613A /* ArtistSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistSearchView.swift; sourceTree = "<group>"; };
 		D9B8B40D2AB8BED300A4613A /* Networker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networker.swift; sourceTree = "<group>"; };
 		D9C8CCBF2AEDC54400FF0997 /* SavedGridCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedGridCardView.swift; sourceTree = "<group>"; };
+		D9C8CCC12AF582E500FF0997 /* SavedGridsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedGridsListView.swift; sourceTree = "<group>"; };
 		D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableGridSetup.swift; sourceTree = "<group>"; };
 		D9DAD16F2AE57111003CD6B6 /* ShakeyDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeyDelete.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,8 +71,8 @@
 		D92B6F022A9BBF9300A7CCBD = {
 			isa = PBXGroup;
 			children = (
-				D9C8CCBF2AEDC54400FF0997 /* SavedGridCardView.swift */,
 				D9DAD16F2AE57111003CD6B6 /* ShakeyDelete.swift */,
+				D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */,
 				D92B6F0D2A9BBF9300A7CCBD /* Topster */,
 				D92B6F0C2A9BBF9300A7CCBD /* Products */,
 			);
@@ -94,13 +96,14 @@
 				D92B6F1E2A9E9A5200A7CCBD /* FortyGridView.swift */,
 				D92B6F202A9E9BF600A7CCBD /* CollageView.swift */,
 				D92B6F422AA380F600A7CCBD /* FortyScrollGridView.swift */,
-				D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */,
 				D93AD4BD2AC64226001D2BA3 /* FortyScrollGridViewModel.swift */,
 				D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */,
 				D9B8B4022AB3B41700A4613A /* TopArtistsNetwork.swift */,
 				D9B8B40D2AB8BED300A4613A /* Networker.swift */,
 				D9B8B40B2AB4FCB800A4613A /* ArtistSearchView.swift */,
 				D93AD4BB2AC23449001D2BA3 /* AlbumSearchView.swift */,
+				D9C8CCBF2AEDC54400FF0997 /* SavedGridCardView.swift */,
+				D9C8CCC12AF582E500FF0997 /* SavedGridsListView.swift */,
 				D92B6F122A9BBF9400A7CCBD /* Assets.xcassets */,
 				D92B6F142A9BBF9400A7CCBD /* Preview Content */,
 			);
@@ -206,6 +209,7 @@
 				D99642542ABB50B6004CEA01 /* SearchResults.swift in Sources */,
 				D9346C692ACB7AC200CA8F70 /* Album.swift in Sources */,
 				D9B8B4082AB4FB0800A4613A /* Artist.swift in Sources */,
+				D9C8CCC22AF582E500FF0997 /* SavedGridsListView.swift in Sources */,
 				D9DAD1702AE57111003CD6B6 /* ShakeyDelete.swift in Sources */,
 				D92B6F0F2A9BBF9300A7CCBD /* TopsterApp.swift in Sources */,
 				D9B8B4012AB3AE6600A4613A /* TopTracksNetwork.swift in Sources */,

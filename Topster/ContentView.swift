@@ -36,23 +36,4 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 
-struct SavedGridsListView: View {
-    
-    @EnvironmentObject private var vm: FortyScrollGridViewModel
-    
-    var body: some View {
-        ScrollView {
-            VStack {
-                
-                // for each GRID in the array of saved grids
-                ForEach(Array(vm.savedGrids.enumerated()), id: \.offset) { index, grid in
-                    
-                    SavedGridCardPreviewView(grid: grid, currentIndex: index)
-                    
-                    
-                }
-                .padding(.horizontal)
-            }
-        }
-    }
-}
+
