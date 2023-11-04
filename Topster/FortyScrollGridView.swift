@@ -10,6 +10,7 @@ import SwiftUI
 struct FortyScrollGridView: View {
     
     @EnvironmentObject private var vm: FortyScrollGridViewModel
+    @State private var saveButtonText = "Add to saved grids"
             
     var body: some View {
         NavigationStack {
@@ -52,8 +53,9 @@ struct FortyScrollGridView: View {
                         .background(.red)
                         .disabled(true)
                     
-                    Button("Add to saved grids") {
+                    Button(saveButtonText) {
                         vm.addToSavedGrids(grid: vm.FortyGridDict)
+                        saveButtonText = "Grid saved"
                     }
                         .frame(maxWidth: .infinity)
                         .buttonStyle(.bordered)
