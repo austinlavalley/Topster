@@ -10,7 +10,7 @@ import SwiftUI
 struct FortyScrollGridView: View {
     
     @EnvironmentObject private var vm: FortyScrollGridViewModel
-    @State private var saveButtonText = "Add to saved grids"
+    @State private var saveButtonText = "Save grid"
             
     var body: some View {
         NavigationStack {
@@ -57,8 +57,9 @@ struct FortyScrollGridView: View {
                         vm.addToSavedGrids(grid: vm.FortyGridDict)
                         saveButtonText = "Grid saved"
                     }
-                        .frame(maxWidth: .infinity)
-                        .buttonStyle(.bordered)
+//                        .frame(maxWidth: .infinity)
+                        .buttonStyle(SaveButtonStyle())
+                    
 
                 }
                 .frame(maxWidth: .infinity)
@@ -95,6 +96,17 @@ struct FortyScrollGridView: View {
     }
 }
 
+struct SaveButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(configuration.isPressed ? .red : .blue)
+            .bold()
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .foregroundColor(.white)
+    }
+}
 
 
 // ALBUMSQAURE FOR MAIN GRID VIEW
