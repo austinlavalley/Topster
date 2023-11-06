@@ -52,7 +52,7 @@ struct FortyScrollGridView: View {
 //                        .buttonStyle(.bordered)
 //                        .background(.red)
 //                        .disabled(true)
-                    AnimatedButtonView()
+                    AnimatedButtonView(buttonText: "Save grid", buttonActionText: "Grid saved")
                     
                     Button(saveButtonText) {
                         vm.addToSavedGrids(grid: vm.FortyGridDict)
@@ -112,23 +112,23 @@ struct SaveButtonStyle: ButtonStyle {
 struct AnimatedButtonView: View {
     @State private var isAnimating = false
     @State private var isSuccess = false
-    @State private var buttonText = "Save grid"
+    
+    @State var buttonText: String
+    @State var buttonActionText: String
 
     var body: some View {
         Button(action: {
             self.isAnimating = true
             self.isSuccess = true
-            self.buttonText = "Grid saved"
 
             // After a delay, reset the animation state
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 withAnimation(.spring()) {
                     self.isAnimating = false
-                    self.buttonText = "Save grid"
                 }
             }
         }) {
-            Text(buttonText)
+            Label(isAnimating ? buttonActionText : buttonText, systemImage: isAnimating ? "checkmark" : "person.fill")
                 .foregroundColor(.white)
                 .bold()
                 .padding()
