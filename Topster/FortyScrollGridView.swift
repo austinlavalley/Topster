@@ -47,11 +47,12 @@ struct FortyScrollGridView: View {
                 Spacer()
                 
                 HStack {
-                    Button("Export grid") {}
-                        .frame(maxWidth: .infinity)
-                        .buttonStyle(.bordered)
-                        .background(.red)
-                        .disabled(true)
+//                    Button("Export grid") {}
+//                        .frame(maxWidth: .infinity)
+//                        .buttonStyle(.bordered)
+//                        .background(.red)
+//                        .disabled(true)
+                    AnimatedButtonView()
                     
                     Button(saveButtonText) {
                         vm.addToSavedGrids(grid: vm.FortyGridDict)
@@ -107,6 +108,40 @@ struct SaveButtonStyle: ButtonStyle {
             .foregroundColor(.white)
     }
 }
+
+struct AnimatedButtonView: View {
+    @State private var isAnimating = false
+    @State private var isSuccess = false
+    @State private var buttonText = "Save grid"
+
+    var body: some View {
+        Button(action: {
+            self.isAnimating = true
+            self.isSuccess = true
+            self.buttonText = "Grid saved"
+
+            // After a delay, reset the animation state
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                withAnimation(.spring()) {
+                    self.isAnimating = false
+                    self.buttonText = "Save grid"
+                }
+            }
+        }) {
+            Text(buttonText)
+                .foregroundColor(.white)
+                .bold()
+                .padding()
+                .background(isAnimating ? Color.green : Color.blue)
+                .cornerRadius(12)
+        }
+        .disabled(isAnimating) // Disable the button while animating
+    }
+}
+
+
+
+
 
 
 // ALBUMSQAURE FOR MAIN GRID VIEW
