@@ -47,21 +47,9 @@ struct FortyScrollGridView: View {
                 Spacer()
                 
                 HStack {
-//                    Button("Export grid") {}
-//                        .frame(maxWidth: .infinity)
-//                        .buttonStyle(.bordered)
-//                        .background(.red)
-//                        .disabled(true)
-                    AnimatedButtonView(buttonText: "Save grid", buttonActionText: "Grid saved")
-                    
-                    Button(saveButtonText) {
-                        vm.addToSavedGrids(grid: vm.FortyGridDict)
-                        saveButtonText = "Grid saved"
-                    }
-//                        .frame(maxWidth: .infinity)
-                        .buttonStyle(SaveButtonStyle())
-                    
+                    AnimatedSaveButtonView(buttonText: "Export grid", buttonActionText: "Exporting")
 
+                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved")
                 }
                 .frame(maxWidth: .infinity)
                 
@@ -109,7 +97,9 @@ struct SaveButtonStyle: ButtonStyle {
     }
 }
 
-struct AnimatedButtonView: View {
+struct AnimatedSaveButtonView: View {
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+
     @State private var isAnimating = false
     @State private var isSuccess = false
     
@@ -120,6 +110,8 @@ struct AnimatedButtonView: View {
         Button(action: {
             self.isAnimating = true
             self.isSuccess = true
+            
+            vm.addToSavedGrids(grid: vm.FortyGridDict)
 
             // After a delay, reset the animation state
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -128,7 +120,8 @@ struct AnimatedButtonView: View {
                 }
             }
         }) {
-            Label(isAnimating ? buttonActionText : buttonText, systemImage: isAnimating ? "checkmark" : "person.fill")
+            Label(isAnimating ? buttonActionText : buttonText, systemImage: isAnimating ? "checkmark" : "")
+                .frame(maxWidth: .infinity)
                 .foregroundColor(.white)
                 .bold()
                 .padding()
