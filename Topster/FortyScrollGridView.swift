@@ -47,9 +47,9 @@ struct FortyScrollGridView: View {
                 Spacer()
                 
                 HStack {
-                    AnimatedSaveButtonView(buttonText: "Export grid", buttonActionText: "Exporting")
+                    AnimatedSaveButtonView(buttonText: "Export grid", buttonActionText: "Exporting", isSecondaryStyle: true)
 
-                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved")
+                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", isSecondaryStyle: false)
                 }
                 .frame(maxWidth: .infinity)
                 
@@ -97,6 +97,7 @@ struct SaveButtonStyle: ButtonStyle {
     }
 }
 
+
 struct AnimatedSaveButtonView: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
 
@@ -105,6 +106,8 @@ struct AnimatedSaveButtonView: View {
     
     @State var buttonText: String
     @State var buttonActionText: String
+    
+    let isSecondaryStyle: Bool
 
     var body: some View {
         Button(action: {
@@ -125,7 +128,7 @@ struct AnimatedSaveButtonView: View {
                 .foregroundColor(.white)
                 .bold()
                 .padding()
-                .background(isAnimating ? Color.green : Color.blue)
+                .background(isAnimating ? (isSecondaryStyle ? Color.gray : Color.green) : (isSecondaryStyle ? Color.red : Color.blue))
                 .cornerRadius(12)
         }
         .disabled(isAnimating) // Disable the button while animating
