@@ -11,6 +11,8 @@ struct SavedGridCardPreviewView: View {
     
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     
+    @State private var showDeleteConfirm = false
+    
     let grid: [Int : Album?]
     let currentIndex: Int
     
@@ -42,10 +44,16 @@ struct SavedGridCardPreviewView: View {
             .background(.secondary)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             
-            Button("delete grid") { vm.removeFromSavedGrids(at: currentIndex)}
         }
         .onTapGesture {
-            vm.FortyGridDict = grid
+            showDeleteConfirm.toggle()
+        }
+
+        
+        .confirmationDialog("Delete this grid?", isPresented: $showDeleteConfirm) {
+            Button("Set as active grid") { vm.FortyGridDict = grid }
+            Button("Delete grid", role: .destructive) { vm.removeFromSavedGrids(at: currentIndex) }
+            Button("Cancel", role: .cancel) { }
         }
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 struct SavedGridsListView: View {
     
     @EnvironmentObject private var vm: FortyScrollGridViewModel
-    
+        
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -20,7 +20,6 @@ struct SavedGridsListView: View {
                     ForEach(Array(vm.savedGrids.enumerated()), id: \.offset) { index, grid in
                         
                         SavedGridCardPreviewView(grid: grid, currentIndex: index)
-                        
                         
                     }
                     .padding(.horizontal)
