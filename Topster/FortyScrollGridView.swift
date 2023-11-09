@@ -125,10 +125,10 @@ struct AnimatedSaveButtonView: View {
         }) {
             Label(isAnimating ? buttonActionText : buttonText, systemImage: isAnimating ? "checkmark" : "")
                 .frame(maxWidth: .infinity)
-                .foregroundColor(.white)
+                .foregroundColor(isSecondaryStyle ? Color.blue : Color.white)
                 .bold()
                 .padding()
-                .background(isAnimating ? (isSecondaryStyle ? Color.gray : Color.green) : (isSecondaryStyle ? Color.red : Color.blue))
+                .background(isAnimating ? (isSecondaryStyle ? Color.gray.opacity(0.25) : Color.green) : (isSecondaryStyle ? Color.gray.opacity(0.25) : Color.blue))
                 .cornerRadius(12)
         }
         .disabled(isAnimating) // Disable the button while animating
