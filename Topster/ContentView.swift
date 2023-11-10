@@ -17,7 +17,6 @@ struct ContentView: View {
             FortyScrollGridView()
 //            DraggableGridSetup()
                 .tabItem {
-//                    Text("Current grid")
                     Label("Current grid", systemImage: "house")
                 }
             
@@ -26,7 +25,7 @@ struct ContentView: View {
                     Label("Saved grids", systemImage: "book.closed")
                 }
             
-            Text("settings, y0")
+            SettingsView()
                 .tabItem {
                     Label("Settings?", systemImage: "person.crop.circle")
                 }

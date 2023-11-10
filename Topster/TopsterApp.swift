@@ -10,12 +10,13 @@ import SwiftUI
 @main
 struct TopsterApp: App {
     @StateObject private var vm = FortyScrollGridViewModel()
+    @AppStorage("appColorTheme") private var darkModeEnabled = false
 
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(vm)
-                .preferredColorScheme(.dark)
+                .preferredColorScheme(darkModeEnabled ? .dark : .light)
         }
     }
 }

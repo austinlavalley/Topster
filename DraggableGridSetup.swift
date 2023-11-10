@@ -20,7 +20,7 @@ struct DraggableGridSetup: View {
                 LazyVGrid(columns: columns, spacing: 12) {
                     ForEach(colors, id: \.self) { color in
                         GeometryReader {
-                            let size = $0.size
+                            let _ = $0.size
                             
                             RoundedRectangle(cornerRadius: 12)
                                 .fill(color.gradient)

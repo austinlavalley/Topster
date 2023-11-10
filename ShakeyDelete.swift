@@ -40,7 +40,7 @@ struct ShakeyDelete: View {
             VStack {
                 Text("AH")
                     .font(Font.system(size: 50))
-                    .offset(x: start ? 30 : 0)
+                    .offset(x: start ? 15 : 0)
                     .padding()
                 
                 Button("Shake") {

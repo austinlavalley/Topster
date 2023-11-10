@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D91952862AFE858300FD246C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91952852AFE858300FD246C /* SettingsView.swift */; };
 		D92B6F0F2A9BBF9300A7CCBD /* TopsterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F0E2A9BBF9300A7CCBD /* TopsterApp.swift */; };
 		D92B6F112A9BBF9300A7CCBD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F102A9BBF9300A7CCBD /* ContentView.swift */; };
 		D92B6F132A9BBF9400A7CCBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D92B6F122A9BBF9400A7CCBD /* Assets.xcassets */; };
@@ -32,6 +33,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D91952852AFE858300FD246C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D92B6F0B2A9BBF9300A7CCBD /* Topster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Topster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D92B6F0E2A9BBF9300A7CCBD /* TopsterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopsterApp.swift; sourceTree = "<group>"; };
 		D92B6F102A9BBF9300A7CCBD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				D9B8B4062AB4FAFD00A4613A /* Models */,
 				D92B6F0E2A9BBF9300A7CCBD /* TopsterApp.swift */,
 				D92B6F102A9BBF9300A7CCBD /* ContentView.swift */,
+				D91952852AFE858300FD246C /* SettingsView.swift */,
 				D92B6F1C2A9BBFA300A7CCBD /* FortyTwoGridView.swift */,
 				D92B6F1E2A9E9A5200A7CCBD /* FortyGridView.swift */,
 				D92B6F202A9E9BF600A7CCBD /* CollageView.swift */,
@@ -199,6 +202,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D91952862AFE858300FD246C /* SettingsView.swift in Sources */,
 				D93AD4BC2AC23449001D2BA3 /* AlbumSearchView.swift in Sources */,
 				D92B6F112A9BBF9300A7CCBD /* ContentView.swift in Sources */,
 				D9B8B40E2AB8BED300A4613A /* Networker.swift in Sources */,
