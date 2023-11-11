@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D91952862AFE858300FD246C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91952852AFE858300FD246C /* SettingsView.swift */; };
+		D91952882B002DFC00FD246C /* ImageRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91952872B002DFC00FD246C /* ImageRender.swift */; };
 		D92B6F0F2A9BBF9300A7CCBD /* TopsterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F0E2A9BBF9300A7CCBD /* TopsterApp.swift */; };
 		D92B6F112A9BBF9300A7CCBD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F102A9BBF9300A7CCBD /* ContentView.swift */; };
 		D92B6F132A9BBF9400A7CCBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D92B6F122A9BBF9400A7CCBD /* Assets.xcassets */; };
@@ -34,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		D91952852AFE858300FD246C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		D91952872B002DFC00FD246C /* ImageRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRender.swift; sourceTree = "<group>"; };
 		D92B6F0B2A9BBF9300A7CCBD /* Topster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Topster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D92B6F0E2A9BBF9300A7CCBD /* TopsterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopsterApp.swift; sourceTree = "<group>"; };
 		D92B6F102A9BBF9300A7CCBD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			children = (
 				D9DAD16F2AE57111003CD6B6 /* ShakeyDelete.swift */,
 				D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */,
+				D91952872B002DFC00FD246C /* ImageRender.swift */,
 				D92B6F0D2A9BBF9300A7CCBD /* Topster */,
 				D92B6F0C2A9BBF9300A7CCBD /* Products */,
 			);
@@ -222,6 +225,7 @@
 				D92B6F212A9E9BF700A7CCBD /* CollageView.swift in Sources */,
 				D92B6F432AA380F700A7CCBD /* FortyScrollGridView.swift in Sources */,
 				D92B6F1F2A9E9A5200A7CCBD /* FortyGridView.swift in Sources */,
+				D91952882B002DFC00FD246C /* ImageRender.swift in Sources */,
 				D93AD4BE2AC64226001D2BA3 /* FortyScrollGridViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -25,7 +25,7 @@ struct ContentView: View {
                     Label("Saved grids", systemImage: "book.closed")
                 }
             
-            SettingsView()
+            ImageRender()
                 .tabItem {
                     Label("Settings?", systemImage: "person.crop.circle")
                 }

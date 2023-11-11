@@ -15,11 +15,10 @@ struct SettingsView: View {
         NavigationView {
             Form {
                 Section(header: Text("General Settings")) {
-                    Toggle("Dark Mode", isOn: $darkModeEnabled) // Replace with your dark mode variable binding
+                    Toggle("Dark Mode", isOn: $darkModeEnabled)
                     Picker("Language", selection: .constant(0)) {
                         Text("English").tag(0)
                         Text("Spanish").tag(1)
-                        // Add more language options as needed
                     }
                 }
 
