@@ -9,39 +9,46 @@ import SwiftUI
 
 // An example view to render
 struct RenderView: View {
-    let text: String
+    let image: Image
 
     var body: some View {
-        Text(text)
-            .font(.largeTitle)
-            .foregroundStyle(.white)
-            .padding()
-            .background(.blue)
-            .clipShape(Capsule())
+            image
+                .frame(width: 240, height: 240)
     }
 }
 
 struct ImageRender: View {
-    @State private var text = "Your text here"
+    
+    @State private var image = Image("localAlbum")
+    
     @State private var renderedImage = Image(systemName: "photo")
     @Environment(\.displayScale) var displayScale
 
     var body: some View {
         VStack {
+            
+            // what being displayed is actually the rendered image, the RenderView doesn't actually exist
             renderedImage
 
+            
+            // export really just means pulling up the share menu on the displayed image
             ShareLink("Export", item: renderedImage, preview: SharePreview(Text("Shared image"), image: renderedImage))
 
-            TextField("Enter some text", text: $text)
-                .textFieldStyle(.roundedBorder)
-                .padding()
+            
+            Button("re render") { render() }
+            
         }
-        .onChange(of: text) { _ in render() }
+        
+        // on first view OR when it is changed, rerender the image
+//        .onChange(of: text) { _ in render() }
         .onAppear { render() }
     }
 
+    
+    
+    // func for rendering
     @MainActor func render() {
-        let renderer = ImageRenderer(content: RenderView(text: text))
+        let renderer = ImageRenderer(content: RenderView(image: image))
 
         // make sure and use the correct display scale for this device
         renderer.scale = displayScale
