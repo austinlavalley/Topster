@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D91952862AFE858300FD246C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91952852AFE858300FD246C /* SettingsView.swift */; };
 		D91952882B002DFC00FD246C /* ImageRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91952872B002DFC00FD246C /* ImageRender.swift */; };
+		D91952A82B02C2DA00FD246C /* InternetImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91952A72B02C2DA00FD246C /* InternetImage.swift */; };
 		D92B6F0F2A9BBF9300A7CCBD /* TopsterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F0E2A9BBF9300A7CCBD /* TopsterApp.swift */; };
 		D92B6F112A9BBF9300A7CCBD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F102A9BBF9300A7CCBD /* ContentView.swift */; };
 		D92B6F132A9BBF9400A7CCBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D92B6F122A9BBF9400A7CCBD /* Assets.xcassets */; };
@@ -36,6 +37,7 @@
 /* Begin PBXFileReference section */
 		D91952852AFE858300FD246C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D91952872B002DFC00FD246C /* ImageRender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRender.swift; sourceTree = "<group>"; };
+		D91952A72B02C2DA00FD246C /* InternetImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetImage.swift; sourceTree = "<group>"; };
 		D92B6F0B2A9BBF9300A7CCBD /* Topster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Topster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D92B6F0E2A9BBF9300A7CCBD /* TopsterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopsterApp.swift; sourceTree = "<group>"; };
 		D92B6F102A9BBF9300A7CCBD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				D9DAD16F2AE57111003CD6B6 /* ShakeyDelete.swift */,
 				D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */,
 				D91952872B002DFC00FD246C /* ImageRender.swift */,
+				D91952A72B02C2DA00FD246C /* InternetImage.swift */,
 				D92B6F0D2A9BBF9300A7CCBD /* Topster */,
 				D92B6F0C2A9BBF9300A7CCBD /* Products */,
 			);
@@ -213,6 +216,7 @@
 				D9B8B40A2AB4FB2800A4613A /* Track.swift in Sources */,
 				D9B8B4032AB3B41700A4613A /* TopArtistsNetwork.swift in Sources */,
 				D92B6F1D2A9BBFA300A7CCBD /* FortyTwoGridView.swift in Sources */,
+				D91952A82B02C2DA00FD246C /* InternetImage.swift in Sources */,
 				D99642542ABB50B6004CEA01 /* SearchResults.swift in Sources */,
 				D9346C692ACB7AC200CA8F70 /* Album.swift in Sources */,
 				D9B8B4082AB4FB0800A4613A /* Artist.swift in Sources */,
