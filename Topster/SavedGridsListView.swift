@@ -15,9 +15,7 @@ struct SavedGridsListView: View {
         NavigationStack {
             ScrollView {
                 VStack {
-                    
-                    
-                    
+            
                     // for each GRID in the array of saved grids
                     ForEach(Array(vm.savedGrids.enumerated()), id: \.offset) { index, grid in
                         

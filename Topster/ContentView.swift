@@ -15,7 +15,6 @@ struct ContentView: View {
         TabView {
 
             FortyScrollGridView()
-//            DraggableGridSetup()
                 .tabItem {
                     Label("Current grid", systemImage: "house")
                 }

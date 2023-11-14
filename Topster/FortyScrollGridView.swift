@@ -11,6 +11,8 @@ struct FortyScrollGridView: View {
     
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     @State private var saveButtonText = "Save grid"
+    
+    @State private var showExportSheet = false
             
     var body: some View {
         NavigationStack {
@@ -47,7 +49,10 @@ struct FortyScrollGridView: View {
                 Spacer()
                 
                 HStack {
-                    AnimatedSaveButtonView(buttonText: "Export grid", buttonActionText: "Exporting", isSecondaryStyle: true)
+//                    AnimatedSaveButtonView(buttonText: "Export grid", buttonActionText: "Exporting", isSecondaryStyle: true)
+                    Button("Export something") {
+                        showExportSheet.toggle()
+                    }
 
                     AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", isSecondaryStyle: false)
                 }
@@ -82,6 +87,9 @@ struct FortyScrollGridView: View {
                 vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
             }
         })
+        .sheet(isPresented: $showExportSheet) {
+            RenderView(album: (vm.FortyGridDict[1]!!))
+        }
     }
 }
 
@@ -176,11 +184,6 @@ struct FortyScrollGridMaster: View {
                         vm.selectedGridID = key
                         vm.toggleSheet()
                     }
-//                    .onLongPressGesture {
-//                        if ((vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ _ in })) != nil) {
-//                            vm.pressShowRemove.toggle()
-//                        }
-//                    }
             } else {
                 ZStack {
                     Rectangle()

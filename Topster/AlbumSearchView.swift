@@ -53,7 +53,7 @@ struct AlbumSearchView: View {
                         vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
                         vm.hideSearchSheet()
                     }
-                } 
+                }
             }
         }
         .onChange(of: searchText) { _ in
