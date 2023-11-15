@@ -93,6 +93,34 @@ struct FortyScrollGridView: View {
     }
 }
 
+struct TestViewForSnapshot: View {
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+    
+    var body: some View {
+        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
+            if album != nil {
+                InternetImage(url: album!.image.first(where: { $0.size == "large"})?.text ?? "") { image in
+                    image
+                        .resizable()
+                        .frame(width: 240, height: 240)
+                        .cornerRadius(24)
+                }
+            } else {
+                ZStack {
+                    Rectangle()
+                        .foregroundColor(.black)
+                        .onTapGesture {
+                            vm.selectedGridID = key
+                            vm.toggleSheet()
+                        }
+                    
+                    Image(systemName: "plus").bold().foregroundColor(.secondary)
+                }
+            }
+        }
+    }
+}
+
 struct SaveButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
