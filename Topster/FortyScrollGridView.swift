@@ -7,6 +7,60 @@
 
 import SwiftUI
 
+struct GridContent: View {
+    
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+
+//    @Binding var saveButtonText: String
+//    @Binding var showExportSheet: Bool
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            
+            // NEED TO PUT THESE ROWS INTO A SEPARATE VIEW FOR RENDER, RENDERER CANT READ THE NAVSTACK
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    FortyScrollGridMaster(start: 0, end: 5, size: 144, squareColor: .secondary)
+                }
+            }
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    FortyScrollGridMaster(start: 5, end: 18, size: 120, squareColor: .secondary.opacity(0.8))
+                }
+            }
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    FortyScrollGridMaster(start: 18, end: 31, size: 96, squareColor: .secondary.opacity(0.6))
+                }
+            }
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    FortyScrollGridMaster(start: 31, end: 40, size: 72, squareColor: .secondary.opacity(0.4))
+
+                }
+            }
+            
+            Spacer()
+            
+            HStack {
+                Button("Export something") {
+                    vm.showExportSheet.toggle()
+                }
+
+                AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", isSecondaryStyle: false)
+            }
+            .frame(maxWidth: .infinity)
+            
+            Spacer()
+        }
+    }
+}
+
 struct FortyScrollGridView: View {
     
     @EnvironmentObject private var vm: FortyScrollGridViewModel
@@ -16,50 +70,51 @@ struct FortyScrollGridView: View {
             
     var body: some View {
         NavigationStack {
-            VStack {
-                Spacer()
-                
-//                Text(vm.pressShowRemove.description)
-                
-                ScrollView(.horizontal) {
-                    HStack {
-                        FortyScrollGridMaster(start: 0, end: 5, size: 144, squareColor: .secondary)
-                    }
-                }
-                
-                ScrollView(.horizontal) {
-                    HStack {
-                        FortyScrollGridMaster(start: 5, end: 18, size: 120, squareColor: .secondary.opacity(0.8))
-                    }
-                }
-                
-                ScrollView(.horizontal) {
-                    HStack {
-                        FortyScrollGridMaster(start: 18, end: 31, size: 96, squareColor: .secondary.opacity(0.6))
-                    }
-                }
-                
-                ScrollView(.horizontal) {
-                    HStack {
-                        FortyScrollGridMaster(start: 31, end: 40, size: 72, squareColor: .secondary.opacity(0.4))
-
-                    }
-                }
-                
-                Spacer()
-                
-                HStack {
-//                    AnimatedSaveButtonView(buttonText: "Export grid", buttonActionText: "Exporting", isSecondaryStyle: true)
-                    Button("Export something") {
-                        showExportSheet.toggle()
-                    }
-
-                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", isSecondaryStyle: false)
-                }
-                .frame(maxWidth: .infinity)
-                
-                Spacer()
-            }
+//            VStack {
+//                Spacer()
+//
+//                // NEED TO PUT THESE ROWS INTO A SEPARATE VIEW FOR RENDER, RENDERER CANT READ THE NAVSTACK
+//
+//                ScrollView(.horizontal) {
+//                    HStack {
+//                        FortyScrollGridMaster(start: 0, end: 5, size: 144, squareColor: .secondary)
+//                    }
+//                }
+//
+//                ScrollView(.horizontal) {
+//                    HStack {
+//                        FortyScrollGridMaster(start: 5, end: 18, size: 120, squareColor: .secondary.opacity(0.8))
+//                    }
+//                }
+//
+//                ScrollView(.horizontal) {
+//                    HStack {
+//                        FortyScrollGridMaster(start: 18, end: 31, size: 96, squareColor: .secondary.opacity(0.6))
+//                    }
+//                }
+//
+//                ScrollView(.horizontal) {
+//                    HStack {
+//                        FortyScrollGridMaster(start: 31, end: 40, size: 72, squareColor: .secondary.opacity(0.4))
+//
+//                    }
+//                }
+//
+//                Spacer()
+//
+//                HStack {
+////                    AnimatedSaveButtonView(buttonText: "Export grid", buttonActionText: "Exporting", isSecondaryStyle: true)
+//                    Button("Export something") {
+//                        showExportSheet.toggle()
+//                    }
+//
+//                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", isSecondaryStyle: false)
+//                }
+//                .frame(maxWidth: .infinity)
+//
+//                Spacer()
+//            }
+            GridContent()//saveButtonText: $saveButtonText, showExportSheet: $showExportSheet)
             .scrollIndicators(.hidden)
             .padding()
             .navigationBarTitleDisplayMode(.inline)
@@ -87,7 +142,7 @@ struct FortyScrollGridView: View {
                 vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
             }
         })
-        .sheet(isPresented: $showExportSheet) {
+        .sheet(isPresented: $vm.showExportSheet) {
             RenderView(album: (vm.FortyGridDict[1]!!))
         }
     }

@@ -52,7 +52,8 @@ extension RenderView {
             //            let renderer = await ImageRenderer(content: RenderView(album: album))
             let renderer = await ImageRenderer(content:
 //                FortyScrollGridMaster(start: 0, end: 5, size: 144, squareColor: .secondary)
-                TestViewForSnapshot()
+//                TestViewForSnapshot()
+                GridContent()
                 .environmentObject(vm)
             )
             if let image = await renderer.uiImage {

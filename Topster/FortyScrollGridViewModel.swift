@@ -13,6 +13,8 @@ class FortyScrollGridViewModel: ObservableObject {
     
     @Published var showSearchSheet = false
     
+    @Published var showExportSheet = false
+    
     // tracks the currently selected/most recently tapped grid. **CURRENTLY DOES NOT GET RESET BACK TO NIL ONCE DESELCTED**
     @Published var selectedGridID: Int?
     
