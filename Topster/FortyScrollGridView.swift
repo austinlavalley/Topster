@@ -102,20 +102,11 @@ struct TestViewForSnapshot: View {
                 InternetImage(url: album!.image.first(where: { $0.size == "large"})?.text ?? "") { image in
                     image
                         .resizable()
-                        .frame(width: 240, height: 240)
-                        .cornerRadius(24)
+                        .frame(width: 96, height: 96)
+                        .cornerRadius(12)
                 }
             } else {
-                ZStack {
-                    Rectangle()
-                        .foregroundColor(.black)
-                        .onTapGesture {
-                            vm.selectedGridID = key
-                            vm.toggleSheet()
-                        }
-                    
-                    Image(systemName: "plus").bold().foregroundColor(.secondary)
-                }
+                Rectangle().fill(Color.black)
             }
         }
     }
@@ -180,13 +171,11 @@ struct AnimatedSaveButtonView: View {
 struct AlbumSquare: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     let album: Album
-
+    
     var body: some View {
-        AsyncImage(url: URL(string: album.image.first(where: { $0.size == "large" })?.text ?? "")) { image in
+        InternetImage(url: album.image.first(where: { $0.size == "large"})?.text ?? "") { image in
             image
                 .resizable()
-        } placeholder: {
-            ProgressView()
         }
     }
 }
