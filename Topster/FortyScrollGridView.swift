@@ -7,114 +7,93 @@
 
 import SwiftUI
 
-struct GridContent: View {
-    
+struct TestViewForSnapshot: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
 
-//    @Binding var saveButtonText: String
-//    @Binding var showExportSheet: Bool
+    var body: some View {
+        HStack {
+            ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
+                if album != nil {
+                    AlbumSquare(album: album!)
+                        .onTapGesture {
+                            vm.selectedGridID = key
+                            vm.toggleSheet()
+                        }
+                } else {
+                    ZStack {
+                        Rectangle()
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                            }
+                        
+                        Image(systemName: "plus").bold().foregroundColor(.secondary)
+                    }
+                }
+            }
+        }
+        .frame(width: 1280, height: 720)
+    }
+}
+
+struct GridContent: View {
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
     
     var body: some View {
-        VStack {
-            Spacer()
-            
-            // NEED TO PUT THESE ROWS INTO A SEPARATE VIEW FOR RENDER, RENDERER CANT READ THE NAVSTACK
-            
-            ScrollView(.horizontal) {
-                HStack {
-                    FortyScrollGridMaster(start: 0, end: 5, size: 144, squareColor: .secondary)
-                }
-            }
-            
-            ScrollView(.horizontal) {
-                HStack {
-                    FortyScrollGridMaster(start: 5, end: 18, size: 120, squareColor: .secondary.opacity(0.8))
-                }
-            }
-            
-            ScrollView(.horizontal) {
-                HStack {
-                    FortyScrollGridMaster(start: 18, end: 31, size: 96, squareColor: .secondary.opacity(0.6))
-                }
-            }
-            
-            ScrollView(.horizontal) {
-                HStack {
-                    FortyScrollGridMaster(start: 31, end: 40, size: 72, squareColor: .secondary.opacity(0.4))
-
-                }
-            }
-            
-            Spacer()
-            
+        Spacer()
+        
+        ScrollView(.horizontal) {
             HStack {
-                Button("Export something") {
-                    vm.showExportSheet.toggle()
-                }
-
-                AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", isSecondaryStyle: false)
+                FortyScrollGridMaster(start: 0, end: 5, size: 144, squareColor: .secondary)
             }
-            .frame(maxWidth: .infinity)
-            
-            Spacer()
+        }
+        
+        ScrollView(.horizontal) {
+            HStack {
+                FortyScrollGridMaster(start: 5, end: 18, size: 120, squareColor: .secondary.opacity(0.8))
+            }
+        }
+        
+        ScrollView(.horizontal) {
+            HStack {
+                FortyScrollGridMaster(start: 18, end: 31, size: 96, squareColor: .secondary.opacity(0.6))
+            }
+        }
+        
+        ScrollView(.horizontal) {
+            HStack {
+                FortyScrollGridMaster(start: 31, end: 40, size: 72, squareColor: .secondary.opacity(0.4))
+                
+            }
         }
     }
 }
 
 struct FortyScrollGridView: View {
-    
     @EnvironmentObject private var vm: FortyScrollGridViewModel
-    @State private var saveButtonText = "Save grid"
     
+    @State private var saveButtonText = "Save grid"
     @State private var showExportSheet = false
             
     var body: some View {
         NavigationStack {
-//            VStack {
-//                Spacer()
-//
-//                // NEED TO PUT THESE ROWS INTO A SEPARATE VIEW FOR RENDER, RENDERER CANT READ THE NAVSTACK
-//
-//                ScrollView(.horizontal) {
-//                    HStack {
-//                        FortyScrollGridMaster(start: 0, end: 5, size: 144, squareColor: .secondary)
-//                    }
-//                }
-//
-//                ScrollView(.horizontal) {
-//                    HStack {
-//                        FortyScrollGridMaster(start: 5, end: 18, size: 120, squareColor: .secondary.opacity(0.8))
-//                    }
-//                }
-//
-//                ScrollView(.horizontal) {
-//                    HStack {
-//                        FortyScrollGridMaster(start: 18, end: 31, size: 96, squareColor: .secondary.opacity(0.6))
-//                    }
-//                }
-//
-//                ScrollView(.horizontal) {
-//                    HStack {
-//                        FortyScrollGridMaster(start: 31, end: 40, size: 72, squareColor: .secondary.opacity(0.4))
-//
-//                    }
-//                }
-//
-//                Spacer()
-//
-//                HStack {
-////                    AnimatedSaveButtonView(buttonText: "Export grid", buttonActionText: "Exporting", isSecondaryStyle: true)
-//                    Button("Export something") {
-//                        showExportSheet.toggle()
-//                    }
-//
-//                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", isSecondaryStyle: false)
-//                }
-//                .frame(maxWidth: .infinity)
-//
-//                Spacer()
-//            }
-            GridContent()//saveButtonText: $saveButtonText, showExportSheet: $showExportSheet)
+            VStack {
+                GridContent()
+                    .background(Color.red)
+                
+                Spacer()
+                
+                HStack {
+                    Button("Export something") {
+                        vm.showExportSheet.toggle()
+                    }
+                    
+                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", isSecondaryStyle: false)
+                }
+                .frame(maxWidth: .infinity)
+                
+                Spacer()
+            }
             .scrollIndicators(.hidden)
             .padding()
             .navigationBarTitleDisplayMode(.inline)
@@ -148,24 +127,6 @@ struct FortyScrollGridView: View {
     }
 }
 
-struct TestViewForSnapshot: View {
-    @EnvironmentObject private var vm: FortyScrollGridViewModel
-    
-    var body: some View {
-        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
-            if album != nil {
-                InternetImage(url: album!.image.first(where: { $0.size == "large"})?.text ?? "") { image in
-                    image
-                        .resizable()
-                        .frame(width: 96, height: 96)
-                        .cornerRadius(12)
-                }
-            } else {
-                Rectangle().fill(Color.black)
-            }
-        }
-    }
-}
 
 struct SaveButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
