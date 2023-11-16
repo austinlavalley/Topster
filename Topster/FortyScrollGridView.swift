@@ -11,23 +11,38 @@ struct TestViewForSnapshot: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
 
     var body: some View {
-        HStack {
-            ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
-                if album != nil {
-                    AlbumSquare(album: album!)
-                        .onTapGesture {
-                            vm.selectedGridID = key
-                            vm.toggleSheet()
-                        }
-                } else {
-                    ZStack {
-                        Rectangle()
+        VStack {
+            HStack {
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
                             .onTapGesture {
                                 vm.selectedGridID = key
                                 vm.toggleSheet()
                             }
-                        
-                        Image(systemName: "plus").bold().foregroundColor(.secondary)
+                    } else {
+                        Rectangle()
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                        }
+                    }
+                }
+            }
+            HStack {
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(18).dropFirst(5), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                            }
+                    } else {
+                        Rectangle()
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                        }
                     }
                 }
             }
@@ -35,6 +50,7 @@ struct TestViewForSnapshot: View {
         .frame(width: 1280, height: 720)
     }
 }
+
 
 struct GridContent: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
