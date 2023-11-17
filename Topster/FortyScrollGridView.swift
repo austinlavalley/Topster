@@ -29,8 +29,10 @@ struct TestViewForSnapshot: View {
                     }
                 } .frame(width: 288, height: 288)
             }
+            
+            
             HStack {
-                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(18).dropFirst(5), id: \.key) { key, album in
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(11).dropFirst(5), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
                             .onTapGesture {
@@ -47,7 +49,26 @@ struct TestViewForSnapshot: View {
                 } .frame(width: 240, height: 240)
             }
             HStack {
-                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(18), id: \.key) { key, album in
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(11), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                            }
+                    } else {
+                        Rectangle()
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                        }
+                    }
+                } .frame(width: 240, height: 240)
+            }
+            
+            
+            HStack {
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(17), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
                             .onTapGesture {
@@ -100,13 +121,13 @@ struct GridContent: View {
         
         ScrollView(.horizontal) {
             HStack {
-                FortyScrollGridMaster(start: 5, end: 18, size: 120, squareColor: .secondary.opacity(0.8))
+                FortyScrollGridMaster(start: 5, end: 17, size: 120, squareColor: .secondary.opacity(0.8))
             }
         }
         
         ScrollView(.horizontal) {
             HStack {
-                FortyScrollGridMaster(start: 18, end: 31, size: 96, squareColor: .secondary.opacity(0.6))
+                FortyScrollGridMaster(start: 17, end: 31, size: 96, squareColor: .secondary.opacity(0.6))
             }
         }
         
@@ -129,7 +150,6 @@ struct FortyScrollGridView: View {
         NavigationStack {
             VStack {
                 GridContent()
-                    .background(Color.red)
                 
                 Spacer()
                 
