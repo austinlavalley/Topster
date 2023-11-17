@@ -20,6 +20,8 @@ struct RenderView: View {
         VStack(spacing: 24) {
             if let image = snapshot {
                 Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
                 
                 ShareLink(
                     item: Image(uiImage: snapshot!),
@@ -27,16 +29,19 @@ struct RenderView: View {
                 )
             }
             
-            InternetImage(url: album.image.first(where: { $0.size == "large"})?.text ?? "") { image in
-                image
-                    .resizable()
-                    .frame(width: 240, height: 240)
-                    .cornerRadius(24)
-            }
+//            InternetImage(url: album.image.first(where: { $0.size == "large"})?.text ?? "") { image in
+//                image
+//                    .resizable()
+//                    .frame(width: 240, height: 240)
+//                    .cornerRadius(24)
+//            }
             
-            Button(action: generateSnapshot) {
-                Text("Create snapshot / export")
-            }.buttonStyle(.bordered)
+//            Button(action: generateSnapshot) {
+//                Text("Create snapshot / export")
+//            }.buttonStyle(.bordered)
+        }
+        .onAppear {
+            generateSnapshot()
         }
     }
     

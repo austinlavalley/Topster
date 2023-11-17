@@ -11,7 +11,7 @@ struct TestViewForSnapshot: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
 
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             HStack {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
                     if album != nil {
@@ -27,7 +27,7 @@ struct TestViewForSnapshot: View {
                                 vm.toggleSheet()
                         }
                     }
-                }
+                } .frame(width: 288, height: 288)
             }
             HStack {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(18).dropFirst(5), id: \.key) { key, album in
@@ -44,10 +44,44 @@ struct TestViewForSnapshot: View {
                                 vm.toggleSheet()
                         }
                     }
-                }
+                } .frame(width: 240, height: 240)
+            }
+            HStack {
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(18), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                            }
+                    } else {
+                        Rectangle()
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                        }
+                    }
+                } .frame(width: 192, height: 192)
+            }
+            HStack {
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(40).dropFirst(31), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                            }
+                    } else {
+                        Rectangle()
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                        }
+                    }
+                } .frame(width: 144, height: 144)
             }
         }
-        .frame(width: 1280, height: 720)
+//        .frame(width: 1280, height: 720)
     }
 }
 
