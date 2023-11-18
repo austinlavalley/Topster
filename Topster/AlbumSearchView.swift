@@ -24,10 +24,6 @@ struct AlbumSearchView: View {
         NavigationView {
             VStack {
                 
-//                Text(vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ album in
-//                    album.artist
-//                }) ?? "none")
-                
                 HStack {
                     TextField("Search", text: $searchText)
                     Button("Search") {

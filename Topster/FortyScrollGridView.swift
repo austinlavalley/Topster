@@ -11,7 +11,10 @@ struct TestViewForSnapshot: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .center) {
+            // topster row sizing: 150 125 125 100 100 75
+            
+            // 5x1 row
             HStack {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
                     if album != nil {
@@ -27,10 +30,10 @@ struct TestViewForSnapshot: View {
                                 vm.toggleSheet()
                         }
                     }
-                } .frame(width: 288, height: 288)
+                } .frame(width: 300, height: 300)
             }
             
-            
+            // 6x2 rows
             HStack {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(11).dropFirst(5), id: \.key) { key, album in
                     if album != nil {
@@ -46,7 +49,7 @@ struct TestViewForSnapshot: View {
                                 vm.toggleSheet()
                         }
                     }
-                } .frame(width: 240, height: 240)
+                } .frame(width: 250, height: 250)
             }
             HStack {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(11), id: \.key) { key, album in
@@ -63,12 +66,13 @@ struct TestViewForSnapshot: View {
                                 vm.toggleSheet()
                         }
                     }
-                } .frame(width: 240, height: 240)
+                } .frame(width: 250, height: 250)
             }
             
             
+            // 7x2 rows
             HStack {
-                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(17), id: \.key) { key, album in
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(24).dropFirst(17), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
                             .onTapGesture {
@@ -82,8 +86,27 @@ struct TestViewForSnapshot: View {
                                 vm.toggleSheet()
                         }
                     }
-                } .frame(width: 192, height: 192)
+                } .frame(width: 200, height: 200)
             }
+            HStack {
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(24), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                            }
+                    } else {
+                        Rectangle()
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                        }
+                    }
+                } .frame(width: 200, height: 200)
+            }
+            
+            
             HStack {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(40).dropFirst(31), id: \.key) { key, album in
                     if album != nil {
@@ -99,7 +122,7 @@ struct TestViewForSnapshot: View {
                                 vm.toggleSheet()
                         }
                     }
-                } .frame(width: 144, height: 144)
+                } .frame(width: 150, height: 150)
             }
         }
 //        .frame(width: 1280, height: 720)
@@ -149,6 +172,12 @@ struct FortyScrollGridView: View {
     var body: some View {
         NavigationStack {
             VStack {
+                ForEach(vm.FortyGridDict.sorted(by: {$0.key < $1.key}), id: \.key) { key, album in
+                    if album != nil {
+                        Text(album!.name)
+                    }
+                }
+                
                 GridContent()
                 
                 Spacer()
