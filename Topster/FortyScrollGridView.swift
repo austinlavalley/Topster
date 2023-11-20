@@ -15,7 +15,7 @@ struct TestViewForSnapshot: View {
             // topster row sizing: 150 125 125 100 100 75
             
             // 5x1 row
-            HStack {
+            HStack(spacing: 10) {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
@@ -31,7 +31,7 @@ struct TestViewForSnapshot: View {
                         }
                     }
                 } .frame(width: 300, height: 300)
-            }
+            } .frame(width: 1600)
             
             // 6x2 rows
             HStack {
@@ -50,7 +50,7 @@ struct TestViewForSnapshot: View {
                         }
                     }
                 } .frame(width: 250, height: 250)
-            }
+            }.frame(width: 1600)
             HStack {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(11), id: \.key) { key, album in
                     if album != nil {
@@ -67,7 +67,7 @@ struct TestViewForSnapshot: View {
                         }
                     }
                 } .frame(width: 250, height: 250)
-            }
+            }.frame(width: 1600)
             
             
             // 7x2 rows
@@ -125,7 +125,7 @@ struct TestViewForSnapshot: View {
                 } .frame(width: 150, height: 150)
             }
         }
-//        .frame(width: 1280, height: 720)
+        .frame(width: 1668, height: 1518)
     }
 }
 
@@ -282,7 +282,7 @@ struct AnimatedSaveButtonView: View {
 
 
 
-// ALBUMSQAURE FOR MAIN GRID VIEW
+// ALBUMSQAURE FOR MAIN GRID VIEW THAT REFRESHES VIEW
 struct AsyncAlbumSquare: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     let album: Album
@@ -297,6 +297,7 @@ struct AsyncAlbumSquare: View {
     }
 }
 
+// ALBUMSQUARE FOR ELSEWHERE IN APP
 struct AlbumSquare: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     let album: Album
