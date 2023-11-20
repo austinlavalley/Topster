@@ -283,6 +283,20 @@ struct AnimatedSaveButtonView: View {
 
 
 // ALBUMSQAURE FOR MAIN GRID VIEW
+struct AsyncAlbumSquare: View {
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+    let album: Album
+    
+    var body: some View {
+        AsyncImage(url: URL(string: album.image.first(where: { $0.size == "large"})?.text ?? "")) { image in
+            image
+                .resizable()
+        } placeholder: {
+            Rectangle().fill(.purple)
+        }
+    }
+}
+
 struct AlbumSquare: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     let album: Album
@@ -311,7 +325,7 @@ struct FortyScrollGridMaster: View {
     var body: some View {
         ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(end).dropFirst(start), id: \.key) { key, album in
             if album != nil {
-                AlbumSquare(album: album!)
+                AsyncAlbumSquare(album: album!)
                     .onTapGesture {
                         vm.selectedGridID = key
                         vm.toggleSheet()
