@@ -25,7 +25,7 @@ struct RenderView: View {
                 
                 ShareLink(
                     item: Image(uiImage: snapshot!),
-                    preview: SharePreview("album.name", image: Image(uiImage: snapshot!), icon: sharePreview)
+                    preview: SharePreview("40 Album Grid", image: Image(uiImage: snapshot!), icon: sharePreview)
                 )
             }
         }
