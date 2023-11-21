@@ -12,7 +12,7 @@ import SwiftUI
 struct RenderView: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     
-    let album: Album
+//    let album: Album
     
     @State private var snapshot: UIImage?
     
@@ -25,7 +25,7 @@ struct RenderView: View {
                 
                 ShareLink(
                     item: Image(uiImage: snapshot!),
-                    preview: SharePreview(album.name, image: Image(uiImage: snapshot!), icon: sharePreview)
+                    preview: SharePreview("album.name", image: Image(uiImage: snapshot!), icon: sharePreview)
                 )
             }
         }
@@ -62,6 +62,6 @@ extension RenderView {
 
 struct RenderView_Previews: PreviewProvider {
     static var previews: some View {
-        RenderView(album: Album(name: "American Heartbreak", artist: "Zach Bryan", url: "https://www.last.fm/music/Zach+Bryan/American+Heartbreak", image: [Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/34s/07c3b7f594f5513c5f07fa7f8fb81787.png"), size: Optional("small")), Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/64s/07c3b7f594f5513c5f07fa7f8fb81787.png"), size: Optional("medium")), Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/174s/07c3b7f594f5513c5f07fa7f8fb81787.png"), size: Optional("large")), Topster.AlbumImage(text: Optional("https://lastfm.freetls.fastly.net/i/u/300x300/07c3b7f594f5513c5f07fa7f8fb81787.png"), size: Optional("extralarge"))], streamable: "0", mbid: ""))
+        RenderView()
     }
 }

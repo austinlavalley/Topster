@@ -51,6 +51,7 @@ struct TestViewForSnapshot: View {
                     }
                 } .frame(width: 250, height: 250)
             }.frame(width: 1600)
+            
             HStack {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(11), id: \.key) { key, album in
                     if album != nil {
@@ -126,6 +127,7 @@ struct TestViewForSnapshot: View {
             }
         }
         .frame(width: 1668, height: 1518)
+        .background(Color.black)
     }
 }
 
@@ -171,57 +173,59 @@ struct FortyScrollGridView: View {
             
     var body: some View {
         NavigationStack {
-            VStack {
-                ForEach(vm.FortyGridDict.sorted(by: {$0.key < $1.key}), id: \.key) { key, album in
-                    if album != nil {
-                        Text(album!.name)
-                    }
-                }
-                
-                GridContent()
-                
-                Spacer()
-                
-                HStack {
-                    Button("Export something") {
-                        vm.showExportSheet.toggle()
+            ScrollView {
+                VStack {
+                    ForEach(vm.FortyGridDict.sorted(by: {$0.key < $1.key}), id: \.key) { key, album in
+                        if album != nil {
+                            Text(album!.name)
+                        }
                     }
                     
-                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", isSecondaryStyle: false)
+                    GridContent()
+                    
+                    Spacer()
+                    
+                    HStack {
+                        Button("Export something") {
+                            vm.showExportSheet.toggle()
+                        }
+                        
+                        AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", isSecondaryStyle: false)
+                    }
+                    .frame(maxWidth: .infinity)
+                    
+                    Spacer()
                 }
-                .frame(maxWidth: .infinity)
+                .scrollIndicators(.hidden)
+                .padding()
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle("Top 40 Chart")
                 
-                Spacer()
-            }
-            .scrollIndicators(.hidden)
-            .padding()
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Top 40 Chart")
-            
-            .toolbar {
-                ToolbarItem {
-                    Menu {
-                        Text("yo")
-                        Button("Reset grid") { vm.clearGrid() }
-                    } label: {
-                        Label("", systemImage: "ellipsis.circle")
+                .toolbar {
+                    ToolbarItem {
+                        Menu {
+                            Text("yo")
+                            Button("Reset grid") { vm.clearGrid() }
+                        } label: {
+                            Label("", systemImage: "ellipsis.circle")
+                        }
                     }
                 }
+                
+                
+                .sheet(isPresented: $vm.showSearchSheet) {
+                    AlbumSearchView()
+                        .presentationDetents([.fraction(0.65), .large])
+                }
             }
-            
-            
-            .sheet(isPresented: $vm.showSearchSheet) {
-                AlbumSearchView()
-                    .presentationDetents([.fraction(0.65), .large])
+            .confirmationDialog("Remove album", isPresented: $vm.pressShowRemove, actions: {
+                Button("yes", role: .destructive) {
+                    vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
+                }
+            })
+            .sheet(isPresented: $vm.showExportSheet) {
+                RenderView()
             }
-        }
-        .confirmationDialog("Remove album", isPresented: $vm.pressShowRemove, actions: {
-            Button("yes", role: .destructive) {
-                vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
-            }
-        })
-        .sheet(isPresented: $vm.showExportSheet) {
-            RenderView(album: (vm.FortyGridDict[1]!!))
         }
     }
 }
