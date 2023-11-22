@@ -14,7 +14,7 @@ struct ContentView: View {
     var body: some View {
         TabView {
 
-            FortyScrollGridView()
+            FortyGridView()
                 .tabItem {
                     Label("Current grid", systemImage: "house")
                 }

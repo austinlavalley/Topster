@@ -15,9 +15,7 @@
 		D92B6F132A9BBF9400A7CCBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D92B6F122A9BBF9400A7CCBD /* Assets.xcassets */; };
 		D92B6F162A9BBF9400A7CCBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D92B6F152A9BBF9400A7CCBD /* Preview Assets.xcassets */; };
 		D92B6F1D2A9BBFA300A7CCBD /* FortyTwoGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F1C2A9BBFA300A7CCBD /* FortyTwoGridView.swift */; };
-		D92B6F1F2A9E9A5200A7CCBD /* FortyGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F1E2A9E9A5200A7CCBD /* FortyGridView.swift */; };
-		D92B6F212A9E9BF700A7CCBD /* CollageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F202A9E9BF600A7CCBD /* CollageView.swift */; };
-		D92B6F432AA380F700A7CCBD /* FortyScrollGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F422AA380F600A7CCBD /* FortyScrollGridView.swift */; };
+		D92B6F432AA380F700A7CCBD /* FortyGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F422AA380F600A7CCBD /* FortyGridView.swift */; };
 		D9346C692ACB7AC200CA8F70 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9346C682ACB7AC200CA8F70 /* Album.swift */; };
 		D93AD4BC2AC23449001D2BA3 /* AlbumSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93AD4BB2AC23449001D2BA3 /* AlbumSearchView.swift */; };
 		D93AD4BE2AC64226001D2BA3 /* FortyScrollGridViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93AD4BD2AC64226001D2BA3 /* FortyScrollGridViewModel.swift */; };
@@ -28,6 +26,7 @@
 		D9B8B40A2AB4FB2800A4613A /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4092AB4FB2800A4613A /* Track.swift */; };
 		D9B8B40C2AB4FCB800A4613A /* ArtistSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B40B2AB4FCB800A4613A /* ArtistSearchView.swift */; };
 		D9B8B40E2AB8BED300A4613A /* Networker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B40D2AB8BED300A4613A /* Networker.swift */; };
+		D9C578742B0EAF2600B94E1F /* GridContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C578732B0EAF2600B94E1F /* GridContent.swift */; };
 		D9C8CCC02AEDC54400FF0997 /* SavedGridCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C8CCBF2AEDC54400FF0997 /* SavedGridCardView.swift */; };
 		D9C8CCC22AF582E500FF0997 /* SavedGridsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C8CCC12AF582E500FF0997 /* SavedGridsListView.swift */; };
 		D9DAD16E2AE423FE003CD6B6 /* DraggableGridSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */; };
@@ -44,9 +43,7 @@
 		D92B6F122A9BBF9400A7CCBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D92B6F152A9BBF9400A7CCBD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D92B6F1C2A9BBFA300A7CCBD /* FortyTwoGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FortyTwoGridView.swift; sourceTree = "<group>"; };
-		D92B6F1E2A9E9A5200A7CCBD /* FortyGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FortyGridView.swift; sourceTree = "<group>"; };
-		D92B6F202A9E9BF600A7CCBD /* CollageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollageView.swift; sourceTree = "<group>"; };
-		D92B6F422AA380F600A7CCBD /* FortyScrollGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FortyScrollGridView.swift; sourceTree = "<group>"; };
+		D92B6F422AA380F600A7CCBD /* FortyGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FortyGridView.swift; sourceTree = "<group>"; };
 		D9346C682ACB7AC200CA8F70 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		D93AD4BB2AC23449001D2BA3 /* AlbumSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumSearchView.swift; sourceTree = "<group>"; };
 		D93AD4BD2AC64226001D2BA3 /* FortyScrollGridViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FortyScrollGridViewModel.swift; sourceTree = "<group>"; };
@@ -58,6 +55,7 @@
 		D9B8B40B2AB4FCB800A4613A /* ArtistSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistSearchView.swift; sourceTree = "<group>"; };
 		D9B8B40D2AB8BED300A4613A /* Networker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networker.swift; sourceTree = "<group>"; };
 		D9C578722B0D66A500B94E1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D9C578732B0EAF2600B94E1F /* GridContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridContent.swift; sourceTree = "<group>"; };
 		D9C8CCBF2AEDC54400FF0997 /* SavedGridCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedGridCardView.swift; sourceTree = "<group>"; };
 		D9C8CCC12AF582E500FF0997 /* SavedGridsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedGridsListView.swift; sourceTree = "<group>"; };
 		D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableGridSetup.swift; sourceTree = "<group>"; };
@@ -102,11 +100,10 @@
 				D9B8B4062AB4FAFD00A4613A /* Models */,
 				D92B6F0E2A9BBF9300A7CCBD /* TopsterApp.swift */,
 				D92B6F102A9BBF9300A7CCBD /* ContentView.swift */,
+				D92B6F422AA380F600A7CCBD /* FortyGridView.swift */,
 				D91952852AFE858300FD246C /* SettingsView.swift */,
 				D92B6F1C2A9BBFA300A7CCBD /* FortyTwoGridView.swift */,
-				D92B6F1E2A9E9A5200A7CCBD /* FortyGridView.swift */,
-				D92B6F202A9E9BF600A7CCBD /* CollageView.swift */,
-				D92B6F422AA380F600A7CCBD /* FortyScrollGridView.swift */,
+				D9C578732B0EAF2600B94E1F /* GridContent.swift */,
 				D93AD4BD2AC64226001D2BA3 /* FortyScrollGridViewModel.swift */,
 				D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */,
 				D9B8B4022AB3B41700A4613A /* TopArtistsNetwork.swift */,
@@ -215,6 +212,7 @@
 				D92B6F112A9BBF9300A7CCBD /* ContentView.swift in Sources */,
 				D9B8B40E2AB8BED300A4613A /* Networker.swift in Sources */,
 				D9C8CCC02AEDC54400FF0997 /* SavedGridCardView.swift in Sources */,
+				D9C578742B0EAF2600B94E1F /* GridContent.swift in Sources */,
 				D9B8B40A2AB4FB2800A4613A /* Track.swift in Sources */,
 				D9B8B4032AB3B41700A4613A /* TopArtistsNetwork.swift in Sources */,
 				D92B6F1D2A9BBFA300A7CCBD /* FortyTwoGridView.swift in Sources */,
@@ -228,9 +226,7 @@
 				D9B8B4012AB3AE6600A4613A /* TopTracksNetwork.swift in Sources */,
 				D9DAD16E2AE423FE003CD6B6 /* DraggableGridSetup.swift in Sources */,
 				D9B8B40C2AB4FCB800A4613A /* ArtistSearchView.swift in Sources */,
-				D92B6F212A9E9BF700A7CCBD /* CollageView.swift in Sources */,
-				D92B6F432AA380F700A7CCBD /* FortyScrollGridView.swift in Sources */,
-				D92B6F1F2A9E9A5200A7CCBD /* FortyGridView.swift in Sources */,
+				D92B6F432AA380F700A7CCBD /* FortyGridView.swift in Sources */,
 				D91952882B002DFC00FD246C /* RenderView.swift in Sources */,
 				D93AD4BE2AC64226001D2BA3 /* FortyScrollGridViewModel.swift in Sources */,
 			);
