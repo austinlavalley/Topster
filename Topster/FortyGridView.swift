@@ -133,9 +133,15 @@ struct FortyGridView: View {
                     Spacer()
                     
                     HStack {
-                        Button("Export something") {
+                        Button("Export") {
                             vm.showExportSheet.toggle()
                         }
+                        .frame(maxWidth: .infinity)
+                        .foregroundColor(Color.accentColor)
+                        .bold()
+                        .padding()
+                        .background(Color.secondary.opacity(0.2))
+                        .cornerRadius(12)
                         
                         AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", isSecondaryStyle: false)
                     }
