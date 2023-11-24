@@ -27,6 +27,16 @@ struct RenderView: View {
                     item: Image(uiImage: snapshot!),
                     preview: SharePreview("40 Album Grid", image: Image(uiImage: snapshot!), icon: sharePreview)
                 )
+                .frame(maxWidth: .infinity)
+                .foregroundColor(Color.accentColor)
+                .bold()
+                .padding()
+                .background(Color.secondary.opacity(0.2))
+                .cornerRadius(12)
+                
+                Button("Save to Photos") {
+                    UIImageWriteToSavedPhotosAlbum(snapshot!, nil, nil, nil)
+                }
             }
         }
         .onAppear {
