@@ -34,8 +34,10 @@ struct RenderView: View {
                 .background(Color.secondary.opacity(0.2))
                 .cornerRadius(12)
                 
-                Button("Save to Photos") {
-                    UIImageWriteToSavedPhotosAlbum(snapshot!, nil, nil, nil)
+                if let snapshot = snapshot {
+                    Button("Save to Photos") {
+                        UIImageWriteToSavedPhotosAlbum(snapshot, nil, nil, nil)
+                    }
                 }
             }
         }
