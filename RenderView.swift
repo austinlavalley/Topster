@@ -8,21 +8,21 @@
 import SwiftUI
 
 
-
 struct RenderView: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
-    
-//    let album: Album
-    
+        
     @State private var snapshot: UIImage?
     
     var body: some View {
         VStack(spacing: 24) {
+            
+            // snapshot of grid to export
             if let image = snapshot {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
                 
+                // export buttons
                 VStack {
                     ShareLink(
                         item: Image(uiImage: snapshot!),
@@ -53,14 +53,11 @@ struct RenderView: View {
 extension RenderView {
     func generateSnapshot() {
         Task {
-            //            let renderer = await ImageRenderer(content: RenderView(album: album))
-            let renderer = await ImageRenderer(content:
-//                FortyScrollGridMaster(start: 0, end: 5, size: 144, squareColor: .secondary)
+            let renderer = ImageRenderer(content:
                 FortyGridExportView()
-//                GridContent()
                 .environmentObject(vm)
             )
-            if let image = await renderer.uiImage {
+            if let image = renderer.uiImage {
                 self.snapshot = image
             }
         }
@@ -73,5 +70,111 @@ extension RenderView {
 struct RenderView_Previews: PreviewProvider {
     static var previews: some View {
         RenderView()
+    }
+}
+
+
+
+// ACTUAL VIEW THAT IS BEING EXPORTED
+
+struct FortyGridExportView: View {
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+    
+    @AppStorage("appColorTheme") private var darkModeEnabled = false
+
+    var body: some View {
+        VStack(alignment: .center) {
+            // topster row sizing: 150 125 125 100 100 75
+            
+            // 5x1 row
+            HStack(spacing: 10) {
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                            }
+                    } else {
+                        Rectangle().fill(.secondary.opacity(0.5))
+                    }
+                } .frame(width: 300, height: 300)
+            } .frame(width: 1600)
+            
+            // 6x2 rows
+            HStack {
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(11).dropFirst(5), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                            }
+                    } else {
+                        Rectangle().fill(.secondary.opacity(0.5))
+                    }
+                } .frame(width: 250, height: 250)
+            }.frame(width: 1600)
+            
+            HStack {
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(11), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                            }
+                    } else {
+                        Rectangle().fill(.secondary.opacity(0.5))
+                    }
+                } .frame(width: 250, height: 250)
+            }.frame(width: 1600)
+            
+            
+            // 7x2 rows
+            HStack {
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(24).dropFirst(17), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                            }
+                    } else {
+                        Rectangle().fill(.secondary.opacity(0.5))
+                    }
+                } .frame(width: 200, height: 200)
+            }
+            HStack {
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(24), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                            }
+                    } else {
+                        Rectangle().fill(.secondary.opacity(0.5))
+                    }
+                } .frame(width: 200, height: 200)
+            }
+            
+            
+            HStack {
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(40).dropFirst(31), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                            }
+                    } else {
+                        Rectangle().fill(.secondary.opacity(0.5))
+                    }
+                } .frame(width: 150, height: 150)
+            }
+        }
+        .frame(width: 1668, height: 1518)
+        .background(darkModeEnabled ? Color.black : Color.white)
     }
 }

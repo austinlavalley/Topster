@@ -40,6 +40,39 @@ struct GridContent: View {
     }
 }
 
+struct FortyScrollGridMaster: View {
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+    
+    let start: Int
+    let end: Int
+    let size: CGFloat
+    let squareColor: Color
+    
+    var body: some View {
+        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(end).dropFirst(start), id: \.key) { key, album in
+            if album != nil {
+                AsyncAlbumSquare(album: album!)
+                    .onTapGesture {
+                        vm.selectedGridID = key
+                        vm.toggleSheet()
+                    }
+            } else {
+                ZStack {
+                    Rectangle()
+                        .foregroundColor(squareColor)
+                        .onTapGesture {
+                            vm.selectedGridID = key
+                            vm.toggleSheet()
+                        }
+                    
+                    Image(systemName: "plus").bold().foregroundColor(.secondary)
+                }
+            }
+        }
+        .frame(width: size, height: size)
+    }
+}
+
 struct GridContent_Previews: PreviewProvider {
     static var previews: some View {
         GridContent()
