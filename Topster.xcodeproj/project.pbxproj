@@ -27,6 +27,7 @@
 		D9B8B40C2AB4FCB800A4613A /* ArtistSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B40B2AB4FCB800A4613A /* ArtistSearchView.swift */; };
 		D9B8B40E2AB8BED300A4613A /* Networker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B40D2AB8BED300A4613A /* Networker.swift */; };
 		D9C578742B0EAF2600B94E1F /* GridContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C578732B0EAF2600B94E1F /* GridContent.swift */; };
+		D9C578762B14E7F900B94E1F /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C578752B14E7F900B94E1F /* ButtonStyles.swift */; };
 		D9C8CCC02AEDC54400FF0997 /* SavedGridCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C8CCBF2AEDC54400FF0997 /* SavedGridCardView.swift */; };
 		D9C8CCC22AF582E500FF0997 /* SavedGridsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C8CCC12AF582E500FF0997 /* SavedGridsListView.swift */; };
 		D9DAD16E2AE423FE003CD6B6 /* DraggableGridSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */; };
@@ -56,6 +57,7 @@
 		D9B8B40D2AB8BED300A4613A /* Networker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networker.swift; sourceTree = "<group>"; };
 		D9C578722B0D66A500B94E1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D9C578732B0EAF2600B94E1F /* GridContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridContent.swift; sourceTree = "<group>"; };
+		D9C578752B14E7F900B94E1F /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		D9C8CCBF2AEDC54400FF0997 /* SavedGridCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedGridCardView.swift; sourceTree = "<group>"; };
 		D9C8CCC12AF582E500FF0997 /* SavedGridsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedGridsListView.swift; sourceTree = "<group>"; };
 		D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableGridSetup.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				D9DAD16F2AE57111003CD6B6 /* ShakeyDelete.swift */,
 				D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */,
 				D91952872B002DFC00FD246C /* RenderView.swift */,
+				D9C578752B14E7F900B94E1F /* ButtonStyles.swift */,
 				D91952A72B02C2DA00FD246C /* InternetImage.swift */,
 				D92B6F0D2A9BBF9300A7CCBD /* Topster */,
 				D92B6F0C2A9BBF9300A7CCBD /* Products */,
@@ -215,6 +218,7 @@
 				D9C578742B0EAF2600B94E1F /* GridContent.swift in Sources */,
 				D9B8B40A2AB4FB2800A4613A /* Track.swift in Sources */,
 				D9B8B4032AB3B41700A4613A /* TopArtistsNetwork.swift in Sources */,
+				D9C578762B14E7F900B94E1F /* ButtonStyles.swift in Sources */,
 				D92B6F1D2A9BBFA300A7CCBD /* FortyTwoGridView.swift in Sources */,
 				D91952A82B02C2DA00FD246C /* InternetImage.swift in Sources */,
 				D99642542ABB50B6004CEA01 /* SearchResults.swift in Sources */,

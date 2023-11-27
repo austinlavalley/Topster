@@ -23,22 +23,20 @@ struct RenderView: View {
                     .resizable()
                     .scaledToFit()
                 
-                ShareLink(
-                    item: Image(uiImage: snapshot!),
-                    preview: SharePreview("40 Album Grid", image: Image(uiImage: snapshot!), icon: sharePreview)
-                )
-                .frame(maxWidth: .infinity)
-                .foregroundColor(Color.accentColor)
-                .bold()
-                .padding()
-                .background(Color.secondary.opacity(0.2))
-                .cornerRadius(12)
-                
-                if let snapshot = snapshot {
-                    Button("Save to Photos") {
-                        UIImageWriteToSavedPhotosAlbum(snapshot, nil, nil, nil)
+                VStack {
+                    ShareLink(
+                        item: Image(uiImage: snapshot!),
+                        preview: SharePreview("40 Album Grid", image: Image(uiImage: snapshot!), icon: sharePreview)
+                    )
+                    .buttonStyle(DefaultSecondary())
+                    
+                    if let snapshot = snapshot {
+                        Button("Save to Photos") {
+                            UIImageWriteToSavedPhotosAlbum(snapshot, nil, nil, nil)
+                        }
+                        .buttonStyle(DefaultPrimary())
                     }
-                }
+                }.padding()
             }
         }
         .onAppear {
