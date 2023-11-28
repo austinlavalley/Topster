@@ -28,7 +28,7 @@ struct FortyGridView: View {
                     .navigationTitle("Top 40 Chart")
 //                    .background(Color.red.opacity(0.25))
 
-                    
+
                     
                     HStack {
                         Button("Export") {
@@ -45,6 +45,7 @@ struct FortyGridView: View {
 
 
                 }
+
 //                .background(Color.red.opacity(0.25))
             }
             
@@ -54,9 +55,7 @@ struct FortyGridView: View {
                     .presentationDetents([.fraction(0.65), .large])
             }
             
-            .sheet(isPresented: $vm.showExportSheet) {
-                RenderView()
-            }
+
             
             .confirmationDialog("Remove album", isPresented: $vm.pressShowRemove, actions: {
                 Button("yes", role: .destructive) {
@@ -74,8 +73,9 @@ struct FortyGridView: View {
                     }
                 }
             }
-            
-            
+        }
+        .sheet(isPresented: $vm.showExportSheet) {
+            RenderView()
         }
     }
 }
