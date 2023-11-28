@@ -16,66 +16,66 @@ struct FortyGridView: View {
             
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack {
-//                    ForEach(vm.FortyGridDict.sorted(by: {$0.key < $1.key}), id: \.key) { key, album in
-//                        if album != nil {
-//                            Text(album!.name)
-//                        }
-//                    }
+            VStack {
+                ScrollView {
+                    VStack {
+                        GridContent()
+                    }
+                    .frame(maxHeight: .infinity)
+                    .scrollIndicators(.hidden)
+                    .padding()
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationTitle("Top 40 Chart")
+//                    .background(Color.red.opacity(0.25))
+
                     
-                    GridContent()
-                    
-                    Spacer()
                     
                     HStack {
                         Button("Export") {
                             vm.showExportSheet.toggle()
                         }
-                        .frame(maxWidth: .infinity)
-                        .foregroundColor(Color.accentColor)
-                        .bold()
-                        .padding()
-                        .background(Color.secondary.opacity(0.2))
-                        .cornerRadius(12)
+                        .buttonStyle(DefaultSecondary())
                         
                         AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", isSecondaryStyle: false)
                         
                     }
                     .frame(maxWidth: .infinity)
-                    
-                    Spacer()
+                    .padding()
+//                    .background(Color.red.opacity(0.25))
+
+
                 }
-                .scrollIndicators(.hidden)
-                .padding()
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationTitle("Top 40 Chart")
-                
-                .toolbar {
-                    ToolbarItem {
-                        Menu {
-                            Text("yo")
-                            Button("Reset grid") { vm.clearGrid() }
-                        } label: {
-                            Label("", systemImage: "ellipsis.circle")
-                        }
-                    }
-                }
-                
-                
-                .sheet(isPresented: $vm.showSearchSheet) {
-                    AlbumSearchView()
-                        .presentationDetents([.fraction(0.65), .large])
-                }
+//                .background(Color.red.opacity(0.25))
             }
+            
+            
+            .sheet(isPresented: $vm.showSearchSheet) {
+                AlbumSearchView()
+                    .presentationDetents([.fraction(0.65), .large])
+            }
+            
+            .sheet(isPresented: $vm.showExportSheet) {
+                RenderView()
+            }
+            
             .confirmationDialog("Remove album", isPresented: $vm.pressShowRemove, actions: {
                 Button("yes", role: .destructive) {
                     vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
                 }
             })
-            .sheet(isPresented: $vm.showExportSheet) {
-                RenderView()
+            
+            .toolbar {
+                ToolbarItem {
+                    Menu {
+                        Text("yo")
+                        Button("Reset grid") { vm.clearGrid() }
+                    } label: {
+                        Label("", systemImage: "ellipsis.circle")
+                    }
+                }
             }
+            
+            
         }
     }
 }
