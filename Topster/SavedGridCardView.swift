@@ -51,7 +51,10 @@ struct SavedGridCardPreviewView: View {
 
         
         .confirmationDialog("Delete this grid?", isPresented: $showDeleteConfirm) {
-            Button("Set as active grid") { vm.FortyGridDict = grid }
+            Button("Set as active grid") {
+                vm.FortyGridDict = grid
+                vm.currentActiveGrid = currentIndex
+            }
             Button("Delete grid", role: .destructive) { vm.removeFromSavedGrids(at: currentIndex) }
             Button("Cancel", role: .cancel) { }
         }

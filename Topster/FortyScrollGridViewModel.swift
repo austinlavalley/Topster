@@ -45,6 +45,8 @@ class FortyScrollGridViewModel: ObservableObject {
     @AppStorage("FortyGridDict") var storedFortyGridDict: Data?
     @AppStorage("storedSavedGrids") var storedSavedGrids: Data?
     
+    @AppStorage("currentActiveGrid") var currentActiveGrid: Int?
+    
     
     init() {
         // Load the saved data from AppStorage when initializing the view model

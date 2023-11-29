@@ -19,6 +19,7 @@ struct FortyGridView: View {
             VStack {
                 ScrollView {
                     VStack {
+                        Text(vm.currentActiveGrid?.description ?? "n/a")
                         GridContent()
                     }
                     .frame(maxHeight: .infinity)
@@ -76,6 +77,12 @@ struct FortyGridView: View {
         }
         .sheet(isPresented: $vm.showExportSheet) {
             RenderView()
+        }
+        
+        .onAppear {
+            if vm.currentActiveGrid != nil {
+                vm.FortyGridDict = vm.savedGrids[vm.currentActiveGrid!]
+            }
         }
     }
 }
