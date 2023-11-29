@@ -80,8 +80,8 @@
 			children = (
 				D9DAD16F2AE57111003CD6B6 /* ShakeyDelete.swift */,
 				D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */,
-				D91952872B002DFC00FD246C /* RenderView.swift */,
 				D9C578752B14E7F900B94E1F /* ButtonStyles.swift */,
+				D92B6F1C2A9BBFA300A7CCBD /* FortyTwoGridView.swift */,
 				D91952A72B02C2DA00FD246C /* InternetImage.swift */,
 				D92B6F0D2A9BBF9300A7CCBD /* Topster */,
 				D92B6F0C2A9BBF9300A7CCBD /* Products */,
@@ -100,21 +100,15 @@
 			isa = PBXGroup;
 			children = (
 				D9C578722B0D66A500B94E1F /* Info.plist */,
-				D9B8B4062AB4FAFD00A4613A /* Models */,
 				D92B6F0E2A9BBF9300A7CCBD /* TopsterApp.swift */,
 				D92B6F102A9BBF9300A7CCBD /* ContentView.swift */,
-				D92B6F422AA380F600A7CCBD /* FortyGridView.swift */,
-				D91952852AFE858300FD246C /* SettingsView.swift */,
-				D92B6F1C2A9BBFA300A7CCBD /* FortyTwoGridView.swift */,
-				D9C578732B0EAF2600B94E1F /* GridContent.swift */,
+				D9B8B4062AB4FAFD00A4613A /* Models */,
 				D93AD4BD2AC64226001D2BA3 /* FortyScrollGridViewModel.swift */,
-				D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */,
-				D9B8B4022AB3B41700A4613A /* TopArtistsNetwork.swift */,
-				D9B8B40D2AB8BED300A4613A /* Networker.swift */,
+				D96E3FCC2B1793C800A6D12B /* Views */,
 				D9B8B40B2AB4FCB800A4613A /* ArtistSearchView.swift */,
 				D93AD4BB2AC23449001D2BA3 /* AlbumSearchView.swift */,
 				D9C8CCBF2AEDC54400FF0997 /* SavedGridCardView.swift */,
-				D9C8CCC12AF582E500FF0997 /* SavedGridsListView.swift */,
+				D96E3FCB2B17937600A6D12B /* Data */,
 				D92B6F122A9BBF9400A7CCBD /* Assets.xcassets */,
 				D92B6F142A9BBF9400A7CCBD /* Preview Content */,
 			);
@@ -127,6 +121,44 @@
 				D92B6F152A9BBF9400A7CCBD /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		D96E3FCB2B17937600A6D12B /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */,
+				D9B8B4022AB3B41700A4613A /* TopArtistsNetwork.swift */,
+				D9B8B40D2AB8BED300A4613A /* Networker.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		D96E3FCC2B1793C800A6D12B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D96E3FCE2B17940D00A6D12B /* GridView */,
+				D9C8CCC12AF582E500FF0997 /* SavedGridsListView.swift */,
+				D91952852AFE858300FD246C /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D96E3FCE2B17940D00A6D12B /* GridView */ = {
+			isa = PBXGroup;
+			children = (
+				D92B6F422AA380F600A7CCBD /* FortyGridView.swift */,
+				D96E3FCF2B17941800A6D12B /* Subviews */,
+			);
+			path = GridView;
+			sourceTree = "<group>";
+		};
+		D96E3FCF2B17941800A6D12B /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				D91952872B002DFC00FD246C /* RenderView.swift */,
+				D9C578732B0EAF2600B94E1F /* GridContent.swift */,
+			);
+			path = Subviews;
 			sourceTree = "<group>";
 		};
 		D9B8B4062AB4FAFD00A4613A /* Models */ = {

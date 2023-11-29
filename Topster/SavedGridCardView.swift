@@ -29,8 +29,7 @@ struct SavedGridCardPreviewView: View {
         VStack {
             ScrollView(.horizontal) {
                 HStack {
-                    // for each [key: album] pair in each individual grid (i.e, "Fav rock albums", "fav 70s", etc)
-                    //                ForEach(grid.sorted(by: { $0.key < $1.key }), id: \.key) { key, album in
+                    
                     ForEach(nonNilPairs.sorted(by: {$0.key < $1.key}), id: \.key) { key, album in
                         if album != nil {
                             AlbumSquare(album: album!)
@@ -60,13 +59,6 @@ struct SavedGridCardPreviewView: View {
         }
     }
 }
-
-
-
-
-// need to iterate through a fixed range (4 or 5) and add albums to the range, detecting if not filled by nonNilPairs, fill in with rectangles. this needs to be an array of something???
-
-
 
 
 

@@ -16,7 +16,7 @@ struct ContentView: View {
 
             FortyGridView()
                 .tabItem {
-                    Label("Current grid", systemImage: "house")
+                    Label("Grid", systemImage: "square.grid.3x3")
                 }
             
             SavedGridsListView()
