@@ -5,64 +5,141 @@
 //  Created by Austin Lavalley on 11/10/23.
 //
 
+
+
+// what settings are needed?
+
+// dark mode
+// delete data/all grids
+// an area for last.fm api placement
+// feedback and support
+// privacy policy
+
+
 import SwiftUI
 
 struct SettingsView: View {
-    
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+    @EnvironmentObject var notificationSettings: NotificationSettings
+
     @AppStorage("appColorTheme") private var darkModeEnabled = false
     
+    
+    @State private var showingDeleteConfirmation = false
+    
     var body: some View {
-        NavigationView {
-            Form {
-                Section(header: Text("General Settings")) {
-                    Toggle("Dark Mode", isOn: $darkModeEnabled)
-                    Picker("Language", selection: .constant(0)) {
-                        Text("English").tag(0)
-                        Text("Spanish").tag(1)
-                    }
+        VStack {
+            ScrollView {
+                Group {
+                    Toggle("Enable notifications", isOn: $notificationSettings.isEnabled) 
                 }
-
-                Section(header: Text("Account Settings")) {
-                    NavigationLink(destination: ChangePasswordView()) {
-                        Text("Change Password")
-                    }
-                    Button(action: {
-                        // Perform logout action
-                    }) {
-                        Text("Delete all grids")
-                            .foregroundColor(.red)
-                    }
+                .font(.subheadline).bold()
+                .padding()
+                .background(.secondary.opacity(0.4))
+                .clipShape(RoundedRectangle(cornerRadius: 24))
+                
+                
+                Group {
+                    Toggle("Enable dark mode 🌙", isOn: $darkModeEnabled)
                 }
+                .font(.subheadline).bold()
+                .padding()
+                .background(.secondary.opacity(0.4))
+                .clipShape(RoundedRectangle(cornerRadius: 24))
+                
+                Group {
+                    Button("Feedback & support") {
+                        openMail(emailTo: "hello@austinlavalley.com",
+                                 subject: "Brisk App Feedback",
+                                 body: "")
+                    }.frame(maxWidth: .infinity, minHeight: 24)
+                }
+                .font(.subheadline).bold()
+                .padding()
+                .background(.secondary.opacity(0.4))
+                .clipShape(RoundedRectangle(cornerRadius: 24))
+                
+                Group {
+                    Button("Privacy policy") {
+                        // link to priv policy
+                    }.frame(maxWidth: .infinity, minHeight: 24)
+                }
+                .font(.subheadline).bold()
+                .padding()
+                .background(.secondary.opacity(0.4))
+                .clipShape(RoundedRectangle(cornerRadius: 24))
+                
+                Group {
+                    Button {
+                        showingDeleteConfirmation.toggle()
+                    } label: {
+                        HStack {
+                            Spacer()
+                            Text("Delete all journal entries")
+                            Spacer()
+                        }
+                        .frame(height: 36)
+                        
+                    }
+                    .font(.subheadline).bold()
+                    .foregroundColor(.red)
+                    .padding()
+                    .background(.secondary.opacity(0.4))
+                    .clipShape(RoundedRectangle(cornerRadius: 24))
+                }
+                .padding(.vertical)
+                
             }
-            .navigationBarTitle("Settings", displayMode: .inline)
+            .padding(.vertical)
+            
+            Spacer()
+            Text("by Austin for Austin in Austin").font(.caption).bold().foregroundColor(.secondary)
         }
+        .confirmationDialog("You sure about that?", isPresented: $showingDeleteConfirmation) {
+            Button("Delete entries", role: .destructive) {
+                // delete all
+            }
+        } message: {
+            Text("This can't be ctrl + z'd")
+        }
+        
+        .navigationBarTitle("Settings")
+        .padding()
+        .background(.gray.opacity(0.1))
     }
 }
 
-struct ChangePasswordView: View {
-    @State private var currentPassword = ""
-    @State private var newPassword = ""
-    @State private var confirmPassword = ""
 
-    var body: some View {
-        Form {
-            Section {
-                SecureField("Current Password", text: $currentPassword)
-                SecureField("New Password", text: $newPassword)
-                SecureField("Confirm Password", text: $confirmPassword)
-            }
 
-            Section {
-                Button(action: {
-                    // Perform password change action
-                }) {
-                    Text("Change Password")
-                }
-            }
-        }
-        .navigationBarTitle("Change Password", displayMode: .inline)
+
+
+
+func openMail(emailTo:String, subject: String, body: String) {
+    if let url = URL(string: "mailto:\(emailTo)?subject=\(subject.fixToBrowserString())&body=\(body.fixToBrowserString())"),
+       UIApplication.shared.canOpenURL(url)
+    {
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }
+
+extension String {
+    func fixToBrowserString() -> String {
+        self.replacingOccurrences(of: ";", with: "%3B")
+            .replacingOccurrences(of: "\n", with: "%0D%0A")
+            .replacingOccurrences(of: " ", with: "+")
+            .replacingOccurrences(of: "!", with: "%21")
+            .replacingOccurrences(of: "\"", with: "%22")
+            .replacingOccurrences(of: "\\", with: "%5C")
+            .replacingOccurrences(of: "/", with: "%2F")
+            .replacingOccurrences(of: "‘", with: "%91")
+            .replacingOccurrences(of: ",", with: "%2C")
+            //more symbols fixes here: https://mykindred.com/htmlspecialchars.php
+    }
+}
+
+
+
+
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {

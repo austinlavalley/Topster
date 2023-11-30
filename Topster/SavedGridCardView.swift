@@ -40,7 +40,7 @@ struct SavedGridCardPreviewView: View {
                 }
             }
             .padding()
-            .background(.secondary)
+            .background(.secondary.opacity(0.4))
             .clipShape(RoundedRectangle(cornerRadius: 12))
             
         }
@@ -54,7 +54,10 @@ struct SavedGridCardPreviewView: View {
                 vm.FortyGridDict = grid
                 vm.currentActiveGrid = currentIndex
             }
-            Button("Delete grid", role: .destructive) { vm.removeFromSavedGrids(at: currentIndex) }
+            Button("Delete grid", role: .destructive) {
+                vm.removeFromSavedGrids(at: currentIndex)
+                vm.currentActiveGrid = nil
+            }
             Button("Cancel", role: .cancel) { }
         }
     }

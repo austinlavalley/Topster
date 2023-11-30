@@ -11,6 +11,9 @@ import SwiftUI
 
 class FortyScrollGridViewModel: ObservableObject {
     
+
+
+    
     @Published var showSearchSheet = false
     
     @Published var showExportSheet = false
@@ -120,6 +123,9 @@ class FortyScrollGridViewModel: ObservableObject {
     }
     
     
+    
+    
+
     
 }
 
