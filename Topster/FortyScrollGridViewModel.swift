@@ -96,10 +96,8 @@ class FortyScrollGridViewModel: ObservableObject {
     
     func removeFromSavedGrids(at index: Int) {
         EditableSavedGrids.remove(at: index)
+//        savedGrids = savedGrids.filter({ $0.count > 1})
     }
-    
-    
-    
     
     
     // assigns album to main grid dict at the currently selected grid id

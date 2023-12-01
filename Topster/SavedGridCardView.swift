@@ -30,9 +30,14 @@ struct SavedGridCardPreviewView: View {
             ScrollView(.horizontal) {
                 HStack {
                     
+                    // the updating problem isn't with the model design, it's strictly with the image. likely has to do with the custom albumimage rendering i'm doing
+                    
                     ForEach(nonNilPairs.sorted(by: {$0.key < $1.key}), id: \.key) { key, album in
                         if album != nil {
-                            AlbumSquare(album: album!)
+                            VStack {
+                                Text(album!.name)
+                                AlbumSquare(album: album!)
+                            }
                         }
                     }
                     .frame(width: 96, height: 96)

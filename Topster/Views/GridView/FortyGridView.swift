@@ -107,15 +107,21 @@ struct AsyncAlbumSquare: View {
 // ALBUMSQUARE FOR ELSEWHERE IN APP
 struct AlbumSquare: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
+    
     let album: Album
     
     var body: some View {
-        InternetImage(url: album.image.first(where: { $0.size == "large"})?.text ?? "") { image in
-            image
-                .resizable()
+        VStack {
+            Text(album.artist)
+            InternetImage(url: album.image.first(where: { $0.size == "large"})?.text ?? "") { image in
+                image
+                    .resizable()
+            }
         }
     }
 }
+
+
 
 
 struct FortyGridView_Previews: PreviewProvider {
