@@ -15,13 +15,11 @@ struct SavedGridCardPreviewView: View {
     
     let grid: [Int : Album?]
     let currentIndex: Int
-    
     let nonNilPairs: [Int: Album?]
     
     init(grid: [Int : Album?], currentIndex: Int) {
         self.grid = grid
         self.currentIndex = currentIndex
-        
         self.nonNilPairs = grid.filter({ $0.value != nil })
     }
     
@@ -31,18 +29,9 @@ struct SavedGridCardPreviewView: View {
             ScrollView(.horizontal) {
                 HStack {
                     
-                    // the updating problem isn't with the model design, it's strictly with the image. likely has to do with the custom albumimage rendering i'm doing
-                    
-                    // the issue is the grids below the one being deleted all move up, and just slot in instead of fully taking the place of the deleted.
-                    //
-                    // THE TEXT IS BEING UPDATED, BUT THE IMAGES ARE NOT. WHATEVER VARIABLE THE GRIDS ARE BEING STORED IN NEEDS TO FULLY REPLACE EACH OTHER, NOT JUST FILL IN GAPS
-                    // AHVE A FEELING IT COULD HAVE TO DO WITH THE NONNILPAIRS
-                    
                     ForEach(nonNilPairs.sorted(by: {$0.key < $1.key}), id: \.key) { key, album in
                         if album != nil {
                             VStack {
-//                                Text(album!.name)
-//                                AlbumSquare(album: album!)
                                 AsyncAlbumSquare(album: album!)
                             }
                         }
