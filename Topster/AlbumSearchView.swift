@@ -16,8 +16,6 @@ struct AlbumSearchView: View {
     @State private var searchText: String = ""
     
     
-    
-    
     private var threeColumnGrid = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
@@ -39,7 +37,7 @@ struct AlbumSearchView: View {
                     }
                 }
             }
-            .padding()
+//            .padding()
             
             .navigationBarTitle("Search")
             
@@ -51,7 +49,7 @@ struct AlbumSearchView: View {
 //                    } label: {
 //                        Text("Remove from grid").foregroundColor(.red)
 //                    }
-//                    
+//
 //                }
 //            }
         }

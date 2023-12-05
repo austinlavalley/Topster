@@ -35,7 +35,7 @@ struct SettingsView: View {
                 }
                 .font(.subheadline).bold()
                 .padding()
-                .background(.secondary.opacity(0.4))
+                .background(.secondary.opacity(0.2))
                 .clipShape(RoundedRectangle(cornerRadius: 24))
                 
                 
@@ -44,7 +44,7 @@ struct SettingsView: View {
                 }
                 .font(.subheadline).bold()
                 .padding()
-                .background(.secondary.opacity(0.4))
+                .background(.secondary.opacity(0.2))
                 .clipShape(RoundedRectangle(cornerRadius: 24))
                 
                 Group {
@@ -56,7 +56,7 @@ struct SettingsView: View {
                 }
                 .font(.subheadline).bold()
                 .padding()
-                .background(.secondary.opacity(0.4))
+                .background(.secondary.opacity(0.2))
                 .clipShape(RoundedRectangle(cornerRadius: 24))
                 
                 Group {
@@ -66,7 +66,7 @@ struct SettingsView: View {
                 }
                 .font(.subheadline).bold()
                 .padding()
-                .background(.secondary.opacity(0.4))
+                .background(.secondary.opacity(0.2))
                 .clipShape(RoundedRectangle(cornerRadius: 24))
                 
                 Group {
@@ -84,7 +84,7 @@ struct SettingsView: View {
                     .font(.subheadline).bold()
                     .foregroundColor(.red)
                     .padding()
-                    .background(.secondary.opacity(0.4))
+                    .background(.secondary.opacity(0.2))
                     .clipShape(RoundedRectangle(cornerRadius: 24))
                 }
                 .padding(.vertical)
