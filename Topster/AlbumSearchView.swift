@@ -43,14 +43,17 @@ struct AlbumSearchView: View {
             
             .navigationBarTitle("Search")
             
-            .toolbar {
-                if ((vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ _ in })) != nil) {
-                    Button("remove") {
-                        vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
-                        vm.hideSearchSheet()
-                    }
-                }
-            }
+//            .toolbar {
+//                if ((vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ _ in })) != nil) {
+//                    Button {
+//                        vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
+//                        vm.hideSearchSheet()
+//                    } label: {
+//                        Text("Remove from grid").foregroundColor(.red)
+//                    }
+//                    
+//                }
+//            }
         }
         .onChange(of: searchText) { _ in
             searchForAlbums()
