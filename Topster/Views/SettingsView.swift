@@ -75,7 +75,7 @@ struct SettingsView: View {
                     } label: {
                         HStack {
                             Spacer()
-                            Text("Delete all journal entries")
+                            Text("Delete all saved grids")
                             Spacer()
                         }
                         .frame(height: 36)
@@ -96,8 +96,9 @@ struct SettingsView: View {
             Text("by Austin for Austin in Austin").font(.caption).bold().foregroundColor(.secondary)
         }
         .confirmationDialog("You sure about that?", isPresented: $showingDeleteConfirmation) {
-            Button("Delete entries", role: .destructive) {
+            Button("Delete grids", role: .destructive) {
                 // delete all
+                vm.deleteAllSavedGrids()
             }
         } message: {
             Text("This can't be ctrl + z'd")
