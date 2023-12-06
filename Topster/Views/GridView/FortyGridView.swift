@@ -68,7 +68,10 @@ struct FortyGridView: View {
                 ToolbarItem {
                     Menu {
                         Text("yo")
-                        Button("Reset grid") { vm.clearGrid() }
+                        Button("Reset grid") {
+                            vm.clearGrid()
+                            vm.currentActiveGrid = nil
+                        }
                     } label: {
                         Label("", systemImage: "ellipsis.circle")
                     }
