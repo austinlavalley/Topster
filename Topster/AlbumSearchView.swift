@@ -15,6 +15,8 @@ struct AlbumSearchView: View {
     @State private var searchResults: [Album] = []
     @State private var searchText: String = ""
     
+    @FocusState private var isSearchFocused: Bool
+    
     
     private var threeColumnGrid = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
 
@@ -24,10 +26,15 @@ struct AlbumSearchView: View {
                 
                 HStack {
                     TextField("Search", text: $searchText)
+                        .focused($isSearchFocused)
                     Button("Search") {
                         searchForAlbums()
                     }
                 }
+                .padding()
+                .background(.secondary.opacity(0.2))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                
                 ScrollView {
                     LazyVGrid(columns: threeColumnGrid) {
                         ForEach(searchResults, id: \.name) { result in
@@ -36,8 +43,8 @@ struct AlbumSearchView: View {
                         }
                     }
                 }
-            }
-//            .padding()
+                
+            }.padding(.horizontal)
             
             .navigationBarTitle("Search")
             
@@ -55,6 +62,10 @@ struct AlbumSearchView: View {
         }
         .onChange(of: searchText) { _ in
             searchForAlbums()
+        }
+        
+        .onAppear {
+            isSearchFocused = true
         }
     }
     
