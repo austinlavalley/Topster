@@ -18,37 +18,34 @@ struct FortyGridView: View {
         NavigationStack {
             VStack {
                 ScrollView {
-                    VStack {
-                        Text(vm.currentActiveGrid?.description ?? "n/a")
-                        GridContent()
-                    }
-                    .frame(maxHeight: .infinity)
-                    .scrollIndicators(.hidden)
-                    .padding()
-                    .navigationBarTitleDisplayMode(.inline)
-                    .navigationTitle("Top 40 Chart")
-//                    .background(Color.red.opacity(0.25))
-
-
+                    GridContent()
+                        .frame(maxHeight: .infinity)
+                        .scrollIndicators(.hidden)
+                        .padding()
+                        .navigationBarTitleDisplayMode(.inline)
+                        .navigationTitle("Top 40 Chart")
+//                        .background(Color.red.opacity(0.25))
                     
-                    HStack {
-                        Button("Export") {
-                            vm.showExportSheet.toggle()
-                        }
-                        .buttonStyle(DefaultSecondary())
-                        
-                        AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", isSecondaryStyle: false)
-                        
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-//                    .background(Color.red.opacity(0.25))
-
-
                 }
-
+                
+                HStack {
+                    Button("Export") {
+                        vm.showExportSheet.toggle()
+                    }
+                    .buttonStyle(DefaultSecondary())
+                    
+                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", isSecondaryStyle: false)
+                    
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
 //                .background(Color.red.opacity(0.25))
+                
+                
             }
+//                .background(Color.red.opacity(0.25))
+//            }
+
             
             
             .sheet(isPresented: $vm.showSearchSheet) {
