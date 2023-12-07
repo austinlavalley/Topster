@@ -44,7 +44,7 @@ struct AlbumSearchView: View {
                     }
                 }
                 
-            }.padding(.horizontal)
+            }.padding()
             
             .navigationBarTitle("Search")
             

@@ -13,7 +13,7 @@ struct FortyGridView: View {
     
     @State private var saveButtonText = "Save grid"
     @State private var showExportSheet = false
-            
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -24,8 +24,6 @@ struct FortyGridView: View {
                         .padding()
                         .navigationBarTitleDisplayMode(.inline)
                         .navigationTitle("Top 40 Chart")
-//                        .background(Color.red.opacity(0.25))
-                    
                 }
                 
                 HStack {
@@ -39,13 +37,8 @@ struct FortyGridView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
-//                .background(Color.red.opacity(0.25))
-                
                 
             }
-//                .background(Color.red.opacity(0.25))
-//            }
-
             
             
             .sheet(isPresented: $vm.showSearchSheet) {
@@ -53,7 +46,7 @@ struct FortyGridView: View {
                     .presentationDetents([.fraction(0.65), .large])
             }
             
-
+            
             
             .confirmationDialog("Remove album", isPresented: $vm.pressShowRemove, actions: {
                 Button("yes", role: .destructive) {
@@ -107,9 +100,9 @@ struct AsyncAlbumSquare: View {
 // ALBUMSQUARE FOR ELSEWHERE IN APP
 struct AlbumSquare: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
-
+    
     let album: Album
-
+    
     var body: some View {
         VStack {
             InternetImage(url: album.image.first(where: { $0.size == "large"})?.text ?? "") { image in
