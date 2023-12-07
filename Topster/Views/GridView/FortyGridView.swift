@@ -92,7 +92,7 @@ struct AsyncAlbumSquare: View {
             image
                 .resizable()
         } placeholder: {
-            Rectangle().fill(.purple)
+            ProgressView()
         }
     }
 }
