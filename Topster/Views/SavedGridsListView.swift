@@ -19,7 +19,9 @@ struct SavedGridsListView: View {
                     // for each GRID in the array of saved grids
                     ForEach(Array(vm.savedGrids.enumerated()), id: \.offset) { index, grid in
                         
-                        SavedGridCardPreviewView(grid: grid, currentIndex: index)
+                        if grid.values.contains(where: { $0 != nil }) {
+                            SavedGridCardPreviewView(grid: grid, currentIndex: index)
+                        }
                         
                     }
                     .padding(.horizontal)
