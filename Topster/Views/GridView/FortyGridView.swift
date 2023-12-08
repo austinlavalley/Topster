@@ -17,6 +17,7 @@ struct FortyGridView: View {
     var body: some View {
         NavigationStack {
             VStack {
+                Text(vm.FortyGridDict.values.count.description)
                 ScrollView {
                     GridContent()
                         .frame(maxHeight: .infinity)
@@ -31,8 +32,9 @@ struct FortyGridView: View {
                         vm.showExportSheet.toggle()
                     }
                     .buttonStyle(DefaultSecondary())
+                    .disabled(vm.FortyGridDict.allSatisfy({ $0.value == nil }))
                     
-                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", isSecondaryStyle: false)
+                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", noAlbums: vm.FortyGridDict.allSatisfy({ $0.value == nil }), isSecondaryStyle: false)
                     
                 }
                 .frame(maxWidth: .infinity)

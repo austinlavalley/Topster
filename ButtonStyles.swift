@@ -43,6 +43,8 @@ struct AnimatedSaveButtonView: View {
     @State var buttonText: String
     @State var buttonActionText: String
     
+    @State var noAlbums: Bool
+    
     let isSecondaryStyle: Bool
 
     var body: some View {
@@ -68,5 +70,6 @@ struct AnimatedSaveButtonView: View {
                 .cornerRadius(12)
         }
         .disabled(isAnimating) // Disable the button while animating
+        .disabled(noAlbums)
     }
 }
