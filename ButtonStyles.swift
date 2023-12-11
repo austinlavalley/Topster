@@ -70,6 +70,5 @@ struct AnimatedSaveButtonView: View {
                 .cornerRadius(12)
         }
         .disabled(isAnimating) // Disable the button while animating
-        .disabled(noAlbums)
     }
 }
