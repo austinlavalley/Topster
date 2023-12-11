@@ -67,6 +67,7 @@ struct FortyScrollGridMaster: View {
                     
                     Image(systemName: "plus").bold().foregroundColor(.secondary)
                 }
+                .clipShape(RoundedRectangle(cornerRadius: 6))
             }
         }
         .frame(width: size, height: size)
