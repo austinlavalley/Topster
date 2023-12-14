@@ -108,12 +108,14 @@ class FortyScrollGridViewModel: ObservableObject {
     // assigns album to main grid dict at the currently selected grid id
     func addAlbumToGrid(album: Album, at index: Int) {
         EditableFortyGridDict[index] = album
+        currentActiveGrid = nil
     }
     
     
     // resets the given key's value back to nil
     func removeAlbumFromGrid(at index: Int) {
         EditableFortyGridDict.updateValue(nil, forKey: index)
+        currentActiveGrid = nil
     }
     
     

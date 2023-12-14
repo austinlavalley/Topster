@@ -13,35 +13,49 @@ struct RenderView: View {
         
     @State private var snapshot: UIImage?
     
+    
+    @State var showLoading = true
+    
+    
     var body: some View {
-        VStack(spacing: 24) {
-            
-            // snapshot of grid to export
-            if let image = snapshot {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-                
-                // export buttons
-                VStack {
-                    ShareLink(
-                        item: Image(uiImage: snapshot!),
-                        preview: SharePreview("40 Album Grid", image: Image(uiImage: snapshot!), icon: sharePreview)
-                    )
-                    .buttonStyle(DefaultSecondary())
+        
+        ZStack {
+
+            VStack(spacing: 24) {
+                // snapshot of grid to export
+                if let image = snapshot {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
                     
-                    if let snapshot = snapshot {
-                        Button("Save to Photos") {
-                            UIImageWriteToSavedPhotosAlbum(snapshot, nil, nil, nil)
+                    // export buttons
+                    VStack {
+                        ShareLink(
+                            item: Image(uiImage: snapshot!),
+                            preview: SharePreview("40 Album Grid", image: Image(uiImage: snapshot!), icon: sharePreview)
+                        )
+                        .buttonStyle(DefaultSecondary())
+                        
+                        if let snapshot = snapshot {
+                            Button("Save to Photos") {
+                                UIImageWriteToSavedPhotosAlbum(snapshot, nil, nil, nil)
+                            }
+                            .buttonStyle(DefaultPrimary())
                         }
-                        .buttonStyle(DefaultPrimary())
-                    }
-                }.padding()
+                    }.padding()
+                }
             }
+            if showLoading { LoadingView() }
         }
         .onAppear {
             generateSnapshot()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                showLoading = false
+            }
         }
+        
+
     }
     
     var sharePreview: some Transferable {
@@ -50,12 +64,14 @@ struct RenderView: View {
 }
 
 
+
+// the imagerenderer works immediately, what we need to do is figure out how to await the isoloated FortyGridExportView to give it time to fetch all images
 extension RenderView {
     func generateSnapshot() {
         Task {
             let renderer = ImageRenderer(content:
                 FortyGridExportView()
-                .environmentObject(vm)
+                    .environmentObject(vm)
             )
             if let image = renderer.uiImage {
                 self.snapshot = image
@@ -72,6 +88,36 @@ struct RenderView_Previews: PreviewProvider {
         RenderView()
     }
 }
+
+
+struct LoadingView: View {
+    
+    var body: some View {
+        ZStack {
+            Rectangle()
+                .fill(.black)
+                .opacity(0.75)
+                .ignoresSafeArea()
+            
+            VStack(spacing: 20) {
+                ProgressView()
+                Text("Loading...")
+            }
+            .background {
+                RoundedRectangle(cornerRadius: 20)
+                .fill(.white)
+                .frame(width: 200, height: 200)
+            }
+            .offset(y: -70)
+        }
+    }
+}
+
+
+
+
+
+
 
 
 

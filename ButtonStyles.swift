@@ -66,7 +66,7 @@ struct AnimatedSaveButtonView: View {
                 .foregroundColor(isSecondaryStyle ? Color.blue : Color.white)
                 .bold()
                 .padding()
-                .background(isAnimating ? (isSecondaryStyle ? Color.gray.opacity(0.25) : Color.green) : (isSecondaryStyle ? Color.gray.opacity(0.25) : Color.blue))
+                .background(vm.FortyGridDict.allSatisfy({ $0.value == nil }) ? Color.gray.opacity(0.75) : isAnimating ? (isSecondaryStyle ? Color.gray.opacity(0.25) : Color.green) : (isSecondaryStyle ? Color.gray.opacity(0.25) : Color.blue))
                 .cornerRadius(12)
         }
         .disabled(isAnimating) // Disable the button while animating
