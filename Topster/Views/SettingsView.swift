@@ -21,84 +21,112 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     @EnvironmentObject var notificationSettings: NotificationSettings
-
+    
     @AppStorage("appColorTheme") private var darkModeEnabled = false
     
     
     @State private var showingDeleteConfirmation = false
+    @State private var showingDeleteSuccess = false
     
     var body: some View {
-        VStack {
-            ScrollView {
-                Group {
-                    Toggle("Enable notifications", isOn: $notificationSettings.isEnabled) 
-                }
-                .font(.subheadline).bold()
-                .padding()
-                .background(.secondary.opacity(0.2))
-                .clipShape(RoundedRectangle(cornerRadius: 24))
-                
-                
-                Group {
-                    Toggle("Enable dark mode 🌙", isOn: $darkModeEnabled)
-                }
-                .font(.subheadline).bold()
-                .padding()
-                .background(.secondary.opacity(0.2))
-                .clipShape(RoundedRectangle(cornerRadius: 24))
-                
-                Group {
-                    Button("Feedback & support") {
-                        openMail(emailTo: "hello@austinlavalley.com",
-                                 subject: "Brisk App Feedback",
-                                 body: "")
-                    }.frame(maxWidth: .infinity, minHeight: 24)
-                }
-                .font(.subheadline).bold()
-                .padding()
-                .background(.secondary.opacity(0.2))
-                .clipShape(RoundedRectangle(cornerRadius: 24))
-                
-                Group {
-                    Button("Privacy policy") {
-                        // link to priv policy
-                    }.frame(maxWidth: .infinity, minHeight: 24)
-                }
-                .font(.subheadline).bold()
-                .padding()
-                .background(.secondary.opacity(0.2))
-                .clipShape(RoundedRectangle(cornerRadius: 24))
-                
-                Group {
-                    Button {
-                        showingDeleteConfirmation.toggle()
-                    } label: {
-                        HStack {
-                            Spacer()
-                            Text("Delete all saved grids")
-                            Spacer()
-                        }
-                        .frame(height: 36)
-                        
+        ZStack {
+            VStack {
+                ScrollView {
+                    Group {
+                        Toggle("Enable notifications", isOn: $notificationSettings.isEnabled)
                     }
                     .font(.subheadline).bold()
-                    .foregroundColor(.red)
                     .padding()
                     .background(.secondary.opacity(0.2))
                     .clipShape(RoundedRectangle(cornerRadius: 24))
+                    
+                    
+                    Group {
+                        Toggle("Enable dark mode 🌙", isOn: $darkModeEnabled)
+                    }
+                    .font(.subheadline).bold()
+                    .padding()
+                    .background(.secondary.opacity(0.2))
+                    .clipShape(RoundedRectangle(cornerRadius: 24))
+                    
+                    Group {
+                        Button("Feedback & support") {
+                            openMail(emailTo: "hello@austinlavalley.com",
+                                     subject: "Brisk App Feedback",
+                                     body: "")
+                        }.frame(maxWidth: .infinity, minHeight: 24)
+                    }
+                    .font(.subheadline).bold()
+                    .padding()
+                    .background(.secondary.opacity(0.2))
+                    .clipShape(RoundedRectangle(cornerRadius: 24))
+                    
+                    Group {
+                        Button("Privacy policy") {
+                            // link to priv policy
+                        }.frame(maxWidth: .infinity, minHeight: 24)
+                    }
+                    .font(.subheadline).bold()
+                    .padding()
+                    .background(.secondary.opacity(0.2))
+                    .clipShape(RoundedRectangle(cornerRadius: 24))
+                    
+                    Group {
+                        Button {
+                            showingDeleteConfirmation.toggle()
+                        } label: {
+                            HStack {
+                                Spacer()
+                                Text("Delete all saved grids")
+                                Spacer()
+                            }
+                            .frame(height: 36)
+                            
+                        }
+                        .font(.subheadline).bold()
+                        .foregroundColor(.red)
+                        .padding()
+                        .background(.secondary.opacity(0.2))
+                        .clipShape(RoundedRectangle(cornerRadius: 24))
+                    }
+                    .padding(.vertical)
+                    
                 }
                 .padding(.vertical)
                 
+                Spacer()
+                Text("by Austin for Austin in Austin").font(.caption).bold().foregroundColor(.secondary)
             }
-            .padding(.vertical)
             
-            Spacer()
-            Text("by Austin for Austin in Austin").font(.caption).bold().foregroundColor(.secondary)
+            
+            
+            if showingDeleteSuccess {
+                VStack {
+                    Spacer()
+                    
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12).fill(Color.secondary.opacity(0.65))
+                            .frame(width: 192, height: 64)
+                        
+                        Text("All grids deleted 🫣").foregroundColor(.white).bold()
+                    }
+                }
+            }
         }
         .confirmationDialog("You sure about that?", isPresented: $showingDeleteConfirmation) {
             Button("Delete grids", role: .destructive) {
                 // delete all
                 vm.deleteAllSavedGrids()
+                
+                withAnimation {
+                    showingDeleteSuccess = true
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    withAnimation {
+                        showingDeleteSuccess = false
+                    }
+                }
             }
         } message: {
             Text("This can't be ctrl + z'd")
@@ -106,7 +134,7 @@ struct SettingsView: View {
         
         .navigationBarTitle("Settings")
         .padding()
-//        .background(.gray.opacity(0.1))
+        //        .background(.gray.opacity(0.1))
     }
 }
 
