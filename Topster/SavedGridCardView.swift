@@ -41,7 +41,7 @@ struct SavedGridCardPreviewView: View {
                 }
             }
             .padding()
-            .background(.secondary.opacity(0.4))
+            .background(currentIndex == vm.currentActiveGrid ? Color.blue.opacity(0.4) : .secondary.opacity(0.4))
             .clipShape(RoundedRectangle(cornerRadius: 12))
             
         }
