@@ -92,6 +92,7 @@ class FortyScrollGridViewModel: ObservableObject {
     
     func addToSavedGrids(grid: [Int: Album?]) {
         EditableSavedGrids.append(grid)
+        currentActiveGrid = savedGrids.count - 1
     }
     
     func removeFromSavedGrids(at index: Int) {
