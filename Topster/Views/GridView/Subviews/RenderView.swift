@@ -14,7 +14,8 @@ struct RenderView: View {
     @State private var snapshot: UIImage?
     
     
-    @State var showLoading = true
+//    @State var showLoading = true
+    @State private var showingSavedToPhotosSuccess = false
     
     
     var body: some View {
@@ -39,20 +40,47 @@ struct RenderView: View {
                         if let snapshot = snapshot {
                             Button("Save to Photos") {
                                 UIImageWriteToSavedPhotosAlbum(snapshot, nil, nil, nil)
+                                
+                                withAnimation {
+                                    showingSavedToPhotosSuccess = true
+                                }
+                                
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                    withAnimation {
+                                        showingSavedToPhotosSuccess = false
+                                    }
+                                }
                             }
                             .buttonStyle(DefaultPrimary())
                         }
                     }.padding()
                 }
             }
-            if showLoading { LoadingView() }
+            
+            if showingSavedToPhotosSuccess {
+                VStack {
+                    Spacer()
+                    
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12).fill(Color.secondary.opacity(0.65))
+                            .frame(width: 240, height: 64)
+                            .padding()
+                        
+                        Text("Grid saved to camera roll").foregroundColor(.white).bold()
+                    }
+                }
+            }
+            
+//            if showLoading { LoadingView() }
         }
+        
+        
         .onAppear {
             generateSnapshot()
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                showLoading = false
-            }
+
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                showLoading = false
+//            }
         }
         
 

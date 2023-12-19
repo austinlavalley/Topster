@@ -34,7 +34,7 @@ struct FortyGridView: View {
                     .buttonStyle(DefaultSecondary())
                     .disabled(vm.FortyGridDict.allSatisfy({ $0.value == nil }))
                     
-                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Grid saved", noAlbums: vm.FortyGridDict.allSatisfy({ $0.value == nil }), isSecondaryStyle: false)
+                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Saved", noAlbums: vm.FortyGridDict.allSatisfy({ $0.value == nil }), isSecondaryStyle: false)
                         .disabled(vm.FortyGridDict.allSatisfy({ $0.value == nil })) // disables save button if the grid is empty, can't do it inside buttonstyle
                     
                 }
