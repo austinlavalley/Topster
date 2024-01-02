@@ -23,6 +23,24 @@ struct RenderView: View {
         ZStack {
 
             VStack(spacing: 24) {
+                
+                HStack(spacing: 10) {
+                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
+                        if album != nil {
+                            AlbumSquare(album: album!)
+    //                            .onTapGesture {
+    //                                vm.selectedGridID = key
+    //                                vm.toggleSheet()
+    //                            }
+                        } else {
+                            Rectangle().fill(.secondary.opacity(0.5))
+                        }
+                    } .frame(width: 300, height: 300)
+                } .frame(width: 1600)
+                
+                
+    // so the issue is the view being displayed is just a static image of the renderview BEFORE it can fetch the async images. due to it being static, obviously the images won't load in because it takes a nonzero amount of time to fetch them. need to convert this to actually show the live view, and then do the rendering of the snapshot when exported
+                
                 // snapshot of grid to export
                 if let image = snapshot {
                     Image(uiImage: image)
@@ -99,14 +117,16 @@ extension RenderView {
         Task {
             let renderer = ImageRenderer(content:
                 FortyGridExportView()
-                    .environmentObject(vm)
+                .environmentObject(vm)
             )
+            
             if let image = renderer.uiImage {
                 self.snapshot = image
             }
         }
     }
 }
+
 
 
 
@@ -159,16 +179,16 @@ struct FortyGridExportView: View {
     var body: some View {
         VStack(alignment: .center) {
             // topster row sizing: 150 125 125 100 100 75
-            
+
             // 5x1 row
             HStack(spacing: 10) {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
-                            .onTapGesture {
-                                vm.selectedGridID = key
-                                vm.toggleSheet()
-                            }
+//                            .onTapGesture {
+//                                vm.selectedGridID = key
+//                                vm.toggleSheet()
+//                            }
                     } else {
                         Rectangle().fill(.secondary.opacity(0.5))
                     }
@@ -180,10 +200,10 @@ struct FortyGridExportView: View {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(11).dropFirst(5), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
-                            .onTapGesture {
-                                vm.selectedGridID = key
-                                vm.toggleSheet()
-                            }
+//                            .onTapGesture {
+//                                vm.selectedGridID = key
+//                                vm.toggleSheet()
+//                            }
                     } else {
                         Rectangle().fill(.secondary.opacity(0.5))
                     }
@@ -194,10 +214,10 @@ struct FortyGridExportView: View {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(11), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
-                            .onTapGesture {
-                                vm.selectedGridID = key
-                                vm.toggleSheet()
-                            }
+//                            .onTapGesture {
+//                                vm.selectedGridID = key
+//                                vm.toggleSheet()
+//                            }
                     } else {
                         Rectangle().fill(.secondary.opacity(0.5))
                     }
@@ -210,10 +230,10 @@ struct FortyGridExportView: View {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(24).dropFirst(17), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
-                            .onTapGesture {
-                                vm.selectedGridID = key
-                                vm.toggleSheet()
-                            }
+//                            .onTapGesture {
+//                                vm.selectedGridID = key
+//                                vm.toggleSheet()
+//                            }
                     } else {
                         Rectangle().fill(.secondary.opacity(0.5))
                     }
@@ -223,10 +243,10 @@ struct FortyGridExportView: View {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(24), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
-                            .onTapGesture {
-                                vm.selectedGridID = key
-                                vm.toggleSheet()
-                            }
+//                            .onTapGesture {
+//                                vm.selectedGridID = key
+//                                vm.toggleSheet()
+//                            }
                     } else {
                         Rectangle().fill(.secondary.opacity(0.5))
                     }
@@ -238,10 +258,10 @@ struct FortyGridExportView: View {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(40).dropFirst(31), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
-                            .onTapGesture {
-                                vm.selectedGridID = key
-                                vm.toggleSheet()
-                            }
+//                            .onTapGesture {
+//                                vm.selectedGridID = key
+//                                vm.toggleSheet()
+//                            }
                     } else {
                         Rectangle().fill(.secondary.opacity(0.5))
                     }

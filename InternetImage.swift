@@ -26,10 +26,13 @@ struct InternetImage<Content: View>: View {
             if let image = image {
                 content(Image(uiImage: image))
             } else {
-                ProgressView().onAppear { loadImage() }
+//                ProgressView()
+                Rectangle().fill(.purple)
+                    .onAppear { loadImage() }
             }
         }
     }
+
     
     private func loadImage() {
         guard let url = URL(string: url) else {
