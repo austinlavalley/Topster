@@ -17,7 +17,9 @@ struct FortyGridView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text(vm.FortyGridDict.values.count.description)
+                
+//                Text(vm.FortyGridDict.values.count.description)
+                
                 ScrollView {
                     GridContent()
                         .frame(maxHeight: .infinity)
