@@ -27,7 +27,7 @@ struct InternetImage<Content: View>: View {
                 content(Image(uiImage: image))
             } else {
 //                ProgressView()
-                Rectangle().fill(.purple)
+                Rectangle().fill(.secondary)
                     .onAppear { loadImage() }
             }
         }

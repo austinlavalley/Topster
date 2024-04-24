@@ -46,12 +46,14 @@ struct RenderView: View {
                 
                 // snapshot of grid to export
                 if let image = snapshot {
+                    Spacer()
+                    
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFit()
                     
                     
-                    
+                    Spacer()
                     // export buttons
                     VStack {
                         ShareLink(
