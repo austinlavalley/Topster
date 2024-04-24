@@ -14,7 +14,7 @@ struct RenderView: View {
     @State private var snapshot: UIImage?
     
     
-//    @State var showLoading = true
+    @State var showLoading = true
     @State private var showingSavedToPhotosSuccess = false
     
     
@@ -24,20 +24,20 @@ struct RenderView: View {
 
             VStack(spacing: 24) {
                 
-                // THIS WORKS, AND LOADS ALL IMAGES ON FIRST LOAD OF RENDERVIEW
-                HStack(spacing: 40) {
-                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
-                        if album != nil {
-                            AlbumSquare(album: album!)
-    //                            .onTapGesture {
-    //                                vm.selectedGridID = key
-    //                                vm.toggleSheet()
-    //                            }
-                        } else {
-                            Rectangle().fill(.secondary.opacity(0.5))
-                        }
-                    } .frame(width: 300, height: 300)
-                } .frame(width: 1600)
+//                // THIS WORKS, AND LOADS ALL IMAGES ON FIRST LOAD OF RENDERVIEW
+//                HStack(spacing: 40) {
+//                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
+//                        if album != nil {
+//                            AlbumSquare(album: album!)
+//    //                            .onTapGesture {
+//    //                                vm.selectedGridID = key
+//    //                                vm.toggleSheet()
+//    //                            }
+//                        } else {
+//                            Rectangle().fill(.secondary.opacity(0.5))
+//                        }
+//                    } .frame(width: 300, height: 300)
+//                } .frame(width: 1600)
                 
                 
     // so the issue is the view being displayed is just a static image of the renderview BEFORE it can fetch the async images. due to it being static, obviously the images won't load in because it takes a nonzero amount of time to fetch them. need to convert this to actually show the live view, and then do the rendering of the snapshot when exported
@@ -94,7 +94,7 @@ struct RenderView: View {
                 }
             }
             
-//            if showLoading { LoadingView() }
+            if showLoading { LoadingView() }
         }
         
         
@@ -103,6 +103,7 @@ struct RenderView: View {
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 generateSnapshot()
+                showLoading = false
             }
         }
         
