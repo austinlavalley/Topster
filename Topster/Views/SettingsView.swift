@@ -95,7 +95,10 @@ struct SettingsView: View {
                 .padding(.vertical)
                 
                 Spacer()
-                Text("by Austin for Austin in Austin").font(.caption).bold().foregroundColor(.secondary)
+                VStack {
+                    Text("🤝🤠🇺🇸")
+                    Text("by Austin for Austin in Austin").font(.caption).italic().bold().foregroundColor(.secondary)
+                }
             }
             
             

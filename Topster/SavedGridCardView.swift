@@ -46,15 +46,20 @@ struct SavedGridCardPreviewView: View {
             
         }
         .onTapGesture {
+            vm.FortyGridDict = grid
+            vm.currentActiveGrid = currentIndex
+        }
+        
+        .onLongPressGesture {
             showDeleteConfirm.toggle()
         }
 
         
         .confirmationDialog("Delete this grid?", isPresented: $showDeleteConfirm) {
-            Button("Set as active grid") {
-                vm.FortyGridDict = grid
-                vm.currentActiveGrid = currentIndex
-            }
+//            Button("Set as active grid") {
+//                vm.FortyGridDict = grid
+//                vm.currentActiveGrid = currentIndex
+//            }
             Button("Delete grid", role: .destructive) {
                 vm.removeFromSavedGrids(at: currentIndex)
                 vm.currentActiveGrid = nil
