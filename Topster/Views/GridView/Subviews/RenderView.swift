@@ -10,7 +10,9 @@ import SwiftUI
 
 struct RenderView: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
-        
+//    @Environment(\.presentationMode) var presentationMode
+
+    
     @State private var snapshot: UIImage?
     
     
@@ -23,27 +25,6 @@ struct RenderView: View {
         ZStack {
 
             VStack(spacing: 24) {
-                
-//                // THIS WORKS, AND LOADS ALL IMAGES ON FIRST LOAD OF RENDERVIEW
-//                HStack(spacing: 40) {
-//                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
-//                        if album != nil {
-//                            AlbumSquare(album: album!)
-//    //                            .onTapGesture {
-//    //                                vm.selectedGridID = key
-//    //                                vm.toggleSheet()
-//    //                            }
-//                        } else {
-//                            Rectangle().fill(.secondary.opacity(0.5))
-//                        }
-//                    } .frame(width: 300, height: 300)
-//                } .frame(width: 1600)
-                
-                
-    // so the issue is the view being displayed is just a static image of the renderview BEFORE it can fetch the async images. due to it being static, obviously the images won't load in because it takes a nonzero amount of time to fetch them. need to convert this to actually show the live view, and then do the rendering of the snapshot when exported
-                
-                // we can't simply jsut build the snapshot view in the BG and use the ForEach solution because when we go to export, even though it's in the BG it still hasn't fetched the images until we refresh. So how do we either put a delay on the imageRender, or use some sort of await/onchange logic to alert when it's loaded?
-                
                 // snapshot of grid to export
                 if let image = snapshot {
                     Spacer()
@@ -75,6 +56,9 @@ struct RenderView: View {
                                         showingSavedToPhotosSuccess = false
                                     }
                                 }
+                                
+//                                presentationMode.wrappedValue.dismiss()
+
                             }
                             .buttonStyle(DefaultPrimary())
                         }
@@ -119,9 +103,8 @@ struct RenderView: View {
 
 
 
-// the imagerenderer works immediately, what we need to do is figure out how to await the isoloated FortyGridExportView to give it time to fetch all images
-//
-// idk what i was on about above, but this generates the exported image. the failure is happening because the generation is happneing before images can be fetched
+
+
 extension RenderView {
     func generateSnapshot() {
         Task {
@@ -195,10 +178,6 @@ struct FortyGridExportView: View {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
-//                            .onTapGesture {
-//                                vm.selectedGridID = key
-//                                vm.toggleSheet()
-//                            }
                     } else {
                         Rectangle().fill(.secondary.opacity(0.5))
                     }
@@ -210,10 +189,6 @@ struct FortyGridExportView: View {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(11).dropFirst(5), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
-//                            .onTapGesture {
-//                                vm.selectedGridID = key
-//                                vm.toggleSheet()
-//                            }
                     } else {
                         Rectangle().fill(.secondary.opacity(0.5))
                     }
@@ -224,10 +199,6 @@ struct FortyGridExportView: View {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(11), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
-//                            .onTapGesture {
-//                                vm.selectedGridID = key
-//                                vm.toggleSheet()
-//                            }
                     } else {
                         Rectangle().fill(.secondary.opacity(0.5))
                     }
@@ -240,10 +211,6 @@ struct FortyGridExportView: View {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(24).dropFirst(17), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
-//                            .onTapGesture {
-//                                vm.selectedGridID = key
-//                                vm.toggleSheet()
-//                            }
                     } else {
                         Rectangle().fill(.secondary.opacity(0.5))
                     }
@@ -253,10 +220,6 @@ struct FortyGridExportView: View {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(24), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
-//                            .onTapGesture {
-//                                vm.selectedGridID = key
-//                                vm.toggleSheet()
-//                            }
                     } else {
                         Rectangle().fill(.secondary.opacity(0.5))
                     }
@@ -268,10 +231,6 @@ struct FortyGridExportView: View {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(40).dropFirst(31), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
-//                            .onTapGesture {
-//                                vm.selectedGridID = key
-//                                vm.toggleSheet()
-//                            }
                     } else {
                         Rectangle().fill(.secondary.opacity(0.5))
                     }
