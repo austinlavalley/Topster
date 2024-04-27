@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+struct ScaleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label.scaleEffect(configuration.isPressed ? 2 : 1)
+    }
+}
+
 struct SavedGridCardPreviewView: View {
     
     @EnvironmentObject private var vm: FortyScrollGridViewModel
@@ -23,32 +29,56 @@ struct SavedGridCardPreviewView: View {
         self.nonNilPairs = grid.filter({ $0.value != nil })
     }
     
+    @State private var isPressed = false
+    
     var body: some View {
         VStack {
-                        
-            ScrollView(.horizontal) {
-                HStack {
-                    
-                    ForEach(nonNilPairs.sorted(by: {$0.key < $1.key}), id: \.key) { key, album in
-                        if album != nil {
-                            VStack {
-                                AsyncAlbumSquare(album: album!)
+            
+//            Button(action: {
+//                    vm.FortyGridDict = grid
+//                    vm.currentActiveGrid = currentIndex
+//            }) {
+                ScrollView(.horizontal) {
+                    HStack {
+
+                        ForEach(nonNilPairs.sorted(by: {$0.key < $1.key}), id: \.key) { key, album in
+                            if album != nil {
+                                VStack {
+                                    AsyncAlbumSquare(album: album!)
+                                }
                             }
                         }
+                        .frame(width: 96, height: 96)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
                     }
-                    .frame(width: 96, height: 96)
-                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                }
+                .padding()
+                .background(currentIndex == vm.currentActiveGrid ? Color.blue.opacity(0.4) : .secondary.opacity(0.4))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .scaleEffect(isPressed ? 1.05 : 1)
+                
+//            }
+//            .simultaneousGesture(
+//            LongPressGesture()
+//                .onEnded({ _ in
+//                    showDeleteConfirm.toggle()
+//                }))
+        }
+        
+        .onTapGesture {
+            withAnimation {
+                isPressed.toggle()
+                vm.FortyGridDict = grid
+                vm.currentActiveGrid = currentIndex
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    withAnimation {
+                        isPressed.toggle()
+                    }
                 }
             }
-            .padding()
-            .background(currentIndex == vm.currentActiveGrid ? Color.blue.opacity(0.4) : .secondary.opacity(0.4))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            
         }
-        .onTapGesture {
-            vm.FortyGridDict = grid
-            vm.currentActiveGrid = currentIndex
-        }
+        
         
         .onLongPressGesture {
             showDeleteConfirm.toggle()
