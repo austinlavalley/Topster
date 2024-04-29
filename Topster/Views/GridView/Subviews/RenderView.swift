@@ -69,6 +69,8 @@ struct RenderView: View {
             if showingSavedToPhotosSuccess {
                 VStack {
                     Spacer()
+                    Spacer()
+                    Spacer()
                     
                     ZStack {
                         RoundedRectangle(cornerRadius: 12).fill(Color.secondary.opacity(0.65))
@@ -77,10 +79,15 @@ struct RenderView: View {
                         
                         Text("Grid saved to camera roll").foregroundColor(.white).bold()
                     }
+                    Spacer()
                 }
             }
             
-            if showLoading { LoadingView() }
+            if showLoading {
+                LoadingView()
+//                    .transition(.opacity)
+                    .zIndex(1)
+            }
         }
         
         
@@ -89,7 +96,10 @@ struct RenderView: View {
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 generateSnapshot()
-                showLoading = false
+                
+                withAnimation {
+                    showLoading = false
+                }
             }
         }
         

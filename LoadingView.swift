@@ -12,7 +12,7 @@ struct LoadingView: View {
     var body: some View {
         ZStack {
             
-            Image("localAlbum")
+//            Image("localAlbum")
 
             Rectangle()
                 .fill(.ultraThinMaterial)
@@ -26,10 +26,10 @@ struct LoadingView: View {
             }
             .background {
                 RoundedRectangle(cornerRadius: 20)
-                    .fill(.ultraThickMaterial)
+                    .fill(.regularMaterial)
                 .frame(width: 200, height: 200)
             }
-//            .offset(y: -70)
+            
         }
     }
 }
