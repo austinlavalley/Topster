@@ -36,6 +36,11 @@ class FortyScrollGridViewModel: ObservableObject {
     }
     
     
+    // if wanting to add grid names, will need to add it in this var
+    // i guess would be an array of arrays, in which each has the grid name, as well as the dict
+    //
+    //  [    [ gridName, [Int: Album?] ]     ]
+    //
     
     @Published var savedGrids: [ [Int: Album?] ] = []
     
