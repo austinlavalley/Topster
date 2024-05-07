@@ -164,32 +164,46 @@ struct FortyGridExportView: View {
 
             // 5x1 row
             HStack(spacing: 10) {
+                // local var to determine if the values of individual row are all NIL
+                let allAlbumsNil = vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0).allSatisfy { $0.value == nil }
+
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
                     } else {
-                        Rectangle().fill(.secondary.opacity(0.5))
+                        // if row has no values in it, do not display row in renderview
+                        if !allAlbumsNil {
+                            Rectangle().fill(.secondary.opacity(0.5))
+                        }
                     }
                 } .frame(width: 300, height: 300)
             } .frame(width: 1600)
             
             // 6x2 rows
             HStack {
+                let allAlbumsNil = vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(11).dropFirst(5).allSatisfy { $0.value == nil }
+
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(11).dropFirst(5), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
                     } else {
-                        Rectangle().fill(.secondary.opacity(0.5))
+                        if !allAlbumsNil {
+                            Rectangle().fill(.secondary.opacity(0.5))
+                        }
                     }
                 } .frame(width: 250, height: 250)
             }.frame(width: 1600)
             
             HStack {
+                let allAlbumsNil = vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(11).allSatisfy { $0.value == nil }
+
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(11), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
                     } else {
-                        Rectangle().fill(.secondary.opacity(0.5))
+                        if !allAlbumsNil {
+                            Rectangle().fill(.secondary.opacity(0.5))
+                        }
                     }
                 } .frame(width: 250, height: 250)
             }.frame(width: 1600)
@@ -197,31 +211,43 @@ struct FortyGridExportView: View {
             
             // 7x2 rows
             HStack {
+                let allAlbumsNil = vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(24).dropFirst(17).allSatisfy { $0.value == nil }
+
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(24).dropFirst(17), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
                     } else {
-                        Rectangle().fill(.secondary.opacity(0.5))
+                        if !allAlbumsNil {
+                            Rectangle().fill(.secondary.opacity(0.5))
+                        }
                     }
                 } .frame(width: 200, height: 200)
             }
             HStack {
+                let allAlbumsNil = vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(24).allSatisfy { $0.value == nil }
+
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(24), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
                     } else {
-                        Rectangle().fill(.secondary.opacity(0.5))
+                        if !allAlbumsNil {
+                            Rectangle().fill(.secondary.opacity(0.5))
+                        }
                     }
                 } .frame(width: 200, height: 200)
             }
             
             
             HStack {
+                let allAlbumsNil = vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(40).dropFirst(31).allSatisfy { $0.value == nil }
+
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(40).dropFirst(31), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
                     } else {
-                        Rectangle().fill(.secondary.opacity(0.5))
+                        if !allAlbumsNil {
+                            Rectangle().fill(.secondary.opacity(0.5))
+                        }
                     }
                 } .frame(width: 150, height: 150)
             }
