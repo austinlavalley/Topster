@@ -10,100 +10,139 @@ import SwiftUI
 
 struct RenderView: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
-//    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode) var presentationMode
 
     
     @State private var snapshot: UIImage?
     
     
-    @State var showLoading = true
+    @State var showLoading = false
     @State private var showingSavedToPhotosSuccess = false
+    
+    @State private var showEdits = false
     
     
     var body: some View {
         
-        ZStack {
-            VStack(spacing: 24) {
-                // snapshot of grid to export
-                if let image = snapshot {
-                    Spacer()
+        VStack {
+            ZStack {
+                VStack(spacing: 24) {
                     
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFit()
-                    
-                    
-                    Spacer()
-                    // export buttons
                     VStack {
-                        ShareLink(
-                            item: Image(uiImage: snapshot!),
-                            preview: SharePreview("40 Album Grid", image: Image(uiImage: snapshot!), icon: sharePreview)
-                        )
-                        .buttonStyle(DefaultSecondary())
-                        
-                        if let snapshot = snapshot {
-                            Button("Save to Photos") {
-                                UIImageWriteToSavedPhotosAlbum(snapshot, nil, nil, nil)
-                                
-                                withAnimation {
-                                    showingSavedToPhotosSuccess = true
-                                }
-                                
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                    withAnimation {
-                                        showingSavedToPhotosSuccess = false
-                                    }
-                                }
-                                
-//                                presentationMode.wrappedValue.dismiss()
-
+                        HStack {
+                            Button {
+                                showEdits.toggle()
+                            } label: {
+                                Label(
+                                    title: { Text("") },
+                                    icon: { Image(systemName: "slider.horizontal.3").font(.title2).bold() })
                             }
-                            .buttonStyle(DefaultPrimary())
-                        } 
-                    }.padding()
-                }
-            }
-            
-            
-            if showingSavedToPhotosSuccess {
-                VStack {
-                    Spacer()
-                    Spacer()
-                    Spacer()
-                    
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 12).fill(Color.secondary.opacity(0.65))
-                            .frame(width: 240, height: 64)
-                            .padding()
-                        
-                        Text("Grid saved to camera roll").foregroundColor(.white).bold()
-                    }
-                    Spacer()
-                }
-            }
-            
-            if showLoading {
-                LoadingView()
-//                    .transition(.opacity)
-                    .zIndex(1)
-            }
-        }
-        
-        
-        
-        .onAppear {
-            generateSnapshot()
+                            .foregroundStyle(.secondary)
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            Spacer()
+
+                            Button {
+                                presentationMode.wrappedValue.dismiss()
+                            } label: {
+                                Label(
+                                    title: { Text("") },
+                                    icon: { Image(systemName: "xmark").font(.title2) })
+                            }
+                            .foregroundStyle(.secondary)
+                        }
+                        .padding(.horizontal, 12)
+                    }.padding(.top, 24)
+
+
+                    
+                    // snapshot of grid to export
+                    if let image = snapshot {
+                        Spacer()
+                        
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFit()
+                        
+                        
+                        Spacer()
+                        // export buttons
+                        VStack {
+                            ShareLink(
+                                item: Image(uiImage: snapshot!),
+                                preview: SharePreview("40 Album Grid", image: Image(uiImage: snapshot!), icon: sharePreview)
+                            )
+                            .buttonStyle(DefaultSecondary())
+                            
+                            if let snapshot = snapshot {
+                                Button("Save to Photos") {
+                                    UIImageWriteToSavedPhotosAlbum(snapshot, nil, nil, nil)
+                                    
+                                    withAnimation {
+                                        showingSavedToPhotosSuccess = true
+                                    }
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                        withAnimation {
+                                            showingSavedToPhotosSuccess = false
+                                        }
+                                    }
+                                    
+                                    //                                presentationMode.wrappedValue.dismiss()
+                                    
+                                }
+                                .buttonStyle(DefaultPrimary())
+                            }
+                        }.padding()
+                    }
+                }
+                
+                
+                if showingSavedToPhotosSuccess {
+                    VStack {
+                        Spacer()
+                        Spacer()
+                        Spacer()
+                        
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 12).fill(Color.secondary.opacity(0.65))
+                                .frame(width: 240, height: 64)
+                                .padding()
+                            
+                            Text("Grid saved to camera roll").foregroundColor(.white).bold()
+                        }
+                        Spacer()
+                    }
+                }
+                
+                if showLoading {
+                    LoadingView()
+                    //                    .transition(.opacity)
+                        .zIndex(1)
+                }
+            }
+            
+            
+            .onAppear {
                 generateSnapshot()
                 
-                withAnimation {
-                    showLoading = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    generateSnapshot()
+                    
+                    withAnimation {
+                        showLoading = false
+                    }
                 }
             }
+            
+            .confirmationDialog("ack", isPresented: $showEdits) {
+                Button(vm.tempExportDarkMode ? "Light background" : "Dark background") {
+                    vm.tempExportDarkMode.toggle()
+                    generateSnapshot()
+                }
+                Button("Show text") {}
+            }
+            
         }
-        
 
     }
     
@@ -138,6 +177,7 @@ extension RenderView {
 struct RenderView_Previews: PreviewProvider {
     static var previews: some View {
         RenderView()
+            .environmentObject(FortyScrollGridViewModel())
     }
 }
 
@@ -281,6 +321,7 @@ struct FortyGridExportView: View {
             
         }
         .frame(width: 1668/*, height: 1518*/)
-        .background(darkModeEnabled ? Color.black : Color.white)
+        .background(darkModeEnabled ? vm.tempExportDarkMode != darkModeEnabled ? Color.white : Color.black :
+                        vm.tempExportDarkMode != darkModeEnabled ? Color.black : Color.white)
     }
 }

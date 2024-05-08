@@ -11,8 +11,7 @@ import SwiftUI
 
 class FortyScrollGridViewModel: ObservableObject {
     
-
-
+    @Published var tempExportDarkMode = UserDefaults.standard.bool(forKey: "appColorTheme")
     
     @Published var showSearchSheet = false
     

@@ -48,6 +48,9 @@ struct SettingsView: View {
                     .padding()
                     .background(.secondary.opacity(0.2))
                     .clipShape(RoundedRectangle(cornerRadius: 24))
+                    .onChange(of: darkModeEnabled) { oldValue, newValue in
+                        vm.tempExportDarkMode = newValue
+                    }
                     
                     Group {
                         Button("Feedback & support") {
