@@ -33,7 +33,7 @@ struct ArtistSearchView: View {
             }
             .padding()
         }
-        .onChange(of: searchText) { _ in
+        .onChange(of: searchText) {
             searchForArtists()
         }
     }

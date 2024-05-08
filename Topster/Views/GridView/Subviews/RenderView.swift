@@ -23,7 +23,6 @@ struct RenderView: View {
     var body: some View {
         
         ZStack {
-
             VStack(spacing: 24) {
                 // snapshot of grid to export
                 if let image = snapshot {
@@ -61,10 +60,11 @@ struct RenderView: View {
 
                             }
                             .buttonStyle(DefaultPrimary())
-                        }
+                        } 
                     }.padding()
                 }
             }
+            
             
             if showingSavedToPhotosSuccess {
                 VStack {
@@ -89,6 +89,7 @@ struct RenderView: View {
                     .zIndex(1)
             }
         }
+        
         
         
         .onAppear {

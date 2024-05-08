@@ -48,7 +48,7 @@ struct FortyGridView: View {
             
             .sheet(isPresented: $vm.showSearchSheet) {
                 AlbumSearchView()
-                    .presentationDetents([.fraction(0.65), .large])
+                    .presentationDetents([.fraction(0.85)])
             }
             
             
