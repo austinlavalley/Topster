@@ -198,6 +198,10 @@ struct FortyGridExportView: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     
     @AppStorage("appColorTheme") private var darkModeEnabled = false
+    
+    @State private var vacant5x17 = false
+    @State private var vacant17x31 = false
+
 
     var body: some View {
         
@@ -307,7 +311,8 @@ struct FortyGridExportView: View {
                     }
                 }
             }
-            .padding(.top, vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(5).allSatisfy { $0.value == nil } ? 10 : 0)
+//            .padding(.top, vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(5).allSatisfy { $0.value == nil } ? 10 : 0)
+            .padding(.top, vacant5x17 ? (vacant17x31 ? 5 : 10) : 0)
 
             
             
@@ -327,12 +332,24 @@ struct FortyGridExportView: View {
                     }
                 } .frame(width: 150, height: 150)
             }
-            .padding(.top, vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(17).allSatisfy { $0.value == nil } ? 10 : 0)
+//            .padding(.top, vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(17).allSatisfy { $0.value == nil } ? 10 : 0)
+            .padding(.top, vacant17x31 ? (vacant5x17 ? 5 : 10) : 0)
 
             
         }
         .frame(width: 1668/*, height: 1518*/)
+        .padding()
         .background(darkModeEnabled ? vm.tempExportDarkMode != darkModeEnabled ? Color.white : Color.black :
                         vm.tempExportDarkMode != darkModeEnabled ? Color.black : Color.white)
+        
+        .onAppear() {
+            if vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(5).allSatisfy({ $0.value == nil }) {
+                vacant5x17 = true
+            }
+            
+            if vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(17).allSatisfy({ $0.value == nil }) {
+                vacant17x31 = true
+            }
+        }
     }
 }
