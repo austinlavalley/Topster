@@ -228,9 +228,12 @@ struct FortyGridExportView: View {
             
             
             // 6x2 rows
-                VStack {
+            VStack {
+                
+            // hides first 6x row if no albums chosen in that range
+                if !vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(11).dropFirst(5).allSatisfy({ $0.value == nil }) {
                     HStack {
-                        let allAlbumsNil = vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(5).allSatisfy { $0.value == nil }
+                        let allAlbumsNil = vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(11).dropFirst(5).allSatisfy { $0.value == nil }
                         
                         ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(11).dropFirst(5), id: \.key) { key, album in
                             if album != nil {
@@ -240,14 +243,16 @@ struct FortyGridExportView: View {
                                     Rectangle().fill(.secondary.opacity(0.5))
                                 }
                             }
-                        } .frame(width: 250, height: 250)
+                        }
+                        .frame(width: 250, height: 250)
                     }.frame(width: 1600)
-
-                    
-                    
-                    
+                }
+                
+                
+            // hides second 6x row if no albums chosen in that range
+                if !vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(11).allSatisfy({ $0.value == nil }) {
                     HStack {
-                        let allAlbumsNil = vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(5).allSatisfy { $0.value == nil }
+                        let allAlbumsNil = vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(11).allSatisfy { $0.value == nil }
                         
                         ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(11), id: \.key) { key, album in
                             if album != nil {
@@ -260,40 +265,46 @@ struct FortyGridExportView: View {
                         } .frame(width: 250, height: 250)
                     }.frame(width: 1600)
                 }
-
+                
+            }
             
             
             
             
             // 7x2 rows
             VStack {
-                HStack {
-                    let allAlbumsNil = vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(17).allSatisfy { $0.value == nil }
-                    
-                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(24).dropFirst(17), id: \.key) { key, album in
-                        if album != nil {
-                            AlbumSquare(album: album!)
-                        } else {
-                            if !allAlbumsNil {
-                                Rectangle().fill(.secondary.opacity(0.5))
+                
+                if !vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(24).dropFirst(17).allSatisfy({ $0.value == nil }) {
+                    HStack {
+                        let allAlbumsNil = vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(17).allSatisfy { $0.value == nil }
+                        
+                        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(24).dropFirst(17), id: \.key) { key, album in
+                            if album != nil {
+                                AlbumSquare(album: album!)
+                            } else {
+                                if !allAlbumsNil {
+                                    Rectangle().fill(.secondary.opacity(0.5))
+                                }
                             }
-                        }
-                    } .frame(width: 200, height: 200)
+                        } .frame(width: 200, height: 200)
+                    }
                 }
                 
                 
-                HStack {
-                    let allAlbumsNil = vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(17).allSatisfy { $0.value == nil }
-                    
-                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(24), id: \.key) { key, album in
-                        if album != nil {
-                            AlbumSquare(album: album!)
-                        } else {
-                            if !allAlbumsNil {
-                                Rectangle().fill(.secondary.opacity(0.5))
+                if !vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(24).allSatisfy({ $0.value == nil }) {
+                    HStack {
+                        let allAlbumsNil = vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(17).allSatisfy { $0.value == nil }
+                        
+                        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(24), id: \.key) { key, album in
+                            if album != nil {
+                                AlbumSquare(album: album!)
+                            } else {
+                                if !allAlbumsNil {
+                                    Rectangle().fill(.secondary.opacity(0.5))
+                                }
                             }
-                        }
-                    } .frame(width: 200, height: 200)
+                        } .frame(width: 200, height: 200)
+                    }
                 }
             }
             .padding(.top, vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(5).allSatisfy { $0.value == nil } ? 10 : 0)
