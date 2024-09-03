@@ -16,7 +16,7 @@ struct RenderView: View {
     @State private var snapshot: UIImage?
     
     
-    @State var showLoading = false
+    @State var showLoading = true
     @State private var showingSavedToPhotosSuccess = false
     
     @State private var showEdits = false
@@ -125,7 +125,7 @@ struct RenderView: View {
             .onAppear {
                 generateSnapshot()
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     generateSnapshot()
                     
                     withAnimation {
@@ -311,7 +311,6 @@ struct FortyGridExportView: View {
                     }
                 }
             }
-//            .padding(.top, vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(5).allSatisfy { $0.value == nil } ? 10 : 0)
             .padding(.top, vacant5x17 ? (vacant17x31 ? 5 : 10) : 0)
 
             
@@ -332,9 +331,9 @@ struct FortyGridExportView: View {
                     }
                 } .frame(width: 150, height: 150)
             }
-//            .padding(.top, vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(31).dropFirst(17).allSatisfy { $0.value == nil } ? 10 : 0)
             .padding(.top, vacant17x31 ? (vacant5x17 ? 5 : 10) : 0)
 
+            
             
         }
         .frame(width: 1668/*, height: 1518*/)
@@ -342,6 +341,9 @@ struct FortyGridExportView: View {
         .background(darkModeEnabled ? vm.tempExportDarkMode != darkModeEnabled ? Color.white : Color.black :
                         vm.tempExportDarkMode != darkModeEnabled ? Color.black : Color.white)
         
+        
+        
+    // on load, determine if/which middle rows are empty to adjust padding between
         .onAppear() {
             if vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(17).dropFirst(5).allSatisfy({ $0.value == nil }) {
                 vacant5x17 = true

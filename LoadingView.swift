@@ -19,14 +19,14 @@ struct LoadingView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 24) {
-                ProgressView().scaleEffect(1.5)
+                ProgressView().scaleEffect(2)
 //                Text("Putting it all together...").bold().frame(width: 160).multilineTextAlignment(.center)
-                Text("Building your grid...").bold().frame(width: 160).multilineTextAlignment(.center)
+//                Text("Building your grid...").bold().frame(width: 160).multilineTextAlignment(.center)
 
             }
             .background {
                 RoundedRectangle(cornerRadius: 20)
-                    .fill(.regularMaterial)
+                    .fill(.ultraThinMaterial)
                 .frame(width: 200, height: 200)
             }
             
