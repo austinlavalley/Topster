@@ -18,7 +18,7 @@ struct FortyGridView: View {
         NavigationStack {
             VStack {
                 
-//                Text(vm.FortyGridDict.values.count.description)
+//                Text(vm.currentActiveGrid?.description ?? "NONE")
                 
                 ScrollView {
                     GridContent()
@@ -66,6 +66,14 @@ struct FortyGridView: View {
                         Button("Reset grid") {
                             vm.clearGrid()
                             vm.currentActiveGrid = nil
+                        }
+                        
+                        Button("Delete grid from saved") {
+                            withAnimation(.bouncy) {
+                                vm.removeFromSavedGrids(at: vm.currentActiveGrid!)
+                                vm.currentActiveGrid = nil
+                                vm.clearGrid()
+                            }
                         }
                     } label: {
                         Label("", systemImage: "ellipsis.circle")
