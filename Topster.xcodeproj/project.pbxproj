@@ -19,7 +19,6 @@
 		D9346C692ACB7AC200CA8F70 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9346C682ACB7AC200CA8F70 /* Album.swift */; };
 		D93AD4BC2AC23449001D2BA3 /* AlbumSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93AD4BB2AC23449001D2BA3 /* AlbumSearchView.swift */; };
 		D93AD4BE2AC64226001D2BA3 /* FortyScrollGridViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93AD4BD2AC64226001D2BA3 /* FortyScrollGridViewModel.swift */; };
-		D9825A512BE9E37A00F65E2F /* SearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9825A502BE9E37A00F65E2F /* SearchHeaderView.swift */; };
 		D99642542ABB50B6004CEA01 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99642532ABB50B6004CEA01 /* SearchResults.swift */; };
 		D9B519972BDD6CC800E703EF /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B519962BDD6CC800E703EF /* LoadingView.swift */; };
 		D9B8B4012AB3AE6600A4613A /* TopTracksNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */; };
@@ -50,7 +49,6 @@
 		D9346C682ACB7AC200CA8F70 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		D93AD4BB2AC23449001D2BA3 /* AlbumSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumSearchView.swift; sourceTree = "<group>"; };
 		D93AD4BD2AC64226001D2BA3 /* FortyScrollGridViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FortyScrollGridViewModel.swift; sourceTree = "<group>"; };
-		D9825A502BE9E37A00F65E2F /* SearchHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHeaderView.swift; sourceTree = "<group>"; };
 		D99642532ABB50B6004CEA01 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		D9B519962BDD6CC800E703EF /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopTracksNetwork.swift; sourceTree = "<group>"; };
@@ -82,8 +80,6 @@
 		D92B6F022A9BBF9300A7CCBD = {
 			isa = PBXGroup;
 			children = (
-				D9825A502BE9E37A00F65E2F /* SearchHeaderView.swift */,
-				D9B519962BDD6CC800E703EF /* LoadingView.swift */,
 				D9DAD16F2AE57111003CD6B6 /* ShakeyDelete.swift */,
 				D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */,
 				D9C578752B14E7F900B94E1F /* ButtonStyles.swift */,
@@ -161,6 +157,7 @@
 		D96E3FCF2B17941800A6D12B /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				D9B519962BDD6CC800E703EF /* LoadingView.swift */,
 				D91952872B002DFC00FD246C /* RenderView.swift */,
 				D9C578732B0EAF2600B94E1F /* GridContent.swift */,
 			);
@@ -260,7 +257,6 @@
 				D9C578762B14E7F900B94E1F /* ButtonStyles.swift in Sources */,
 				D92B6F1D2A9BBFA300A7CCBD /* FortyTwoGridView.swift in Sources */,
 				D91952A82B02C2DA00FD246C /* InternetImage.swift in Sources */,
-				D9825A512BE9E37A00F65E2F /* SearchHeaderView.swift in Sources */,
 				D99642542ABB50B6004CEA01 /* SearchResults.swift in Sources */,
 				D9346C692ACB7AC200CA8F70 /* Album.swift in Sources */,
 				D9B8B4082AB4FB0800A4613A /* Artist.swift in Sources */,

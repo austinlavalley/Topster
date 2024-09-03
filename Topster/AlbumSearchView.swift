@@ -115,6 +115,32 @@ struct SearchAlbumSquare: View {
 }
 
 
+
+struct SearchHeaderView: View {
+    
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text("Search").font(.title)
+                
+                if ((vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ _ in })) != nil) {
+                    Text(vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ alb in
+                        alb.name
+                    }) ?? "Couldn't fetch album name").font(.subheadline).italic().foregroundStyle(.secondary)
+                }
+            }
+            
+            Spacer()
+        }
+    }
+}
+
+
+
+
+
 struct AlbumSearchView_Previews: PreviewProvider {
     static var previews: some View {
         AlbumSearchView()
