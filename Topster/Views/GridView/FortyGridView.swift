@@ -26,7 +26,8 @@ struct FortyGridView: View {
                         .scrollIndicators(.hidden)
                         .padding()
                         .navigationBarTitleDisplayMode(.inline)
-                        .navigationTitle("Top 40 Chart")
+//                        .navigationTitle("Top 40 Chart")
+                        .navigationTitle((vm.currentActiveGrid != nil) ? "Grid #\(vm.currentActiveGrid ?? 0)" : "Unsaved Grid")
                 }
                 
                 HStack {
@@ -62,7 +63,7 @@ struct FortyGridView: View {
             .toolbar {
                 ToolbarItem {
                     Menu {
-                        Button("Reset grid") {
+                        Button("Reset to blank grid") {
                             vm.clearGrid()
                             vm.currentActiveGrid = nil
                         }

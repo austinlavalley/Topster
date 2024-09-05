@@ -134,12 +134,12 @@ struct RenderView: View {
                 }
             }
             
-            .confirmationDialog("ack", isPresented: $showEdits) {
+            .confirmationDialog("", isPresented: $showEdits) {
                 Button(vm.tempExportDarkMode ? "Light background" : "Dark background") {
                     vm.tempExportDarkMode.toggle()
                     generateSnapshot()
                 }
-                Button("Show text") {}
+//                Button("Show text") {}
             }
             
         }

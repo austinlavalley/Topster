@@ -21,12 +21,12 @@ struct ContentView: View {
             
             SavedGridsListView()
                 .tabItem {
-                    Label("Saved grids", systemImage: "book.closed")
+                    Label("Saved", systemImage: "book.pages")
                 }
             
             SettingsView()
                 .tabItem {
-                    Label("Settings?", systemImage: "person.crop.circle")
+                    Label("Settings", systemImage: "lines.measurement.vertical")
                 }
         }
     }
