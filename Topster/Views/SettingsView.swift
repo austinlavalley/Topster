@@ -32,13 +32,13 @@ struct SettingsView: View {
         ZStack {
             VStack {
                 ScrollView {
-                    Group {
-                        Toggle("Enable notifications", isOn: $notificationSettings.isEnabled)
-                    }
-                    .font(.subheadline).bold()
-                    .padding()
-                    .background(.secondary.opacity(0.2))
-                    .clipShape(RoundedRectangle(cornerRadius: 24))
+//                    Group {
+//                        Toggle("Enable notifications", isOn: $notificationSettings.isEnabled)
+//                    }
+//                    .font(.subheadline).bold()
+//                    .padding()
+//                    .background(.secondary.opacity(0.2))
+//                    .clipShape(RoundedRectangle(cornerRadius: 24))
                     
                     
                     Group {
@@ -73,6 +73,7 @@ struct SettingsView: View {
                     .padding()
                     .background(.secondary.opacity(0.2))
                     .clipShape(RoundedRectangle(cornerRadius: 24))
+                
                     
                     Group {
                         Button {
@@ -93,10 +94,20 @@ struct SettingsView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 24))
                     }
                     .padding(.vertical)
+                         
+                    VStack {
+                        Text("data provided by").italic()
+                        Image("lastfm_logo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: 64)
+                    }.foregroundStyle(.secondary)
+                        .padding(.top, 32)
+                    
                     
                 }
                 .padding(.vertical)
-                
+
                 Spacer()
                 VStack {
                     Text("🤝🤠🇺🇸")
@@ -119,6 +130,7 @@ struct SettingsView: View {
                 }
             }
         }
+        
         .confirmationDialog("You sure about that?", isPresented: $showingDeleteConfirmation) {
             Button("Delete grids", role: .destructive) {
                 // delete all
