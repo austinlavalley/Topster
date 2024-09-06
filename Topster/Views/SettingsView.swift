@@ -22,6 +22,8 @@ struct SettingsView: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     @EnvironmentObject var notificationSettings: NotificationSettings
     
+    @Environment(\.openURL) var openURL
+    
     @AppStorage("appColorTheme") private var darkModeEnabled = false
     
     
@@ -32,14 +34,6 @@ struct SettingsView: View {
         ZStack {
             VStack {
                 ScrollView {
-//                    Group {
-//                        Toggle("Enable notifications", isOn: $notificationSettings.isEnabled)
-//                    }
-//                    .font(.subheadline).bold()
-//                    .padding()
-//                    .background(.secondary.opacity(0.2))
-//                    .clipShape(RoundedRectangle(cornerRadius: 24))
-                    
                     
                     Group {
                         Toggle("Enable dark mode 🌙", isOn: $darkModeEnabled)
@@ -54,9 +48,7 @@ struct SettingsView: View {
                     
                     Group {
                         Button("Feedback & support") {
-                            openMail(emailTo: "hello@austinlavalley.com",
-                                     subject: "Brisk App Feedback",
-                                     body: "")
+                            openURL(URL(string: "https://topster.austinlavalley.com")!)
                         }.frame(maxWidth: .infinity, minHeight: 24)
                     }
                     .font(.subheadline).bold()
@@ -66,7 +58,7 @@ struct SettingsView: View {
                     
                     Group {
                         Button("Privacy policy") {
-                            // link to priv policy
+                            openURL(URL(string: "https://topster.austinlavalley.com")!)
                         }.frame(maxWidth: .infinity, minHeight: 24)
                     }
                     .font(.subheadline).bold()

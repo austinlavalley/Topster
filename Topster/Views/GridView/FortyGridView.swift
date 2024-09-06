@@ -63,7 +63,7 @@ struct FortyGridView: View {
             .toolbar {
                 ToolbarItem {
                     Menu {
-                        Button("Reset to blank grid") {
+                        Button("New grid") {
                             vm.clearGrid()
                             vm.currentActiveGrid = nil
                         }
