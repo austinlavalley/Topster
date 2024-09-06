@@ -24,19 +24,35 @@ struct AlbumSearchView: View {
         NavigationView {
             VStack {
                 
-                SearchHeaderView()
-
-                
                 HStack {
-                    TextField("Search", text: $searchText)
-                        .focused($isSearchFocused)
-                    Button("Search") {
-                        searchForAlbums()
+                    SearchHeaderView()
+                    Spacer()
+                    if ((vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ _ in })) != nil) {
+                        Button {
+                            withAnimation {
+                                vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
+                                //                            vm.hideSearchSheet()
+                            }
+                        } label: {
+//                            Text("Remove from grid").foregroundColor(.red)
+                            Label("Remove", systemImage: "").foregroundStyle(.red)
+                        }
+
                     }
                 }
-                .padding()
-                .background(.secondary.opacity(0.2))
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                
+                Group {
+                    HStack {
+                        TextField("Search", text: $searchText)
+                            .focused($isSearchFocused)
+                        Button("Search") {
+                            searchForAlbums()
+                        }
+                    }
+                    .padding()
+                    .background(.secondary.opacity(0.2))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }.padding(.vertical, ((vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ _ in })) != nil) ? 12 : 0)
                 
                 ScrollView {
                     LazyVGrid(columns: threeColumnGrid) {
@@ -48,22 +64,23 @@ struct AlbumSearchView: View {
                 }
                 
             }.padding()
+                .padding(.vertical)
             
 //            .navigationTitle("Search")
 
             
         
-            .toolbar {
-                if ((vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ _ in })) != nil) {
-                    Button {
-                        vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
-                        vm.hideSearchSheet()
-                    } label: {
-                        Text("Remove from grid").foregroundColor(.red)
-                    }
-
-                }
-            }
+//            .toolbar {
+//                if ((vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ _ in })) != nil) {
+//                    Button {
+//                        vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
+//                        vm.hideSearchSheet()
+//                    } label: {
+//                        Text("Remove from grid").foregroundColor(.red)
+//                    }
+//
+//                }
+//            }
         }
         .onChange(of: searchText, {
             searchForAlbums()
