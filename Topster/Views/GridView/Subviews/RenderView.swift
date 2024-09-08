@@ -159,7 +159,8 @@ extension RenderView {
     func generateSnapshot() {
         Task {
             let renderer = ImageRenderer(content:
-                FortyGridExportView()
+//                FortyGridExportView()
+                TwentyGridExportView()
                     .environmentObject(vm)
             )
             
@@ -353,5 +354,93 @@ struct FortyGridExportView: View {
                 vacant17x31 = true
             }
         }
+    }
+}
+
+
+
+
+struct TwentyGridExportView: View {
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+    
+    @AppStorage("appColorTheme") private var darkModeEnabled = false
+
+
+    var body: some View {
+        
+        VStack(alignment: .center) {
+            
+            // 5x1 row
+            HStack(spacing: 12) {
+
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(4).dropFirst(0), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                    } else {
+                        // if row has no values in it, do not display row in renderview
+                        Rectangle().fill(.secondary)
+                    }
+                } .frame(width: 360, height: 360)
+            }
+            
+            HStack(spacing: 12) {
+
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(8).dropFirst(4), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                    } else {
+                        // if row has no values in it, do not display row in renderview
+                        Rectangle().fill(.secondary)
+                    }
+                } .frame(width: 360, height: 360)
+            }
+            
+            HStack(spacing: 12) {
+
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(12).dropFirst(8), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                    } else {
+                        // if row has no values in it, do not display row in renderview
+                        Rectangle().fill(.secondary)
+                    }
+                } .frame(width: 360, height: 360)
+            }
+            
+            HStack(spacing: 12) {
+
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(16).dropFirst(12), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                    } else {
+                        // if row has no values in it, do not display row in renderview
+                        Rectangle().fill(.secondary)
+                    }
+                } .frame(width: 360, height: 360)
+            }
+            
+            HStack(spacing: 12) {
+
+                ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(20).dropFirst(16), id: \.key) { key, album in
+                    if album != nil {
+                        AlbumSquare(album: album!)
+                    } else {
+                        // if row has no values in it, do not display row in renderview
+                        Rectangle().fill(.secondary)
+                    }
+                } .frame(width: 360, height: 360)
+            }
+
+
+            
+            
+            
+        }
+        .frame(width: 1668/*, height: 1518*/)
+        .padding()
+        .background(darkModeEnabled ? vm.tempExportDarkMode != darkModeEnabled ? Color.white : Color.black :
+                        vm.tempExportDarkMode != darkModeEnabled ? Color.black : Color.white)
+        
+        
     }
 }

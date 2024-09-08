@@ -31,7 +31,6 @@ struct AlbumSearchView: View {
                         Button {
                             withAnimation {
                                 vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
-                                //                            vm.hideSearchSheet()
                             }
                         } label: {
 //                            Text("Remove from grid").foregroundColor(.red)
@@ -65,30 +64,11 @@ struct AlbumSearchView: View {
                 
             }.padding()
                 .padding(.vertical)
-            
-//            .navigationTitle("Search")
-
-            
-        
-//            .toolbar {
-//                if ((vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ _ in })) != nil) {
-//                    Button {
-//                        vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
-//                        vm.hideSearchSheet()
-//                    } label: {
-//                        Text("Remove from grid").foregroundColor(.red)
-//                    }
-//
-//                }
-//            }
         }
         .onChange(of: searchText, {
             searchForAlbums()
         })
-        
-//        .onChange(of: searchText) { _ in
-//            searchForAlbums()
-//        }
+
         
         .onAppear {
             isSearchFocused = true
