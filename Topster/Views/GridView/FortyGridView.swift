@@ -13,6 +13,7 @@ struct FortyGridView: View {
     
     @State private var saveButtonText = "Save grid"
     @State private var showExportSheet = false
+    @State private var showNewSheet = false
     
     var body: some View {
         NavigationStack {
@@ -61,11 +62,13 @@ struct FortyGridView: View {
             })
             
             .toolbar {
-                ToolbarItem {
+                ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         Button("New grid") {
                             vm.clearGrid()
                             vm.currentActiveGrid = nil
+                            
+                            showNewSheet.toggle()
                         }
                         
                         Button("Delete grid from saved") {
@@ -83,6 +86,22 @@ struct FortyGridView: View {
         }
         .sheet(isPresented: $vm.showExportSheet) {
             RenderView()
+        }
+        
+        .sheet(isPresented: $showNewSheet) {
+
+            VStack {
+                Button("forty sheet") {
+                    vm.activeGridType = .forty
+                    showNewSheet = false
+                }
+                Button("twenty sheet") {
+                    vm.activeGridType = .twenty
+                    showNewSheet = false
+
+                }
+
+            }
         }
         
         .onAppear {

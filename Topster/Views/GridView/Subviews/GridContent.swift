@@ -11,71 +11,227 @@ struct GridContent: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     
     var body: some View {
+        switch vm.activeGridType {
+        case .forty:
+            FortyGridMaster()
+        case .twenty:
+            TwentyGridMaster()
+        case .twentyWide:
+            Text("20w")
+        case .twentyFive:
+            Text("25")
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+struct TwentyGridMaster: View {
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+
+    var body: some View {
+        
+        VStack {
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
+                        if album != nil {
+                            AsyncAlbumSquare(album: album!)
+                                .onTapGesture {
+                                    vm.selectedGridID = key
+                                    vm.toggleSheet()
+                                }
+                        } else {
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.secondary)
+                                    .onTapGesture {
+                                        vm.selectedGridID = key
+                                        vm.toggleSheet()
+                                    }
+                                
+                                Image(systemName: "plus").bold().foregroundColor(.secondary)
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                        }
+                    }
+                    .frame(width: 96, height: 96)
+                }
+            }
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(10).dropFirst(5), id: \.key) { key, album in
+                        if album != nil {
+                            AsyncAlbumSquare(album: album!)
+                                .onTapGesture {
+                                    vm.selectedGridID = key
+                                    vm.toggleSheet()
+                                }
+                        } else {
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.secondary)
+                                    .onTapGesture {
+                                        vm.selectedGridID = key
+                                        vm.toggleSheet()
+                                    }
+                                
+                                Image(systemName: "plus").bold().foregroundColor(.secondary)
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                        }
+                    }
+                    .frame(width: 96, height: 96)
+                }
+            }
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(15).dropFirst(10), id: \.key) { key, album in
+                        if album != nil {
+                            AsyncAlbumSquare(album: album!)
+                                .onTapGesture {
+                                    vm.selectedGridID = key
+                                    vm.toggleSheet()
+                                }
+                        } else {
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.secondary)
+                                    .onTapGesture {
+                                        vm.selectedGridID = key
+                                        vm.toggleSheet()
+                                    }
+                                
+                                Image(systemName: "plus").bold().foregroundColor(.secondary)
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                        }
+                    }
+                    .frame(width: 96, height: 96)
+                }
+            }
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(20).dropFirst(15), id: \.key) { key, album in
+                        if album != nil {
+                            AsyncAlbumSquare(album: album!)
+                                .onTapGesture {
+                                    vm.selectedGridID = key
+                                    vm.toggleSheet()
+                                }
+                        } else {
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.secondary)
+                                    .onTapGesture {
+                                        vm.selectedGridID = key
+                                        vm.toggleSheet()
+                                    }
+                                
+                                Image(systemName: "plus").bold().foregroundColor(.secondary)
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                        }
+                    }
+                    .frame(width: 96, height: 96)
+                }
+            }
+            
+        }
+        
+    }
+}
+
+
+
+
+
+
+
+
+struct FortyGridMaster: View {
+    var body: some View {
         VStack {
             ScrollView(.horizontal) {
                 HStack {
-                    FortyScrollGridMaster(start: 0, end: 5, size: 144, squareColor: .secondary)
+                    FortyScrollGridRows(start: 0, end: 5, size: 144, squareColor: .secondary)
                 }
             }
             
             ScrollView(.horizontal) {
                 HStack {
-                    FortyScrollGridMaster(start: 5, end: 17, size: 120, squareColor: .secondary.opacity(0.8))
+                    FortyScrollGridRows(start: 5, end: 17, size: 120, squareColor: .secondary.opacity(0.8))
                 }
             }
             
             ScrollView(.horizontal) {
                 HStack {
-                    FortyScrollGridMaster(start: 17, end: 31, size: 96, squareColor: .secondary.opacity(0.6))
+                    FortyScrollGridRows(start: 17, end: 31, size: 96, squareColor: .secondary.opacity(0.6))
                 }
             }
             
             ScrollView(.horizontal) {
                 HStack {
-                    FortyScrollGridMaster(start: 31, end: 40, size: 72, squareColor: .secondary.opacity(0.4))
+                    FortyScrollGridRows(start: 31, end: 40, size: 72, squareColor: .secondary.opacity(0.4))
                     
                 }
             }
         }
     }
-}
-
-struct FortyScrollGridMaster: View {
-    @EnvironmentObject private var vm: FortyScrollGridViewModel
     
-    let start: Int
-    let end: Int
-    let size: CGFloat
-    let squareColor: Color
     
-    var body: some View {
-        ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(end).dropFirst(start), id: \.key) { key, album in
-            if album != nil {
-                AsyncAlbumSquare(album: album!)
-                    .onTapGesture {
-                        vm.selectedGridID = key
-                        vm.toggleSheet()
-                    }
-            } else {
-                ZStack {
-                    Rectangle()
-                        .foregroundColor(squareColor)
+    struct FortyScrollGridRows: View {
+        @EnvironmentObject private var vm: FortyScrollGridViewModel
+        
+        let start: Int
+        let end: Int
+        let size: CGFloat
+        let squareColor: Color
+        
+        var body: some View {
+            ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(end).dropFirst(start), id: \.key) { key, album in
+                if album != nil {
+                    AsyncAlbumSquare(album: album!)
                         .onTapGesture {
                             vm.selectedGridID = key
                             vm.toggleSheet()
                         }
-                    
-                    Image(systemName: "plus").bold().foregroundColor(.secondary)
+                } else {
+                    ZStack {
+                        Rectangle()
+                            .foregroundColor(squareColor)
+                            .onTapGesture {
+                                vm.selectedGridID = key
+                                vm.toggleSheet()
+                            }
+                        
+                        Image(systemName: "plus").bold().foregroundColor(.secondary)
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
                 }
-                .clipShape(RoundedRectangle(cornerRadius: 6))
             }
+            .frame(width: size, height: size)
         }
-        .frame(width: size, height: size)
     }
 }
+
+
+
+
 
 struct GridContent_Previews: PreviewProvider {
     static var previews: some View {
         GridContent()
+            .environmentObject(FortyScrollGridViewModel())
     }
 }
