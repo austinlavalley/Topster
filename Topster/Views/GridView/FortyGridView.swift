@@ -62,6 +62,16 @@ struct FortyGridView: View {
             })
             
             .toolbar {
+                ToolbarItem {
+                    Button {
+                        vm.clearGrid()
+                        vm.currentActiveGrid = nil
+                        
+                        showNewSheet.toggle()
+                    } label: {
+                        Label("", systemImage: "circle.grid.3x3.circle")
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         Button("New grid") {
@@ -98,7 +108,14 @@ struct FortyGridView: View {
                 Button("twenty sheet") {
                     vm.activeGridType = .twenty
                     showNewSheet = false
-
+                }
+                Button("twentyWide sheet") {
+                    vm.activeGridType = .twentyWide
+                    showNewSheet = false
+                }
+                Button("twentyfive sheet") {
+                    vm.activeGridType = .twentyFive
+                    showNewSheet = false
                 }
 
             }
