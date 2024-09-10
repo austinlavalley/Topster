@@ -63,30 +63,44 @@ struct FortyGridView: View {
             
             .toolbar {
                 ToolbarItem {
-                    Button {
-                        vm.clearGrid()
-                        vm.currentActiveGrid = nil
-                        
-                        showNewSheet.toggle()
-                    } label: {
-                        Label("", systemImage: "circle.grid.3x3.circle")
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Menu {
-                        Button("New grid") {
+                // Using a label instead of a button to incorporate hierarchical icons
+                    Label("", systemImage: "crop.rotate")
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundStyle(.blue)
+                        .onTapGesture {
                             vm.clearGrid()
                             vm.currentActiveGrid = nil
                             
                             showNewSheet.toggle()
                         }
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Button() {
+                            vm.clearGrid()
+                            vm.currentActiveGrid = nil                            
+                        } label: {
+                            Label("New grid", systemImage: "plus")
+                        }
                         
-                        Button("Delete grid from saved") {
+                        Button() {
+                            vm.clearGrid()
+                            vm.currentActiveGrid = nil
+                            
+                            showNewSheet.toggle()
+                        } label: {
+                            Label("Change grid layout", systemImage: "crop.rotate")
+                        }
+                        
+                        Button() {
                             withAnimation(.bouncy) {
                                 vm.removeFromSavedGrids(at: vm.currentActiveGrid!)
                                 vm.currentActiveGrid = nil
                                 vm.clearGrid()
                             }
+                        } label: {
+                            Label("Remove grid from saved", systemImage: "trash")
                         }
                     } label: {
                         Label("", systemImage: "ellipsis.circle")
