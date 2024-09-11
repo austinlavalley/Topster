@@ -79,7 +79,7 @@ struct FortyGridView: View {
                     Menu {
                         Button() {
                             vm.clearGrid()
-                            vm.currentActiveGrid = nil                            
+                            vm.currentActiveGrid = nil
                         } label: {
                             Label("New grid", systemImage: "plus")
                         }
@@ -102,6 +102,7 @@ struct FortyGridView: View {
                         } label: {
                             Label("Remove grid from saved", systemImage: "trash")
                         }
+                        .disabled(vm.currentActiveGrid == nil)
                     } label: {
                         Label("", systemImage: "ellipsis.circle")
                     }
