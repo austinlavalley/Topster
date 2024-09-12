@@ -19,6 +19,8 @@
 		D9346C692ACB7AC200CA8F70 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9346C682ACB7AC200CA8F70 /* Album.swift */; };
 		D93AD4BC2AC23449001D2BA3 /* AlbumSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93AD4BB2AC23449001D2BA3 /* AlbumSearchView.swift */; };
 		D93AD4BE2AC64226001D2BA3 /* FortyScrollGridViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93AD4BD2AC64226001D2BA3 /* FortyScrollGridViewModel.swift */; };
+		D93B71DC2C934C63002F816C /* GridLayoutSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93B71DB2C934C63002F816C /* GridLayoutSheet.swift */; };
+		D93B71DE2C93959B002F816C /* GridLayoutSelectOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93B71DD2C93959A002F816C /* GridLayoutSelectOption.swift */; };
 		D99642542ABB50B6004CEA01 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99642532ABB50B6004CEA01 /* SearchResults.swift */; };
 		D9B519972BDD6CC800E703EF /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B519962BDD6CC800E703EF /* LoadingView.swift */; };
 		D9B8B4012AB3AE6600A4613A /* TopTracksNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */; };
@@ -49,6 +51,8 @@
 		D9346C682ACB7AC200CA8F70 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		D93AD4BB2AC23449001D2BA3 /* AlbumSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumSearchView.swift; sourceTree = "<group>"; };
 		D93AD4BD2AC64226001D2BA3 /* FortyScrollGridViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FortyScrollGridViewModel.swift; sourceTree = "<group>"; };
+		D93B71DB2C934C63002F816C /* GridLayoutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridLayoutSheet.swift; sourceTree = "<group>"; };
+		D93B71DD2C93959A002F816C /* GridLayoutSelectOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridLayoutSelectOption.swift; sourceTree = "<group>"; };
 		D99642532ABB50B6004CEA01 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		D9B519962BDD6CC800E703EF /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopTracksNetwork.swift; sourceTree = "<group>"; };
@@ -157,6 +161,8 @@
 		D96E3FCF2B17941800A6D12B /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				D93B71DB2C934C63002F816C /* GridLayoutSheet.swift */,
+				D93B71DD2C93959A002F816C /* GridLayoutSelectOption.swift */,
 				D9B519962BDD6CC800E703EF /* LoadingView.swift */,
 				D91952872B002DFC00FD246C /* RenderView.swift */,
 				D9C578732B0EAF2600B94E1F /* GridContent.swift */,
@@ -248,6 +254,7 @@
 				D91952862AFE858300FD246C /* SettingsView.swift in Sources */,
 				D93AD4BC2AC23449001D2BA3 /* AlbumSearchView.swift in Sources */,
 				D92B6F112A9BBF9300A7CCBD /* ContentView.swift in Sources */,
+				D93B71DC2C934C63002F816C /* GridLayoutSheet.swift in Sources */,
 				D9B8B40E2AB8BED300A4613A /* Networker.swift in Sources */,
 				D9C8CCC02AEDC54400FF0997 /* SavedGridCardView.swift in Sources */,
 				D9B519972BDD6CC800E703EF /* LoadingView.swift in Sources */,
@@ -266,6 +273,7 @@
 				D9B8B4012AB3AE6600A4613A /* TopTracksNetwork.swift in Sources */,
 				D9DAD16E2AE423FE003CD6B6 /* DraggableGridSetup.swift in Sources */,
 				D9B8B40C2AB4FCB800A4613A /* ArtistSearchView.swift in Sources */,
+				D93B71DE2C93959B002F816C /* GridLayoutSelectOption.swift in Sources */,
 				D92B6F432AA380F700A7CCBD /* FortyGridView.swift in Sources */,
 				D91952882B002DFC00FD246C /* RenderView.swift in Sources */,
 				D93AD4BE2AC64226001D2BA3 /* FortyScrollGridViewModel.swift in Sources */,

@@ -13,7 +13,7 @@ struct FortyGridView: View {
     
     @State private var saveButtonText = "Save grid"
     @State private var showExportSheet = false
-    @State private var showNewSheet = false
+    @State private var showNewSheet = true
     
     var body: some View {
         NavigationStack {
@@ -108,35 +108,81 @@ struct FortyGridView: View {
         }
         
         .sheet(isPresented: $showNewSheet) {
-
-            VStack {
-                Button("forty sheet") {
-                    withAnimation(.spring) {
-                        vm.activeGridType = .forty
-                        showNewSheet = false
-                    }
+            VStack(spacing: 0) {
+            //            VStack {
+            //                Button("forty sheet") {
+            //                    withAnimation(.spring) {
+            //                        vm.activeGridType = .forty
+            //                        showNewSheet = false
+            //                    }
+            //                }
+            //                Button("twenty sheet") {
+            //                    withAnimation(.spring) {
+            //                        vm.activeGridType = .twenty
+            //                        showNewSheet = false
+            //                    }
+            //                }
+            //                Button("twentyWide sheet") {
+            //                    withAnimation(.spring) {
+            //                        vm.activeGridType = .twentyWide
+            //                        showNewSheet = false
+            //                    }
+            //                }
+            //                Button("twentyfive sheet") {
+            //                    withAnimation(.spring) {
+            //                        vm.activeGridType = .twentyFive
+            //                        showNewSheet = false
+            //                    }
+            //                }
+            //
+            //            }
+                
+                Text("Choose layout").font(.title).bold()
+                
+//            GridLayoutSheet().padding()
+                
+                VStack {
+                    
+                    Button {
+                        withAnimation(.spring) {
+                            vm.activeGridType = .forty
+                            showNewSheet = false
+                        }
+                    } label: {
+                        GridLayoutSelectOption(title: "Forty", subtitle: "Forty grid", isSelected: vm.activeGridType == .forty)
+                    }.tint(.primary)
+                    
+                    Button {
+                        withAnimation(.spring) {
+                            vm.activeGridType = .twentyFive
+                            showNewSheet = false
+                        }
+                    } label: {
+                        GridLayoutSelectOption(title: "Twenty-five", subtitle: "Forty grid", isSelected: vm.activeGridType == .twentyFive)
+                    }.tint(.primary)
+                    
+                    Button {
+                        withAnimation(.spring) {
+                            vm.activeGridType = .twenty
+                            showNewSheet = false
+                        }
+                    } label: {
+                        GridLayoutSelectOption(title: "Twenty", subtitle: "Forty grid", isSelected: vm.activeGridType == .twenty)
+                    }.tint(.primary)
+                    
+                    Button {
+                        withAnimation(.spring) {
+                            vm.activeGridType = .twentyWide
+                            showNewSheet = false
+                        }
+                    } label: {
+                        GridLayoutSelectOption(title: "Twenty", subtitle: "Forty grid", isSelected: vm.activeGridType == .twentyWide)
+                    }.tint(.primary)
                 }
-                Button("twenty sheet") {
-                    withAnimation(.spring) {
-                        vm.activeGridType = .twenty
-                        showNewSheet = false
-                    }
-                }
-                Button("twentyWide sheet") {
-                    withAnimation(.spring) {
-                        vm.activeGridType = .twentyWide
-                        showNewSheet = false
-                    }
-                }
-                Button("twentyfive sheet") {
-                    withAnimation(.spring) {
-                        vm.activeGridType = .twentyFive
-                        showNewSheet = false
-                    }
-                }
-
-            }
+        }
+            .padding(.top, 24)
             .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
         }
         
         .onAppear {
