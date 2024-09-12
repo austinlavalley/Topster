@@ -68,9 +68,6 @@ struct FortyGridView: View {
                         .symbolRenderingMode(.hierarchical)
                         .foregroundStyle(.blue)
                         .onTapGesture {
-                            vm.clearGrid()
-                            vm.currentActiveGrid = nil
-                            
                             showNewSheet.toggle()
                         }
                 }
@@ -85,9 +82,6 @@ struct FortyGridView: View {
                         }
                         
                         Button() {
-                            vm.clearGrid()
-                            vm.currentActiveGrid = nil
-                            
                             showNewSheet.toggle()
                         } label: {
                             Label("Change grid layout", systemImage: "crop.rotate")
@@ -117,23 +111,32 @@ struct FortyGridView: View {
 
             VStack {
                 Button("forty sheet") {
-                    vm.activeGridType = .forty
-                    showNewSheet = false
+                    withAnimation(.spring) {
+                        vm.activeGridType = .forty
+                        showNewSheet = false
+                    }
                 }
                 Button("twenty sheet") {
-                    vm.activeGridType = .twenty
-                    showNewSheet = false
+                    withAnimation(.spring) {
+                        vm.activeGridType = .twenty
+                        showNewSheet = false
+                    }
                 }
                 Button("twentyWide sheet") {
-                    vm.activeGridType = .twentyWide
-                    showNewSheet = false
+                    withAnimation(.spring) {
+                        vm.activeGridType = .twentyWide
+                        showNewSheet = false
+                    }
                 }
                 Button("twentyfive sheet") {
-                    vm.activeGridType = .twentyFive
-                    showNewSheet = false
+                    withAnimation(.spring) {
+                        vm.activeGridType = .twentyFive
+                        showNewSheet = false
+                    }
                 }
 
             }
+            .presentationDetents([.medium])
         }
         
         .onAppear {
