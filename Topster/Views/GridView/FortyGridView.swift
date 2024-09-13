@@ -109,47 +109,17 @@ struct FortyGridView: View {
         
         .sheet(isPresented: $showNewSheet) {
             VStack(spacing: 0) {
-            //            VStack {
-            //                Button("forty sheet") {
-            //                    withAnimation(.spring) {
-            //                        vm.activeGridType = .forty
-            //                        showNewSheet = false
-            //                    }
-            //                }
-            //                Button("twenty sheet") {
-            //                    withAnimation(.spring) {
-            //                        vm.activeGridType = .twenty
-            //                        showNewSheet = false
-            //                    }
-            //                }
-            //                Button("twentyWide sheet") {
-            //                    withAnimation(.spring) {
-            //                        vm.activeGridType = .twentyWide
-            //                        showNewSheet = false
-            //                    }
-            //                }
-            //                Button("twentyfive sheet") {
-            //                    withAnimation(.spring) {
-            //                        vm.activeGridType = .twentyFive
-            //                        showNewSheet = false
-            //                    }
-            //                }
-            //
-            //            }
                 
-                Text("Choose layout").font(.title).bold()
-                
-//            GridLayoutSheet().padding()
-                
+                Text("Choose grid layout").font(.title2).bold()
+                                
                 VStack {
-                    
                     Button {
                         withAnimation(.spring) {
                             vm.activeGridType = .forty
                             showNewSheet = false
                         }
                     } label: {
-                        GridLayoutSelectOption(title: "Forty", subtitle: "Forty grid", isSelected: vm.activeGridType == .forty)
+                        GridLayoutSelectOption(title: "40 Albums", subtitle: "Multi-sized rows", isSelected: vm.activeGridType == .forty)
                     }.tint(.primary)
                     
                     Button {
@@ -158,7 +128,7 @@ struct FortyGridView: View {
                             showNewSheet = false
                         }
                     } label: {
-                        GridLayoutSelectOption(title: "Twenty-five", subtitle: "Forty grid", isSelected: vm.activeGridType == .twentyFive)
+                        GridLayoutSelectOption(title: "25 Albums", subtitle: "5x5 Grid", isSelected: vm.activeGridType == .twentyFive)
                     }.tint(.primary)
                     
                     Button {
@@ -167,7 +137,7 @@ struct FortyGridView: View {
                             showNewSheet = false
                         }
                     } label: {
-                        GridLayoutSelectOption(title: "Twenty", subtitle: "Forty grid", isSelected: vm.activeGridType == .twenty)
+                        GridLayoutSelectOption(title: "20 Albums", subtitle: "5x4 Grid", isSelected: vm.activeGridType == .twenty)
                     }.tint(.primary)
                     
                     Button {
@@ -176,9 +146,9 @@ struct FortyGridView: View {
                             showNewSheet = false
                         }
                     } label: {
-                        GridLayoutSelectOption(title: "Twenty", subtitle: "Forty grid", isSelected: vm.activeGridType == .twentyWide)
+                        GridLayoutSelectOption(title: "20 Albums (Wide)", subtitle: "4x5 Grid", isSelected: vm.activeGridType == .twentyWide)
                     }.tint(.primary)
-                }
+                }.padding()
         }
             .padding(.top, 24)
             .presentationDetents([.medium])
@@ -187,7 +157,7 @@ struct FortyGridView: View {
         
         .onAppear {
             if vm.currentActiveGrid != nil {
-                vm.FortyGridDict = vm.savedGrids[vm.currentActiveGrid!]
+                vm.FortyGridDict = vm.savedGrids[vm.currentActiveGrid!].grid
             }
         }
     }

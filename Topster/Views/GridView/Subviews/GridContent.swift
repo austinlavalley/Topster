@@ -32,7 +32,7 @@ struct GridContent: View {
 
 
 
-struct TwentyGridMaster: View {
+struct TwentyGridMasterWide: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
 
     var body: some View {
@@ -153,7 +153,7 @@ struct TwentyGridMaster: View {
 }
 
 
-struct TwentyGridMasterWide: View {
+struct TwentyGridMaster: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
 
     var body: some View {
