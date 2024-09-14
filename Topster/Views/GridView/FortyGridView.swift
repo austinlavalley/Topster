@@ -13,13 +13,13 @@ struct FortyGridView: View {
     
     @State private var saveButtonText = "Save grid"
     @State private var showExportSheet = false
-    @State private var showNewSheet = true
+    @State private var showNewSheet = false
     
     var body: some View {
         NavigationStack {
             VStack {
                 
-//                Text(vm.currentActiveGrid?.description ?? "NONE")
+                Text(vm.currentActiveGrid?.description ?? "NONE")
                 
                 ScrollView {
                     GridContent()
@@ -150,8 +150,8 @@ struct FortyGridView: View {
                     }.tint(.primary)
                 }.padding()
         }
-            .padding(.top, 24)
-            .presentationDetents([.medium])
+//            .padding(.top, 24)
+            .presentationDetents([.fraction(0.6)])
             .presentationDragIndicator(.visible)
         }
         
