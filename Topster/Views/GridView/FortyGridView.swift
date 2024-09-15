@@ -19,7 +19,7 @@ struct FortyGridView: View {
         NavigationStack {
             VStack {
                 
-                Text(vm.currentActiveGrid?.description ?? "NONE")
+//                Text(vm.currentActiveGrid?.description ?? "NONE")
                 
                 ScrollView {
                     GridContent()
@@ -119,7 +119,7 @@ struct FortyGridView: View {
                             showNewSheet = false
                         }
                     } label: {
-                        GridLayoutSelectOption(title: "40 Albums", subtitle: "Multi-sized rows", isSelected: vm.activeGridType == .forty)
+                        GridLayoutSelectOption(title: "40 Albums", subtitle: "Dynamic, multi-sized rows", isSelected: vm.activeGridType == .forty)
                     }.tint(.primary)
                     
                     Button {

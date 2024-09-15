@@ -13,21 +13,31 @@ struct SavedGridsListView: View {
         
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack {
-            
-                    // for each GRID in the array of saved grids
-                    ForEach(Array(vm.savedGrids.enumerated()), id: \.offset) { index, grid in
+            if !vm.savedGrids.isEmpty {
+                ScrollView {
+                    VStack {
                         
-                        if grid.grid.values.contains(where: { $0 != nil }) {
-                            SavedGridCardPreviewView(grid: grid, currentIndex: index)
+                        // for each GRID in the array of saved grids
+                        ForEach(Array(vm.savedGrids.enumerated()), id: \.offset) { index, grid in
+                            
+                            if grid.grid.values.contains(where: { $0 != nil }) {
+                                SavedGridCardPreviewView(grid: grid, currentIndex: index)
+                            }
+                            
                         }
-                        
+                        .padding(.horizontal)
                     }
-                    .padding(.horizontal)
+                }
+                .navigationTitle("Saved grids")
+            } else {
+                VStack {
+                    Spacer()
+                    
+                    Text("no saved grids")
+                    
+                    Spacer()
                 }
             }
-            .navigationTitle("Saved grids")
         }
     }
 }

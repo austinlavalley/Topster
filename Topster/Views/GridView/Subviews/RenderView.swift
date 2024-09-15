@@ -144,13 +144,6 @@ struct RenderView: View {
                     vm.tempExportDarkMode.toggle()
                     generateSnapshot()
                 }
-                Button("toggle export view") {
-                    if vm.activeGridType == .forty {
-                        vm.activeGridType = .twentyFive
-                    } else {
-                        vm.activeGridType = .forty
-                    }
-                }
             }
             
         }
@@ -170,8 +163,6 @@ extension RenderView {
     func generateSnapshot() {
         Task {
             let renderer = ImageRenderer(content:
-                                            //                FortyGridExportView()
-                                         //                TwentyFiveGridExportView()
                                          
                 ExportView().environmentObject(vm)
                                          
