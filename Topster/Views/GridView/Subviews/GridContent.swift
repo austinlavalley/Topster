@@ -13,7 +13,7 @@ struct GridContent: View {
     var body: some View {
         switch vm.activeGridType {
         case .forty:
-            FortyGridMaster()
+            FortyTwoGridMaster()
         case .twenty:
             TwentyGridMaster()
         case .twentyWide:
@@ -451,6 +451,186 @@ struct TwentyFiveGridMaster: View {
 }
 
 
+
+
+struct FortyTwoGridMaster: View {
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+
+    var body: some View {
+        
+        VStack {
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
+                        if album != nil {
+                            AsyncAlbumSquare(album: album!)
+                                .onTapGesture {
+                                    vm.selectedGridID = key
+                                    vm.toggleSheet()
+                                }
+                        } else {
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.secondary)
+                                    .onTapGesture {
+                                        vm.selectedGridID = key
+                                        vm.toggleSheet()
+                                    }
+                                
+                                Image(systemName: "plus").bold().foregroundColor(.secondary)
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                        }
+                    }
+                    .frame(width: 120, height: 120)
+                }
+            }
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(10).dropFirst(5), id: \.key) { key, album in
+                        if album != nil {
+                            AsyncAlbumSquare(album: album!)
+                                .onTapGesture {
+                                    vm.selectedGridID = key
+                                    vm.toggleSheet()
+                                }
+                        } else {
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.secondary)
+                                    .onTapGesture {
+                                        vm.selectedGridID = key
+                                        vm.toggleSheet()
+                                    }
+                                
+                                Image(systemName: "plus").bold().foregroundColor(.secondary)
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                        }
+                    }
+                    .frame(width: 120, height: 120)
+                }
+            }
+            
+            
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(16).dropFirst(10), id: \.key) { key, album in
+                        if album != nil {
+                            AsyncAlbumSquare(album: album!)
+                                .onTapGesture {
+                                    vm.selectedGridID = key
+                                    vm.toggleSheet()
+                                }
+                        } else {
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.secondary)
+                                    .onTapGesture {
+                                        vm.selectedGridID = key
+                                        vm.toggleSheet()
+                                    }
+                                
+                                Image(systemName: "plus").bold().foregroundColor(.secondary)
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                        }
+                    }
+                    .frame(width: 96, height: 96)
+                }
+            }
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(22).dropFirst(16), id: \.key) { key, album in
+                        if album != nil {
+                            AsyncAlbumSquare(album: album!)
+                                .onTapGesture {
+                                    vm.selectedGridID = key
+                                    vm.toggleSheet()
+                                }
+                        } else {
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.secondary)
+                                    .onTapGesture {
+                                        vm.selectedGridID = key
+                                        vm.toggleSheet()
+                                    }
+                                
+                                Image(systemName: "plus").bold().foregroundColor(.secondary)
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                        }
+                    }
+                    .frame(width: 96, height: 96)
+                }
+            }
+            
+            
+            
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(32).dropFirst(22), id: \.key) { key, album in
+                        if album != nil {
+                            AsyncAlbumSquare(album: album!)
+                                .onTapGesture {
+                                    vm.selectedGridID = key
+                                    vm.toggleSheet()
+                                }
+                        } else {
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.secondary)
+                                    .onTapGesture {
+                                        vm.selectedGridID = key
+                                        vm.toggleSheet()
+                                    }
+                                
+                                Image(systemName: "plus").bold().foregroundColor(.secondary)
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                        }
+                    }
+                    .frame(width: 64, height: 64)
+                }
+            }
+            
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(42).dropFirst(32), id: \.key) { key, album in
+                        if album != nil {
+                            AsyncAlbumSquare(album: album!)
+                                .onTapGesture {
+                                    vm.selectedGridID = key
+                                    vm.toggleSheet()
+                                }
+                        } else {
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.secondary)
+                                    .onTapGesture {
+                                        vm.selectedGridID = key
+                                        vm.toggleSheet()
+                                    }
+                                
+                                Image(systemName: "plus").bold().foregroundColor(.secondary)
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                        }
+                    }
+                    .frame(width: 64, height: 64)
+                }
+            }
+            
+        }
+    }
+}
 
 
 

@@ -165,7 +165,6 @@ extension RenderView {
             let renderer = ImageRenderer(content:
                                          
                 ExportView().environmentObject(vm)
-                .padding(196)
                                          
             )
             
@@ -390,30 +389,27 @@ struct FortyTwoGridExportView: View {
 
     var body: some View {
         
-        
         VStack(spacing: 24) {
             
             HStack(spacing: 24) {
-
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
                     } else {
                         Rectangle().fill(.secondary)
                     }
-                } /*.frame(width: 720, height: 720)*/
+                }
                 .aspectRatio(1, contentMode: .fill)
             }
             
             HStack(spacing: 24) {
-
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(10).dropFirst(5), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
                     } else {
                         Rectangle().fill(.secondary)
                     }
-                } /*.frame(width: 720, height: 720)*/
+                }
                 .aspectRatio(1, contentMode: .fill)
             }
             
@@ -421,26 +417,24 @@ struct FortyTwoGridExportView: View {
             
             
             HStack(spacing: 24) {
-
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(16).dropFirst(10), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
                     } else {
                         Rectangle().fill(.secondary)
                     }
-                } /*.frame(width: 360, height: 360)*/
+                }
                 .aspectRatio(1, contentMode: .fill)
             }
             
             HStack(spacing: 24) {
-
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(22).dropFirst(16), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
                     } else {
                         Rectangle().fill(.secondary)
                     }
-                } /*.frame(width: 360, height: 360)*/
+                }
                 .aspectRatio(1, contentMode: .fill)
             }
             
@@ -448,48 +442,37 @@ struct FortyTwoGridExportView: View {
             
             
             HStack(spacing: 24) {
-
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(32).dropFirst(22), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
                     } else {
                         Rectangle().fill(.secondary)
                     }
-                }/* .frame(width: 360, height: 360)*/
+                }
                 .aspectRatio(1, contentMode: .fill)
             }
             
             HStack(spacing: 24) {
-
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(42).dropFirst(32), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
                     } else {
                         Rectangle().fill(.secondary)
                     }
-                } /*.frame(width: 360, height: 360)*/
+                }
                 .aspectRatio(1, contentMode: .fill)
             }
             
             
         }
-        
-        
-        
         .frame(width: 3366/*, minHeight: 3366*/)
-//        .padding()
+        .padding(72)
         .background(darkModeEnabled ? vm.tempExportDarkMode != darkModeEnabled ? Color.white : Color.black :
                         vm.tempExportDarkMode != darkModeEnabled ? Color.black : Color.white)
-        
-        
     }
 }
 
-func squareSize(in geometry: GeometryProxy) -> CGFloat {
-    let totalWidth = geometry.size.width - (geometry.size.width * 0.066)
-    let squareSize = totalWidth / CGFloat(10)
-    return squareSize
-}
+
 
 struct TwentyGridExportView: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
