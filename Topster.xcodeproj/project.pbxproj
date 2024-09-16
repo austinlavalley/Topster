@@ -22,6 +22,7 @@
 		D93B71DC2C934C63002F816C /* GridLayoutSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93B71DB2C934C63002F816C /* GridLayoutSheet.swift */; };
 		D93B71DE2C93959B002F816C /* GridLayoutSelectOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93B71DD2C93959A002F816C /* GridLayoutSelectOption.swift */; };
 		D99642542ABB50B6004CEA01 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99642532ABB50B6004CEA01 /* SearchResults.swift */; };
+		D9ADFFE52C98815A00CA2D0F /* fittingrows.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9ADFFE42C98815A00CA2D0F /* fittingrows.swift */; };
 		D9B519972BDD6CC800E703EF /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B519962BDD6CC800E703EF /* LoadingView.swift */; };
 		D9B8B4012AB3AE6600A4613A /* TopTracksNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */; };
 		D9B8B4032AB3B41700A4613A /* TopArtistsNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4022AB3B41700A4613A /* TopArtistsNetwork.swift */; };
@@ -54,6 +55,7 @@
 		D93B71DB2C934C63002F816C /* GridLayoutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridLayoutSheet.swift; sourceTree = "<group>"; };
 		D93B71DD2C93959A002F816C /* GridLayoutSelectOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridLayoutSelectOption.swift; sourceTree = "<group>"; };
 		D99642532ABB50B6004CEA01 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
+		D9ADFFE42C98815A00CA2D0F /* fittingrows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fittingrows.swift; sourceTree = "<group>"; };
 		D9B519962BDD6CC800E703EF /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopTracksNetwork.swift; sourceTree = "<group>"; };
 		D9B8B4022AB3B41700A4613A /* TopArtistsNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopArtistsNetwork.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				D93B71DD2C93959A002F816C /* GridLayoutSelectOption.swift */,
 				D9B519962BDD6CC800E703EF /* LoadingView.swift */,
 				D91952872B002DFC00FD246C /* RenderView.swift */,
+				D9ADFFE42C98815A00CA2D0F /* fittingrows.swift */,
 				D9C578732B0EAF2600B94E1F /* GridContent.swift */,
 			);
 			path = Subviews;
@@ -272,6 +275,7 @@
 				D92B6F0F2A9BBF9300A7CCBD /* TopsterApp.swift in Sources */,
 				D9B8B4012AB3AE6600A4613A /* TopTracksNetwork.swift in Sources */,
 				D9DAD16E2AE423FE003CD6B6 /* DraggableGridSetup.swift in Sources */,
+				D9ADFFE52C98815A00CA2D0F /* fittingrows.swift in Sources */,
 				D9B8B40C2AB4FCB800A4613A /* ArtistSearchView.swift in Sources */,
 				D93B71DE2C93959B002F816C /* GridLayoutSelectOption.swift in Sources */,
 				D92B6F432AA380F700A7CCBD /* FortyGridView.swift in Sources */,
