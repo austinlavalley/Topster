@@ -183,7 +183,7 @@ class FortyScrollGridViewModel: ObservableObject {
     @Published var activeGridType = GridType.forty
     
     
-    @Published var globalSpacing = 12
+    @Published var globalSpacing: CGFloat = 24
     
     
     @AppStorage("FortyGridDict") var storedFortyGridDict: Data?

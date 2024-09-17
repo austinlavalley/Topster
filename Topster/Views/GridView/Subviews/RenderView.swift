@@ -182,7 +182,7 @@ struct ExportView: View {
         Group {
             switch vm.activeGridType {
             case .forty:
-                FortyTwoGridExportView()
+                TwentyFiveGridExportView()
             case .twenty:
                 TwentyGridExportView()
             case .twentyWide:
@@ -389,9 +389,9 @@ struct FortyTwoGridExportView: View {
 
     var body: some View {
         
-        VStack(spacing: 24) {
+        VStack(spacing: vm.globalSpacing) {
             
-            HStack(spacing: 24) {
+            HStack(spacing: vm.globalSpacing) {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
@@ -402,7 +402,7 @@ struct FortyTwoGridExportView: View {
                 .aspectRatio(1, contentMode: .fill)
             }
             
-            HStack(spacing: 24) {
+            HStack(spacing: vm.globalSpacing) {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(10).dropFirst(5), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
@@ -416,7 +416,7 @@ struct FortyTwoGridExportView: View {
             
             
             
-            HStack(spacing: 24) {
+            HStack(spacing: vm.globalSpacing) {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(16).dropFirst(10), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
@@ -427,7 +427,7 @@ struct FortyTwoGridExportView: View {
                 .aspectRatio(1, contentMode: .fill)
             }
             
-            HStack(spacing: 24) {
+            HStack(spacing: vm.globalSpacing) {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(22).dropFirst(16), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
@@ -441,7 +441,7 @@ struct FortyTwoGridExportView: View {
             
             
             
-            HStack(spacing: 24) {
+            HStack(spacing: vm.globalSpacing) {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(32).dropFirst(22), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
@@ -452,7 +452,7 @@ struct FortyTwoGridExportView: View {
                 .aspectRatio(1, contentMode: .fill)
             }
             
-            HStack(spacing: 24) {
+            HStack(spacing: vm.globalSpacing) {
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(42).dropFirst(32), id: \.key) { key, album in
                     if album != nil {
                         AlbumSquare(album: album!)
@@ -482,10 +482,10 @@ struct TwentyGridExportView: View {
 
     var body: some View {
         
-        VStack(alignment: .center) {
+        VStack(alignment: .center, spacing: vm.globalSpacing) {
             
             // 5x1 row
-            HStack(spacing: 12) {
+            HStack(spacing: vm.globalSpacing) {
 
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(4).dropFirst(0), id: \.key) { key, album in
                     if album != nil {
@@ -494,10 +494,11 @@ struct TwentyGridExportView: View {
                         // if row has no values in it, do not display row in renderview
                         Rectangle().fill(.secondary)
                     }
-                } .frame(width: 360, height: 360)
+                } /*.frame(width: 720, height: 720)*/
+                .aspectRatio(1, contentMode: .fill)
             }
             
-            HStack(spacing: 12) {
+            HStack(spacing: vm.globalSpacing) {
 
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(8).dropFirst(4), id: \.key) { key, album in
                     if album != nil {
@@ -506,10 +507,11 @@ struct TwentyGridExportView: View {
                         // if row has no values in it, do not display row in renderview
                         Rectangle().fill(.secondary)
                     }
-                } .frame(width: 360, height: 360)
+                } /*.frame(width: 720, height: 720)*/
+                .aspectRatio(1, contentMode: .fill)
             }
             
-            HStack(spacing: 12) {
+            HStack(spacing: vm.globalSpacing) {
 
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(12).dropFirst(8), id: \.key) { key, album in
                     if album != nil {
@@ -518,10 +520,11 @@ struct TwentyGridExportView: View {
                         // if row has no values in it, do not display row in renderview
                         Rectangle().fill(.secondary)
                     }
-                } .frame(width: 360, height: 360)
+                } /*.frame(width: 720, height: 720)*/
+                .aspectRatio(1, contentMode: .fill)
             }
             
-            HStack(spacing: 12) {
+            HStack(spacing: vm.globalSpacing) {
 
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(16).dropFirst(12), id: \.key) { key, album in
                     if album != nil {
@@ -530,10 +533,11 @@ struct TwentyGridExportView: View {
                         // if row has no values in it, do not display row in renderview
                         Rectangle().fill(.secondary)
                     }
-                } .frame(width: 360, height: 360)
+                } /*.frame(width: 720, height: 720)*/
+                .aspectRatio(1, contentMode: .fill)
             }
             
-            HStack(spacing: 12) {
+            HStack(spacing: vm.globalSpacing) {
 
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(20).dropFirst(16), id: \.key) { key, album in
                     if album != nil {
@@ -542,7 +546,8 @@ struct TwentyGridExportView: View {
                         // if row has no values in it, do not display row in renderview
                         Rectangle().fill(.secondary)
                     }
-                } .frame(width: 360, height: 360)
+                } /*.frame(width: 720, height: 720)*/
+                .aspectRatio(1, contentMode: .fill)
             }
 
 
@@ -550,8 +555,8 @@ struct TwentyGridExportView: View {
             
             
         }
-        .frame(width: 1668/*, height: 1518*/)
-        .padding()
+        .frame(width: 3366/*, height: 1518*/)
+        .padding(72)
         .background(darkModeEnabled ? vm.tempExportDarkMode != darkModeEnabled ? Color.white : Color.black :
                         vm.tempExportDarkMode != darkModeEnabled ? Color.black : Color.white)
         
@@ -571,10 +576,10 @@ struct TwentyGridExportViewWide: View {
 
     var body: some View {
         
-        VStack(alignment: .center) {
+        VStack(alignment: .center, spacing: vm.globalSpacing) {
             
             // 5x1 row
-            HStack(spacing: 12) {
+            HStack(spacing: vm.globalSpacing) {
 
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
                     if album != nil {
@@ -583,10 +588,11 @@ struct TwentyGridExportViewWide: View {
                         // if row has no values in it, do not display row in renderview
                         Rectangle().fill(.secondary)
                     }
-                } .frame(width: 320, height: 320)
+                } /*.frame(width: 320, height: 320)*/
+                .aspectRatio(1, contentMode: .fill)
             }
             
-            HStack(spacing: 12) {
+            HStack(spacing: vm.globalSpacing) {
 
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(10).dropFirst(5), id: \.key) { key, album in
                     if album != nil {
@@ -595,10 +601,11 @@ struct TwentyGridExportViewWide: View {
                         // if row has no values in it, do not display row in renderview
                         Rectangle().fill(.secondary)
                     }
-                } .frame(width: 320, height: 320)
+                } /*.frame(width: 320, height: 320)*/
+                .aspectRatio(1, contentMode: .fill)
             }
             
-            HStack(spacing: 12) {
+            HStack(spacing: vm.globalSpacing) {
 
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(15).dropFirst(10), id: \.key) { key, album in
                     if album != nil {
@@ -607,10 +614,11 @@ struct TwentyGridExportViewWide: View {
                         // if row has no values in it, do not display row in renderview
                         Rectangle().fill(.secondary)
                     }
-                } .frame(width: 320, height: 320)
+                } /*.frame(width: 320, height: 320)*/
+                .aspectRatio(1, contentMode: .fill)
             }
             
-            HStack(spacing: 12) {
+            HStack(spacing: vm.globalSpacing) {
 
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(20).dropFirst(15), id: \.key) { key, album in
                     if album != nil {
@@ -619,15 +627,16 @@ struct TwentyGridExportViewWide: View {
                         // if row has no values in it, do not display row in renderview
                         Rectangle().fill(.secondary)
                     }
-                } .frame(width: 320, height: 320)
+                } /*.frame(width: 320, height: 320)*/
+                .aspectRatio(1, contentMode: .fill)
             }
             
             
             
             
         }
-        .frame(width: 1668/*, height: 1518*/)
-        .padding()
+        .frame(width: 3366/*, height: 1518*/)
+        .padding(72)
         .background(darkModeEnabled ? vm.tempExportDarkMode != darkModeEnabled ? Color.white : Color.black :
                         vm.tempExportDarkMode != darkModeEnabled ? Color.black : Color.white)
         
@@ -644,10 +653,10 @@ struct TwentyFiveGridExportView: View {
 
     var body: some View {
         
-        VStack(alignment: .center) {
+        VStack(alignment: .center, spacing: vm.globalSpacing) {
             
             // 5x1 row
-            HStack(spacing: 12) {
+            HStack(spacing: vm.globalSpacing) {
 
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
                     if album != nil {
@@ -656,10 +665,11 @@ struct TwentyFiveGridExportView: View {
                         // if row has no values in it, do not display row in renderview
                         Rectangle().fill(.secondary)
                     }
-                } .frame(width: 320, height: 320)
+                } /*.frame(width: 320, height: 320)*/
+                .aspectRatio(1, contentMode: .fill)
             }
             
-            HStack(spacing: 12) {
+            HStack(spacing: vm.globalSpacing) {
 
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(10).dropFirst(5), id: \.key) { key, album in
                     if album != nil {
@@ -668,10 +678,11 @@ struct TwentyFiveGridExportView: View {
                         // if row has no values in it, do not display row in renderview
                         Rectangle().fill(.secondary)
                     }
-                } .frame(width: 320, height: 320)
+                } /*.frame(width: 320, height: 320)*/
+                .aspectRatio(1, contentMode: .fill)
             }
             
-            HStack(spacing: 12) {
+            HStack(spacing: vm.globalSpacing) {
 
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(15).dropFirst(10), id: \.key) { key, album in
                     if album != nil {
@@ -680,10 +691,11 @@ struct TwentyFiveGridExportView: View {
                         // if row has no values in it, do not display row in renderview
                         Rectangle().fill(.secondary)
                     }
-                } .frame(width: 320, height: 320)
+                } /*.frame(width: 320, height: 320)*/
+                .aspectRatio(1, contentMode: .fill)
             }
             
-            HStack(spacing: 12) {
+            HStack(spacing: vm.globalSpacing) {
 
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(20).dropFirst(15), id: \.key) { key, album in
                     if album != nil {
@@ -692,10 +704,11 @@ struct TwentyFiveGridExportView: View {
                         // if row has no values in it, do not display row in renderview
                         Rectangle().fill(.secondary)
                     }
-                } .frame(width: 320, height: 320)
+                } /*.frame(width: 320, height: 320)*/
+                .aspectRatio(1, contentMode: .fill)
             }
             
-            HStack(spacing: 12) {
+            HStack(spacing: vm.globalSpacing) {
 
                 ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(25).dropFirst(20), id: \.key) { key, album in
                     if album != nil {
@@ -704,15 +717,16 @@ struct TwentyFiveGridExportView: View {
                         // if row has no values in it, do not display row in renderview
                         Rectangle().fill(.secondary)
                     }
-                } .frame(width: 320, height: 320)
+                } /*.frame(width: 320, height: 320)*/
+                .aspectRatio(1, contentMode: .fill)
             }
             
             
             
             
         }
-        .frame(width: 1668/*, height: 1518*/)
-        .padding()
+        .frame(width: 3366/*, height: 1518*/)
+        .padding(72)
         .background(darkModeEnabled ? vm.tempExportDarkMode != darkModeEnabled ? Color.white : Color.black :
                         vm.tempExportDarkMode != darkModeEnabled ? Color.black : Color.white)
         
