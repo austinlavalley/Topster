@@ -12,7 +12,7 @@ struct GridContent: View {
     
     var body: some View {
         switch vm.activeGridType {
-        case .forty:
+        case .fortyTwo:
             FortyTwoGridMaster()
         case .twenty:
             TwentyGridMaster()

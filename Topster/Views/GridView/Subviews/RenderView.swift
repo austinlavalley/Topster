@@ -181,8 +181,8 @@ struct ExportView: View {
     var body: some View {
         Group {
             switch vm.activeGridType {
-            case .forty:
-                TwentyFiveGridExportView()
+            case .fortyTwo:
+                FortyTwoGridExportView()
             case .twenty:
                 TwentyGridExportView()
             case .twentyWide:

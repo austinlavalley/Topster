@@ -26,7 +26,7 @@ struct GridLayoutSelectOption: View {
             
             Circle()
                 .stroke(isSelected ? Color.blue : Color.gray, lineWidth: 2)
-                .frame(width: 20, height: 20)
+                .frame(width: 24, height: 24)
                 .overlay(
                     Circle()
                         .fill(isSelected ? Color.blue : Color.clear)
@@ -35,7 +35,7 @@ struct GridLayoutSelectOption: View {
         }
         .padding()
         .background(isSelected ? Color.blue.opacity(0.1) : Color(UIColor.secondarySystemBackground))
-        .cornerRadius(10)
+        .cornerRadius(12)
     }
 }
 

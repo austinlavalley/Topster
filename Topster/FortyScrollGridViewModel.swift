@@ -165,7 +165,7 @@ struct GridWithType: Codable {
 }
 
 enum GridType: String, Codable {
-    case forty
+    case fortyTwo
     case twenty
     case twentyWide
     case twentyFive
@@ -180,7 +180,7 @@ class FortyScrollGridViewModel: ObservableObject {
     
     @Published var savedGrids: [GridWithType] = []
 //    @Published var FortyGridDict: [Int: Album?] = [:]
-    @Published var activeGridType = GridType.forty
+    @Published var activeGridType = GridType.fortyTwo
     
     
     @Published var globalSpacing: CGFloat = 24

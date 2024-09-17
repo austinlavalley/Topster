@@ -16,18 +16,18 @@ struct GridLayoutSheet: View {
             HStack {
                 ZStack {
                     Rectangle()
-                        .fill(vm.activeGridType == .forty ? Color.secondary.opacity(0.1) : Color.secondary.opacity(0.6))
+                        .fill(vm.activeGridType == .fortyTwo ? Color.secondary.opacity(0.1) : Color.secondary.opacity(0.6))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                         .overlay {
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(.blue, lineWidth: vm.activeGridType == .forty ? 2 : 0)
+                                .stroke(.blue, lineWidth: vm.activeGridType == .fortyTwo ? 2 : 0)
                         }
                     
                     VStack {
                         Text("40").font(.title).bold()
                         Text("Grid").font(.title2).bold()
                     }
-                    .foregroundStyle(vm.activeGridType == .forty ? Color.primary : .white)
+                    .foregroundStyle(vm.activeGridType == .fortyTwo ? Color.primary : .white)
                     
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

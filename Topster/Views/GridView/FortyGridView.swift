@@ -115,11 +115,11 @@ struct FortyGridView: View {
                 VStack {
                     Button {
                         withAnimation(.spring) {
-                            vm.activeGridType = .forty
+                            vm.activeGridType = .fortyTwo
                             showNewSheet = false
                         }
                     } label: {
-                        GridLayoutSelectOption(title: "40 Albums", subtitle: "Dynamic, multi-sized rows", isSelected: vm.activeGridType == .forty)
+                        GridLayoutSelectOption(title: "42 Albums", subtitle: "Multi-sized rows", isSelected: vm.activeGridType == .fortyTwo)
                     }.tint(.primary)
                     
                     Button {
