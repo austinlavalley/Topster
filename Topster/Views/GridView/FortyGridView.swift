@@ -15,11 +15,14 @@ struct FortyGridView: View {
     @State private var showExportSheet = false
     @State private var showNewSheet = false
     
+    @State private var showingPopover = false
+    @State private var customGridName = ""
+    
     var body: some View {
         NavigationStack {
             VStack {
                 
-//                Text(vm.currentActiveGrid?.description ?? "NONE")
+                //                Text(vm.currentActiveGrid?.description ?? "NONE")
                 
                 ScrollView {
                     GridContent()
@@ -27,8 +30,9 @@ struct FortyGridView: View {
                         .scrollIndicators(.hidden)
                         .padding()
                         .navigationBarTitleDisplayMode(.inline)
-//                        .navigationTitle("Top 40 Chart")
-                        .navigationTitle((vm.currentActiveGrid != nil) ? "Grid #\(vm.currentActiveGrid ?? 0)" : "Unsaved Grid")
+                    //                        .navigationTitle("Top 40 Chart")
+                    //                        .navigationTitle((vm.currentActiveGrid != nil) ? "Grid #\(vm.currentActiveGrid ?? 0)" : "Unsaved Grid")
+                        .navigationTitle((vm.currentActiveGrid != nil) ? vm.savedGrids[vm.currentActiveGrid!].name != nil ? "\(String(describing: vm.savedGrids[vm.currentActiveGrid!].name))" : "Unnamed Grid" : "Unsaved Grid" )
                 }
                 
                 HStack {
@@ -63,7 +67,7 @@ struct FortyGridView: View {
             
             .toolbar {
                 ToolbarItem {
-                // Using a label instead of a button to incorporate hierarchical icons
+                    // Using a label instead of a button to incorporate hierarchical icons
                     Label("", systemImage: "crop.rotate")
                         .symbolRenderingMode(.hierarchical)
                         .foregroundStyle(.blue)
@@ -80,6 +84,13 @@ struct FortyGridView: View {
                         } label: {
                             Label("New grid", systemImage: "plus")
                         }
+                        
+                        Button() {
+                            showingPopover.toggle()
+                        } label: {
+                            Label("Name grid", systemImage: "pencil")
+                        }
+                        
                         
                         Button() {
                             showNewSheet.toggle()
@@ -102,6 +113,7 @@ struct FortyGridView: View {
                     }
                 }
             }
+            
         }
         .sheet(isPresented: $vm.showExportSheet) {
             RenderView()
@@ -111,7 +123,7 @@ struct FortyGridView: View {
             VStack(spacing: 0) {
                 
                 Text("Choose grid layout").font(.title2).bold()
-                                
+                
                 VStack {
                     Button {
                         withAnimation(.spring) {
@@ -149,10 +161,30 @@ struct FortyGridView: View {
                         GridLayoutSelectOption(title: "20 Albums (Wide)", subtitle: "4x5 Grid", isSelected: vm.activeGridType == .twentyWide)
                     }.tint(.primary)
                 }.padding()
-        }
-//            .padding(.top, 24)
+            }
+            //            .padding(.top, 24)
             .presentationDetents([.fraction(0.6)])
             .presentationDragIndicator(.visible)
+        }
+        
+        .popover(isPresented: $showingPopover) {
+            VStack {
+                Text("Name Your Grid")
+                    .font(.headline)
+                    .padding()
+                
+                TextField("Grid Name", text: $customGridName)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                
+                Button("Save") {
+                    // Here you would typically save the collection name
+                    showingPopover = false
+                }
+                .padding()
+            }
+            .frame(width: 300, height: 200)
+            .presentationDetents([.medium])
         }
         
         .onAppear {

@@ -162,6 +162,8 @@ import SwiftUI
 struct GridWithType: Codable {
     var grid: [Int: Album?]
     var type: GridType
+    
+    var name: String?
 }
 
 enum GridType: String, Codable {
@@ -179,7 +181,7 @@ class FortyScrollGridViewModel: ObservableObject {
     @Published var pressShowRemove = false
     
     @Published var savedGrids: [GridWithType] = []
-//    @Published var FortyGridDict: [Int: Album?] = [:]
+    @Published var FortyGridDict: [Int: Album?] = [:]
     @Published var activeGridType = GridType.fortyTwo
     
     
@@ -203,17 +205,17 @@ class FortyScrollGridViewModel: ObservableObject {
         }
         
         // Initialize FortyGridDict if it's empty
-//        if FortyGridDict.isEmpty {
-//            for i in 1...40 {
-//                FortyGridDict[i] = nil
-//            }
-//        }
+        if FortyGridDict.isEmpty {
+            for i in 1...42 {
+                FortyGridDict[i] = nil
+            }
+        }
     }
     
         // main grid control, key is the grid space & value is an optional Album model
-        @Published var FortyGridDict: [Int: Album?] = [
-            1: nil, 2: nil, 3: nil, 4: nil, 5: nil, 6: nil, 7: nil, 8: nil, 9: nil, 10: nil, 11: nil, 12: nil, 13: nil, 14: nil, 15: nil, 16: nil, 17: nil, 18: nil, 19: nil, 20: nil, 21: nil, 22: nil, 23: nil, 24: nil, 25: nil, 26: nil, 27: nil, 28: nil, 29: nil, 30: nil, 31: nil, 32: nil, 33: nil, 34: nil, 35: nil, 36: nil, 37: nil, 38: nil, 39: nil, 40: nil, 41: nil, 42: nil
-        ]
+//        @Published var FortyGridDict: [Int: Album?] = [
+//            1: nil, 2: nil, 3: nil, 4: nil, 5: nil, 6: nil, 7: nil, 8: nil, 9: nil, 10: nil, 11: nil, 12: nil, 13: nil, 14: nil, 15: nil, 16: nil, 17: nil, 18: nil, 19: nil, 20: nil, 21: nil, 22: nil, 23: nil, 24: nil, 25: nil, 26: nil, 27: nil, 28: nil, 29: nil, 30: nil, 31: nil, 32: nil, 33: nil, 34: nil, 35: nil, 36: nil, 37: nil, 38: nil, 39: nil, 40: nil, 41: nil, 42: nil
+//        ]
 
     
     var EditableFortyGridDict: [Int: Album?] {
