@@ -52,7 +52,7 @@ struct AnimatedSaveButtonView: View {
             self.isAnimating = true
             self.isSuccess = true
             
-            vm.addToSavedGrids(grid: vm.FortyGridDict, type: vm.activeGridType)
+            vm.addToSavedGrids()
 
             // After a delay, reset the animation state
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {

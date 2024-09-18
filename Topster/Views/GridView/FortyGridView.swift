@@ -32,7 +32,7 @@ struct FortyGridView: View {
                         .navigationBarTitleDisplayMode(.inline)
                     //                        .navigationTitle("Top 40 Chart")
                     //                        .navigationTitle((vm.currentActiveGrid != nil) ? "Grid #\(vm.currentActiveGrid ?? 0)" : "Unsaved Grid")
-                        .navigationTitle((vm.currentActiveGrid != nil) ? vm.savedGrids[vm.currentActiveGrid!].name != nil ? "\(String(describing: vm.savedGrids[vm.currentActiveGrid!].name))" : "Unnamed Grid" : "Unsaved Grid" )
+                        .navigationTitle((vm.currentActiveGrid != nil) ? vm.savedGrids[vm.currentActiveGrid!].name != nil ? "\(vm.savedGrids[vm.currentActiveGrid!].name ?? "BROKEN OPTIONAL")" : "Unnamed Grid \(vm.currentActiveGrid ?? 0)" : "Unsaved Grid" )
                 }
                 
                 HStack {
@@ -179,6 +179,8 @@ struct FortyGridView: View {
                 
                 Button("Save") {
                     // Here you would typically save the collection name
+//                    vm.addToSavedGrids(name: customGridName)
+                    vm.updateName(name: customGridName)
                     showingPopover = false
                 }
                 .padding()
