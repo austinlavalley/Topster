@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Album: Codable, Identifiable {
+struct Album: Codable, Identifiable, Equatable {
     
     let id = UUID()
     let name, artist: String
@@ -19,6 +19,14 @@ struct Album: Codable, Identifiable {
     
     enum CodingKeys: String, CodingKey {
         case name, artist, url, image, streamable, mbid
+    }
+    
+    
+    
+    static func == (lhs: Album, rhs: Album) -> Bool {
+        lhs.id == rhs.id &&
+        lhs.name == rhs.name &&
+        lhs.artist == rhs.artist
     }
 }
 

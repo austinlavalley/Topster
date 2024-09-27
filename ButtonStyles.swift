@@ -42,10 +42,12 @@ struct AnimatedSaveButtonView: View {
     
     @State var buttonText: String
     @State var buttonActionText: String
-    
-    @State var noAlbums: Bool
-    
+        
     let isSecondaryStyle: Bool
+
+    private var isDisabled: Bool {
+        (vm.FortyGridDict.allSatisfy({ $0.value == nil }) || vm.currentActiveGrid != nil) && !isAnimating
+    }
 
     var body: some View {
         Button(action: {
@@ -63,12 +65,22 @@ struct AnimatedSaveButtonView: View {
         }) {
             Label(isAnimating ? buttonActionText : buttonText, systemImage: isAnimating ? "checkmark" : "")
                 .frame(maxWidth: .infinity)
-                .foregroundColor(isSecondaryStyle ? Color.blue : Color.white)
+                .foregroundColor(isDisabled ? Color.gray : (isSecondaryStyle ? Color.blue : Color.white))
                 .bold()
                 .padding()
-                .background(vm.FortyGridDict.allSatisfy({ $0.value == nil }) ? Color.gray.opacity(0.75) : isAnimating ? (isSecondaryStyle ? Color.gray.opacity(0.25) : Color.green) : (isSecondaryStyle ? Color.gray.opacity(0.25) : Color.blue))
+                .background(
+                    Group {
+                        if isDisabled {
+                            Color.gray.opacity(0.2)
+                        } else if isAnimating {
+                            isSecondaryStyle ? Color.yellow.opacity(0.25) : Color.green
+                        } else {
+                            isSecondaryStyle ? Color.red.opacity(0.25) : Color.blue
+                        }
+                    }
+                )
                 .cornerRadius(12)
         }
-        .disabled(isAnimating) // Disable the button while animating
+        .disabled(isDisabled || isAnimating)  // Disable the button when conditions are met or while animating
     }
 }

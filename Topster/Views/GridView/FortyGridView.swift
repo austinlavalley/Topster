@@ -8,6 +8,25 @@
 import SwiftUI
 
 
+func areDictsEqual(dict1: [Int: Album?], dict2: [Int: Album?]) -> Bool {
+    
+    guard dict1.count == dict2.count else { return false }
+    
+    guard !dict1.isEmpty else { return false }
+    
+    
+    for (key, value) in dict1 {
+        
+        guard let val = dict2[key], value == val else { return false }
+        
+    }
+    
+    
+    return true
+}
+
+
+
 struct FortyGridView: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     
@@ -22,7 +41,8 @@ struct FortyGridView: View {
         NavigationStack {
             VStack {
                 
-                //                Text(vm.currentActiveGrid?.description ?? "NONE")
+                                Text(vm.currentActiveGrid?.description ?? "NIL")
+                Text(vm.currentActiveGrid != nil ? (vm.savedGrids[vm.currentActiveGrid!].grid == vm.FortyGridDict ? "EQUAL" : "NOT EQUAL") : "currentActiveGrid = NIL")
                 
                 ScrollView {
                     GridContent()
@@ -42,8 +62,10 @@ struct FortyGridView: View {
                     .buttonStyle(DefaultSecondary())
                     .disabled(vm.FortyGridDict.allSatisfy({ $0.value == nil }))
                     
-                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Saved", noAlbums: vm.FortyGridDict.allSatisfy({ $0.value == nil }), isSecondaryStyle: false)
-                        .disabled(vm.FortyGridDict.allSatisfy({ $0.value == nil })) // disables save button if the grid is empty, can't do it inside buttonstyle
+//                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Saved", noAlbums: vm.FortyGridDict.allSatisfy({ $0.value == nil }), isSecondaryStyle: false)
+                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Saved", isSecondaryStyle: false)
+//                        .disabled(vm.FortyGridDict.allSatisfy({ $0.value == nil })) // disables save button if the grid is empty, can't do it inside buttonstyle
+//                        .disabled((vm.currentActiveGrid != nil) ? vm.savedGrids[vm.currentActiveGrid!].grid == vm.FortyGridDict : true)
                     
                 }
                 .frame(maxWidth: .infinity)

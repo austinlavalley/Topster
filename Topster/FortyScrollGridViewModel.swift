@@ -250,6 +250,12 @@ class FortyScrollGridViewModel: ObservableObject {
     
     
     func updateName(name: String? = nil) {
+        guard currentActiveGrid != nil else {
+            addToSavedGrids(name: name)
+            return
+        }
+        
+        
         EditableSavedGrids[currentActiveGrid!].name = name
     }
     
