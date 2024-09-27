@@ -14,9 +14,9 @@ struct SavedGridsListView: View {
     var body: some View {
         NavigationStack {
             if !vm.savedGrids.isEmpty {
-                ScrollView {
                     VStack {
-                        
+                        ScrollView {
+
                         // for each GRID in the array of saved grids
                         ForEach(Array(vm.savedGrids.enumerated()), id: \.offset) { index, grid in
                             
@@ -27,6 +27,7 @@ struct SavedGridsListView: View {
                         }
                         .padding(.horizontal)
                     }
+                        
                 }
                 .navigationTitle("Saved grids")
             } else {
