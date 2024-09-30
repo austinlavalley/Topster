@@ -29,7 +29,20 @@ struct SavedGridsListView: View {
                     }
                         
                 }
+                    .toolbar {
+                        ToolbarItem {
+                            Button {
+                                vm.removeFromSavedGrids(at: vm.currentActiveGrid!)
+                            } label: {
+                                Image(systemName: "trash")
+                            }
+                            .disabled(vm.currentActiveGrid == nil)
+                        }
+                    }
+                
                 .navigationTitle("Saved grids")
+                
+                
             } else {
                 VStack {
                     Spacer()

@@ -52,6 +52,7 @@ struct SavedGridCardPreviewView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 6))
                     }
                 }
+            .scrollIndicators(.hidden)
             }
             .padding()
             .background(currentIndex == vm.currentActiveGrid ? Color.blue.opacity(0.4) : .secondary.opacity(0.4))
@@ -59,32 +60,7 @@ struct SavedGridCardPreviewView: View {
             .scaleEffect(isPressed || isLongPressed ? 0.95 : 1)
             .animation(.spring(response: 0.3, dampingFraction: 0.6, blendDuration: 0), value: isPressed || isLongPressed)
         }
-//        .gesture(
-//            DragGesture(minimumDistance: 0)
-//                .updating($isPressed) { _, state, _ in
-//                    state = true
-//                }
-//                .onEnded { _ in
-//                    if !isLongPressed {
-//                        vm.FortyGridDict = grid.grid
-//                        vm.currentActiveGrid = currentIndex
-//                        vm.activeGridType = grid.type
-//                    }
-//                }
-//        )
-//        .simultaneousGesture(
-//            LongPressGesture(minimumDuration: 0.5)
-//                .onEnded { _ in
-//                    isLongPressed = true
-//                    showDeleteConfirm.toggle()
-//                }
-//        )
-//        .onChange(of: showDeleteConfirm) { _, newValue in
-//            if !newValue {
-//                isLongPressed = false
-//            }
-//        }
-        
+
         .onTapGesture {
             isLongPressed.toggle()
             
@@ -99,10 +75,6 @@ struct SavedGridCardPreviewView: View {
 
         
         .confirmationDialog("Delete this grid?", isPresented: $showDeleteConfirm) {
-//            Button("Set as active grid") {
-//                vm.FortyGridDict = grid
-//                vm.currentActiveGrid = currentIndex
-//            }
             Button("Delete grid", role: .destructive) {
                 vm.removeFromSavedGrids(at: currentIndex)
                 vm.currentActiveGrid = nil

@@ -180,8 +180,6 @@ struct FortyGridView: View {
                     .padding()
                 
                 Button("Save") {
-                    // Here you would typically save the collection name
-//                    vm.addToSavedGrids(name: customGridName)
                     vm.updateName(name: customGridName)
                     showingPopover = false
                 }
