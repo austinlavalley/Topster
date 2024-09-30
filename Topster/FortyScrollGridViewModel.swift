@@ -189,7 +189,7 @@ class FortyScrollGridViewModel: ObservableObject {
     
     @AppStorage("FortyGridDict") var storedFortyGridDict: Data?
     @AppStorage("storedSavedGrids") var storedSavedGrids: Data?
-    @AppStorage("currentActiveGrid") var currentActiveGrid: Int?
+    @AppStorage("currentActiveGrid") var currentActiveGrid: Int? 
     
     
     init() {

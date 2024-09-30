@@ -33,6 +33,8 @@ struct SavedGridsListView: View {
                         ToolbarItem {
                             Button {
                                 vm.removeFromSavedGrids(at: vm.currentActiveGrid!)
+                                vm.currentActiveGrid = nil
+                                vm.clearGrid()
                             } label: {
                                 Image(systemName: "trash")
                             }
