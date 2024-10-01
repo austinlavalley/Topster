@@ -15,7 +15,7 @@ struct FortyGridView: View {
     @State private var showExportSheet = false
     @State private var showNewSheet = false
     
-    @State private var showingPopover = false
+    @State private var showingPopover = true
     @State private var customGridName = ""
     
     var body: some View {
@@ -31,9 +31,7 @@ struct FortyGridView: View {
                         .scrollIndicators(.hidden)
                         .padding()
                         .navigationBarTitleDisplayMode(.inline)
-                    //                        .navigationTitle("Top 40 Chart")
-                    //                        .navigationTitle((vm.currentActiveGrid != nil) ? "Grid #\(vm.currentActiveGrid ?? 0)" : "Unsaved Grid")
-                        .navigationTitle((vm.currentActiveGrid != nil) ? vm.savedGrids[vm.currentActiveGrid!].name != nil ? "\(vm.savedGrids[vm.currentActiveGrid!].name ?? "BROKEN OPTIONAL")" : "Unnamed Grid \(vm.currentActiveGrid ?? 0)" : "Unsaved Grid" )
+//                        .navigationTitle((vm.currentActiveGrid != nil) ? vm.savedGrids[vm.currentActiveGrid!].name != nil ? "\(vm.savedGrids[vm.currentActiveGrid!].name ?? "BROKEN OPTIONAL")" : "Unnamed Grid \(vm.currentActiveGrid ?? 0)" : "Unsaved Grid" )
                 }
                 
                 HStack {
@@ -44,9 +42,6 @@ struct FortyGridView: View {
                     .disabled(vm.FortyGridDict.allSatisfy({ $0.value == nil }))
                     
                     AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Saved", isSecondaryStyle: false)
-//                        .disabled(vm.FortyGridDict.allSatisfy({ $0.value == nil })) // disables save button if the grid is empty, can't do it inside buttonstyle
-//                        .disabled((vm.currentActiveGrid != nil) ? vm.savedGrids[vm.currentActiveGrid!].grid == vm.FortyGridDict : true)
-                    
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
@@ -164,34 +159,49 @@ struct FortyGridView: View {
                     }.tint(.primary)
                 }.padding()
             }
-            //            .padding(.top, 24)
             .presentationDetents([.fraction(0.6)])
             .presentationDragIndicator(.visible)
         }
         
         .popover(isPresented: $showingPopover) {
-            VStack {
-                Text("Name Your Grid")
-                    .font(.headline)
-                    .padding()
+            VStack(spacing: 24) {
+//                Spacer()
+                
+                VStack(spacing: 8) {
+                    Text("Name this grid")
+                        .font(.title3).bold()
+                    Text("This is the name that will show in your saved list, and can be changed at any time.")
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.secondary)
+                }.padding(12)
                 
                 TextField("Grid Name", text: $customGridName)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
+                    .background(.secondary.opacity(0.2))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                
+//                Spacer()
                 
                 Button("Save") {
                     vm.updateName(name: customGridName)
                     showingPopover = false
                 }
                 .padding()
+                .frame(maxWidth: .infinity)
+                .background(customGridName.isEmpty ? Color.secondary : .blue)
+                .foregroundStyle(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .bold()
+                .disabled(customGridName.isEmpty)
             }
-            .frame(width: 300, height: 200)
-            .presentationDetents([.medium])
+            .padding()
+//            .frame(width: 300, height: 200)
+            .presentationDetents([.fraction(0.4)])
         }
         
         .onAppear {
             if vm.currentActiveGrid != nil {
-                vm.FortyGridDict = vm.savedGrids[vm.currentActiveGrid!].grid
+//                vm.FortyGridDict = vm.savedGrids[vm.currentActiveGrid!].grid
             }
         }
     }
