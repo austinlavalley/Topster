@@ -15,7 +15,7 @@ struct FortyGridView: View {
     @State private var showExportSheet = false
     @State private var showNewSheet = false
     
-    @State private var showingPopover = true
+    @State private var showingPopover = false
     @State private var customGridName = ""
     
     var body: some View {
@@ -31,7 +31,7 @@ struct FortyGridView: View {
                         .scrollIndicators(.hidden)
                         .padding()
                         .navigationBarTitleDisplayMode(.inline)
-//                        .navigationTitle((vm.currentActiveGrid != nil) ? vm.savedGrids[vm.currentActiveGrid!].name != nil ? "\(vm.savedGrids[vm.currentActiveGrid!].name ?? "BROKEN OPTIONAL")" : "Unnamed Grid \(vm.currentActiveGrid ?? 0)" : "Unsaved Grid" )
+                        .navigationTitle((vm.currentActiveGrid != nil) ? vm.savedGrids[vm.currentActiveGrid!].name != nil ? "\(vm.savedGrids[vm.currentActiveGrid!].name ?? "BROKEN OPTIONAL")" : "Unnamed Grid \(vm.currentActiveGrid ?? 0)" : "Unsaved Grid" )
                 }
                 
                 HStack {
@@ -201,7 +201,7 @@ struct FortyGridView: View {
         
         .onAppear {
             if vm.currentActiveGrid != nil {
-//                vm.FortyGridDict = vm.savedGrids[vm.currentActiveGrid!].grid
+                vm.FortyGridDict = vm.savedGrids[vm.currentActiveGrid!].grid
             }
         }
     }
