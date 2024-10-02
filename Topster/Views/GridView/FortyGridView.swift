@@ -185,6 +185,7 @@ struct FortyGridView: View {
                 Button("Save") {
                     vm.updateName(name: customGridName)
                     showingPopover = false
+                    customGridName = ""
                 }
                 .padding()
                 .frame(maxWidth: .infinity)

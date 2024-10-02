@@ -10,6 +10,8 @@ import SwiftUI
 struct SavedGridsListView: View {
     
     @EnvironmentObject private var vm: FortyScrollGridViewModel
+    
+    @State private var showDeleteConfirm = false
         
     var body: some View {
         NavigationStack {
@@ -32,11 +34,7 @@ struct SavedGridsListView: View {
                     .toolbar {
                         ToolbarItem {
                             Button {
-                                withAnimation {
-                                    vm.removeFromSavedGrids(at: vm.currentActiveGrid!)
-                                    vm.currentActiveGrid = nil
-                                    vm.clearGrid()
-                                }
+                                showDeleteConfirm.toggle()
                             } label: {
                                 Image(systemName: "trash")
                             }
@@ -57,6 +55,19 @@ struct SavedGridsListView: View {
                 }
             }
         }
+        .confirmationDialog("Delete this grid?", isPresented: $showDeleteConfirm) {
+            Button("Delete grid", role: .destructive) {
+                withAnimation {
+                    vm.removeFromSavedGrids(at: vm.currentActiveGrid!)
+                    vm.currentActiveGrid = nil
+                    vm.clearGrid()
+                }
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("This can't be ctrl + z'd")
+        }
+        
     }
 }
 
