@@ -33,7 +33,6 @@ struct AlbumSearchView: View {
                                 vm.removeAlbumFromGrid(at: vm.selectedGridID ?? 0)
                             }
                         } label: {
-//                            Text("Remove from grid").foregroundColor(.red)
                             Label("Remove", systemImage: "").foregroundStyle(.red)
                         }
 
@@ -43,7 +42,17 @@ struct AlbumSearchView: View {
                 Group {
                     HStack {
                         TextField("Search", text: $searchText)
+                            .autocorrectionDisabled()
                             .focused($isSearchFocused)
+                            .toolbar {
+                                ToolbarItemGroup(placement: .keyboard) {
+                                    Spacer()
+
+                                    Button("Done") {
+                                        isSearchFocused = false
+                                    }
+                                }
+                            }
                         Button("Search") {
                             searchForAlbums()
                         }
