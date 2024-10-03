@@ -14,7 +14,6 @@
 		D92B6F112A9BBF9300A7CCBD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F102A9BBF9300A7CCBD /* ContentView.swift */; };
 		D92B6F132A9BBF9400A7CCBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D92B6F122A9BBF9400A7CCBD /* Assets.xcassets */; };
 		D92B6F162A9BBF9400A7CCBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D92B6F152A9BBF9400A7CCBD /* Preview Assets.xcassets */; };
-		D92B6F1D2A9BBFA300A7CCBD /* FortyTwoGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F1C2A9BBFA300A7CCBD /* FortyTwoGridView.swift */; };
 		D92B6F432AA380F700A7CCBD /* FortyGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92B6F422AA380F600A7CCBD /* FortyGridView.swift */; };
 		D9346C692ACB7AC200CA8F70 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9346C682ACB7AC200CA8F70 /* Album.swift */; };
 		D93AD4BC2AC23449001D2BA3 /* AlbumSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93AD4BB2AC23449001D2BA3 /* AlbumSearchView.swift */; };
@@ -34,8 +33,6 @@
 		D9C578762B14E7F900B94E1F /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C578752B14E7F900B94E1F /* ButtonStyles.swift */; };
 		D9C8CCC02AEDC54400FF0997 /* SavedGridCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C8CCBF2AEDC54400FF0997 /* SavedGridCardView.swift */; };
 		D9C8CCC22AF582E500FF0997 /* SavedGridsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C8CCC12AF582E500FF0997 /* SavedGridsListView.swift */; };
-		D9DAD16E2AE423FE003CD6B6 /* DraggableGridSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */; };
-		D9DAD1702AE57111003CD6B6 /* ShakeyDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DAD16F2AE57111003CD6B6 /* ShakeyDelete.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,7 +44,6 @@
 		D92B6F102A9BBF9300A7CCBD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D92B6F122A9BBF9400A7CCBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D92B6F152A9BBF9400A7CCBD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		D92B6F1C2A9BBFA300A7CCBD /* FortyTwoGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FortyTwoGridView.swift; sourceTree = "<group>"; };
 		D92B6F422AA380F600A7CCBD /* FortyGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FortyGridView.swift; sourceTree = "<group>"; };
 		D9346C682ACB7AC200CA8F70 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		D93AD4BB2AC23449001D2BA3 /* AlbumSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumSearchView.swift; sourceTree = "<group>"; };
@@ -68,8 +64,6 @@
 		D9C578752B14E7F900B94E1F /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		D9C8CCBF2AEDC54400FF0997 /* SavedGridCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedGridCardView.swift; sourceTree = "<group>"; };
 		D9C8CCC12AF582E500FF0997 /* SavedGridsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedGridsListView.swift; sourceTree = "<group>"; };
-		D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableGridSetup.swift; sourceTree = "<group>"; };
-		D9DAD16F2AE57111003CD6B6 /* ShakeyDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeyDelete.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,11 +80,6 @@
 		D92B6F022A9BBF9300A7CCBD = {
 			isa = PBXGroup;
 			children = (
-				D9DAD16F2AE57111003CD6B6 /* ShakeyDelete.swift */,
-				D9DAD16D2AE423FE003CD6B6 /* DraggableGridSetup.swift */,
-				D9C578752B14E7F900B94E1F /* ButtonStyles.swift */,
-				D92B6F1C2A9BBFA300A7CCBD /* FortyTwoGridView.swift */,
-				D91952A72B02C2DA00FD246C /* InternetImage.swift */,
 				D92B6F0D2A9BBF9300A7CCBD /* Topster */,
 				D92B6F0C2A9BBF9300A7CCBD /* Products */,
 			);
@@ -107,6 +96,8 @@
 		D92B6F0D2A9BBF9300A7CCBD /* Topster */ = {
 			isa = PBXGroup;
 			children = (
+				D91952A72B02C2DA00FD246C /* InternetImage.swift */,
+				D9C578752B14E7F900B94E1F /* ButtonStyles.swift */,
 				D9C578722B0D66A500B94E1F /* Info.plist */,
 				D9B8B4062AB4FAFD00A4613A /* Models */,
 				D92B6F0E2A9BBF9300A7CCBD /* TopsterApp.swift */,
@@ -265,16 +256,13 @@
 				D9B8B40A2AB4FB2800A4613A /* Track.swift in Sources */,
 				D9B8B4032AB3B41700A4613A /* TopArtistsNetwork.swift in Sources */,
 				D9C578762B14E7F900B94E1F /* ButtonStyles.swift in Sources */,
-				D92B6F1D2A9BBFA300A7CCBD /* FortyTwoGridView.swift in Sources */,
 				D91952A82B02C2DA00FD246C /* InternetImage.swift in Sources */,
 				D99642542ABB50B6004CEA01 /* SearchResults.swift in Sources */,
 				D9346C692ACB7AC200CA8F70 /* Album.swift in Sources */,
 				D9B8B4082AB4FB0800A4613A /* Artist.swift in Sources */,
 				D9C8CCC22AF582E500FF0997 /* SavedGridsListView.swift in Sources */,
-				D9DAD1702AE57111003CD6B6 /* ShakeyDelete.swift in Sources */,
 				D92B6F0F2A9BBF9300A7CCBD /* TopsterApp.swift in Sources */,
 				D9B8B4012AB3AE6600A4613A /* TopTracksNetwork.swift in Sources */,
-				D9DAD16E2AE423FE003CD6B6 /* DraggableGridSetup.swift in Sources */,
 				D9ADFFE52C98815A00CA2D0F /* fittingrows.swift in Sources */,
 				D9B8B40C2AB4FCB800A4613A /* ArtistSearchView.swift in Sources */,
 				D93B71DE2C93959B002F816C /* GridLayoutSelectOption.swift in Sources */,
@@ -419,8 +407,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -429,9 +416,12 @@
 				MARKETING_VERSION = 1.3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.austinlavalley.Topster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -451,8 +441,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -461,9 +450,12 @@
 				MARKETING_VERSION = 1.3.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.austinlavalley.Topster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

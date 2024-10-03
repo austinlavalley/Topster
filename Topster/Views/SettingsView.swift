@@ -144,7 +144,6 @@ struct SettingsView: View {
         
         .navigationBarTitle("Settings")
         .padding()
-        //        .background(.gray.opacity(0.1))
     }
 }
 

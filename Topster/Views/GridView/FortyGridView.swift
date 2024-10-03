@@ -165,7 +165,6 @@ struct FortyGridView: View {
         
         .popover(isPresented: $showingPopover) {
             VStack(spacing: 24) {
-//                Spacer()
                 
                 VStack(spacing: 8) {
                     Text("Name this grid")
@@ -180,7 +179,6 @@ struct FortyGridView: View {
                     .background(.secondary.opacity(0.2))
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                 
-//                Spacer()
                 
                 Button("Save") {
                     vm.updateName(name: customGridName)
@@ -196,7 +194,6 @@ struct FortyGridView: View {
                 .disabled(customGridName.isEmpty)
             }
             .padding()
-//            .frame(width: 300, height: 200)
             .presentationDetents([.fraction(0.4)])
         }
         

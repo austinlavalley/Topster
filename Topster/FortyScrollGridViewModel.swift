@@ -181,7 +181,7 @@ class FortyScrollGridViewModel: ObservableObject {
     @Published var pressShowRemove = false
     
     @Published var savedGrids: [GridWithType] = []
-//    @Published var FortyGridDict: [Int: Album?] = [:]
+
     @Published var activeGridType = GridType.fortyTwo
     
     @Published var globalSpacing: CGFloat = 24
@@ -202,13 +202,6 @@ class FortyScrollGridViewModel: ObservableObject {
            let decodedData = try? JSONDecoder().decode([GridWithType].self, from: storedGrids) {
             savedGrids = decodedData
         }
-        
-        // Initialize FortyGridDict if it's empty
-//        if FortyGridDict.isEmpty {
-//            for i in 1...42 {
-//                FortyGridDict[i] = nil
-//            }
-//        }
     }
     
         // main grid control, key is the grid space & value is an optional Album model
@@ -237,11 +230,6 @@ class FortyScrollGridViewModel: ObservableObject {
         }
     }
     
-//    func addToSavedGrids(grid: [Int: Album?], type: GridType) {
-//        let gridWithType = GridWithType(grid: grid, type: type)
-//        EditableSavedGrids.append(gridWithType)
-//        currentActiveGrid = savedGrids.count - 1
-//    }
     
     func addToSavedGrids(name: String? = nil) {
         EditableSavedGrids.append(GridWithType(grid: FortyGridDict, type: activeGridType, name: name))

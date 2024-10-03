@@ -33,26 +33,6 @@ struct TopTracksNetwork: View {
             }
         }
     }
-
-//    func loadData() {
-//        guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=4a4a5193d0fbc4584f64f7032c91d277&format=json") else {
-//            return
-//        }
-//
-//        URLSession.shared.dataTask(with: url) { data, _, error in
-//            if let data = data {
-//                do {
-//                    let decoder = JSONDecoder()
-//                    let trackInfo = try decoder.decode(TrackInfo.self, from: data)
-//                    DispatchQueue.main.async {
-//                        self.tracks = trackInfo.tracks.track
-//                    }
-//                } catch {
-//                    print("Error decoding JSON: \(error)")
-//                }
-//            }
-//        }.resume()
-//    }
 }
 
 

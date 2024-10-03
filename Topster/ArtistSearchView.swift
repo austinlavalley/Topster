@@ -24,9 +24,7 @@ struct ArtistSearchView: View {
                 }
                 List(searchResults, id: \.name) { result in
                     HStack {
-                        Text(result.name ?? "")
-                        
-                        //                    Text("\(result.name ?? "n/a") - \(result.listeners ?? "0")")
+                        Text(result.name ?? "")                        
                     }
                 }
                 .navigationBarTitle("Search")
