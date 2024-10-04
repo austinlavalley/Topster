@@ -15,7 +15,7 @@ struct SavedGridsListView: View {
         
     var body: some View {
         NavigationStack {
-            if !vm.savedGrids.isEmpty {
+            if /*!vm.savedGrids.isEmpty*/ false {
                     VStack {
                         ScrollView {
 
@@ -46,10 +46,18 @@ struct SavedGridsListView: View {
                 
                 
             } else {
-                VStack {
+                VStack(spacing: 24) {
                     Spacer()
                     
-                    Text("no saved grids")
+                    Image("player")
+                        .resizable()
+                        .scaledToFit()
+                        .padding(.horizontal, 48)
+                    
+                    VStack(spacing: 4) {
+                        Text("No grids saved yet").font(.title).bold()
+                        Text("All of your saved grids will show up here").font(.subheadline).foregroundStyle(.secondary)
+                    }
                     
                     Spacer()
                 }
