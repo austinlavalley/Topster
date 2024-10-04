@@ -55,7 +55,7 @@ struct SavedGridsListView: View {
                         .padding(.horizontal, 48)
                     
                     VStack(spacing: 4) {
-                        Text("No grids saved yet").font(.title).bold()
+                        Text("No grids saved yet").font(.title2).bold()
                         Text("All of your saved grids will show up here").font(.subheadline).foregroundStyle(.secondary)
                     }
                     
