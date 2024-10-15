@@ -15,7 +15,7 @@ struct SavedGridsListView: View {
         
     var body: some View {
         NavigationStack {
-            if /*!vm.savedGrids.isEmpty*/ false {
+            if !vm.savedGrids.isEmpty /*false*/ {
                     VStack {
                         ScrollView {
 
