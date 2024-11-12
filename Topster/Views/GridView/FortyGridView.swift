@@ -128,7 +128,7 @@ struct FortyGridView: View {
                             showNewSheet = false
                         }
                     } label: {
-                        GridLayoutSelectOption(title: "42 Albums", subtitle: "Multi-sized rows", isSelected: vm.activeGridType == .fortyTwo)
+                        GridLayoutSelectOption(title: "42 Albums", subtitle: "Dynamic, multi-sized rows", isSelected: vm.activeGridType == .fortyTwo)
                     }.tint(.primary)
                     
                     Button {
