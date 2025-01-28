@@ -44,7 +44,8 @@ struct SavedGridCardPreviewView: View {
                         ForEach(nonNilPairs.sorted(by: {$0.key < $1.key}), id: \.key) { key, album in
                             if album != nil {
                                 VStack {
-                                    AsyncAlbumSquare(album: album!)
+//                                    AsyncAlbumSquare(album: album!)
+                                    AlbumSquare(album: album!)
                                 }
                             }
                         }
