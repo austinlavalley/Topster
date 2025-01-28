@@ -10,9 +10,18 @@ import Foundation
 
 
 class Networker {
+        
+    func fetchApiKey() -> String {
+        if let path = Bundle.main.path(forResource: "Secrets", ofType: "plist"),
+           let dict = NSDictionary(contentsOfFile: path) {
+            return dict["API_KEY"] as? String ?? ""
+        }
+        return ""
+    }
     
     func returnTopArtists(completion: @escaping (Result<[Artist], Error>) -> Void) {
-        guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=4a4a5193d0fbc4584f64f7032c91d277&format=json")
+        let apiKey = fetchApiKey()
+        guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=\(apiKey)&format=json")
         else { return }
         
         URLSession.shared.dataTask(with: url) { data, _, error in
@@ -37,7 +46,8 @@ class Networker {
     
     
     func returnTopTracks(completion: @escaping (Result<[Track], Error>) -> Void) {
-        guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=4a4a5193d0fbc4584f64f7032c91d277&format=json")
+        let apiKey = fetchApiKey()
+        guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=\(apiKey)&format=json")
         else { return }
         
         URLSession.shared.dataTask(with: url) { data, _, error in
@@ -62,7 +72,8 @@ class Networker {
     
     
     func searchArtists(query: String, completion: @escaping (Result<[Artist], Error>) -> Void) {
-        guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=artist.search&artist=\(query)&api_key=4a4a5193d0fbc4584f64f7032c91d277&format=json") else { return }
+        let apiKey = fetchApiKey()
+        guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=artist.search&artist=\(query)&api_key=\(apiKey)&format=json") else { return }
 
         URLSession.shared.dataTask(with: url) { data, _, error in
             
@@ -86,8 +97,9 @@ class Networker {
     }
     
     func searchAlbums(query: String, completion: @escaping (Result<[Album], Error>) -> Void) {
+        let apiKey = fetchApiKey()
         let formattedQuery = query.replacingOccurrences(of: " ", with: "-")
-        guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=album.search&album=\(formattedQuery)&api_key=4a4a5193d0fbc4584f64f7032c91d277&format=json") else { return }
+        guard let url = URL(string: "https://ws.audioscrobbler.com/2.0/?method=album.search&album=\(formattedQuery)&api_key=\(apiKey)&format=json") else { return }
 
         URLSession.shared.dataTask(with: url) { data, _, error in
             
