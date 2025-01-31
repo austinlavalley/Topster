@@ -213,11 +213,20 @@ struct AsyncAlbumSquare: View {
     let album: Album
     
     var body: some View {
-        AsyncImage(url: URL(string: album.image.first(where: { $0.size == "large"})?.text ?? "")) { image in
-            image
-                .resizable()
-        } placeholder: {
-            ProgressView()
+        AsyncImage(url: URL(string: album.image.first(where: { $0.size == "large"})?.text ?? "")) { phase in
+            if let image = phase.image {
+                image.resizable()
+            } else if phase.error != nil {
+                ZStack {
+                    Rectangle().fill(.primary.opacity(0.25))
+                    VStack(spacing: 8) {
+                        Image(systemName: "exclamationmark.icloud")
+                        Text("Problem fetching cover")
+                    }.foregroundStyle(.secondary).multilineTextAlignment(.center).font(.caption)
+                }
+            } else {
+                ProgressView()
+            }
         }
     }
 }
