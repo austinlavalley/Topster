@@ -9,24 +9,28 @@ import SwiftUI
 
 struct TopTracksNetwork: View {
     @State private var topTracks: [Track] = []
+    @State private var loadError: String?
 
     var body: some View {
         NavigationView {
             VStack {
                 
                 Button("Fetch top tracks") {
-                    Networker().returnTopTracks { result in
-                        
-                        switch result {
-                        case .success(let returnedTracks):
-                            self.topTracks = returnedTracks
-                        case .failure(let error):
-                            print("Error fetching top tracks: \(error)")
+                    Task {
+                        do {
+                            topTracks = try await Networker().returnTopTracks()
+                            loadError = nil
+                        } catch {
+                            loadError = error.localizedDescription
                         }
                     }
                 }
+
+                if let loadError {
+                    Text(loadError).font(.footnote).foregroundStyle(.secondary)
+                }
                 
-                List(topTracks, id: \.name) { track in
+                List(Array(topTracks.enumerated()), id: \.offset) { _, track in
                     Text("\(track.artist.name) - \(track.name)")
                 }
                 .navigationBarTitle("Track List")
@@ -34,10 +38,6 @@ struct TopTracksNetwork: View {
         }
     }
 }
-
-
-
-
 
 
 struct TopTracksNetwork_Previews: PreviewProvider {
