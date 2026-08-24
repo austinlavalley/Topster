@@ -15,6 +15,20 @@ struct TopsterApp: App {
     @State var notificationsEnabled = UserDefaults.standard.bool(forKey: "notificationsEnabled")
 
 
+    init() {
+        Self.configureImageCache()
+    }
+
+    /// Album art is ~72 KB a cover and Last.fm serves it with a ten year
+    /// `Cache-Control: max-age`, but `URLCache.shared` defaults to 500 KB of memory.
+    /// That is six covers. A forty album grid needs about 2.9 MB, so almost every
+    /// cover was evicted the moment it arrived and refetched on the next scroll.
+    private static func configureImageCache() {
+        URLCache.shared = URLCache(memoryCapacity: 50 * 1024 * 1024,
+                                   diskCapacity: 200 * 1024 * 1024,
+                                   diskPath: "topster-art")
+    }
+
 
     var body: some Scene {
         WindowGroup {
