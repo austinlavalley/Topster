@@ -14,6 +14,7 @@
 		97274259631D13944C99B3B1 /* CoverArchiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D56BEDFA2A77EB923433FFA /* CoverArchiveTests.swift */; };
 		B334FA5B82095B09DE5798EF /* ExportRenderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238A5096857BB6BB880878A1 /* ExportRenderTests.swift */; };
 		B89CC38CA1A04CAAB9446D1E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E27F7B6FCEF196F584F58CC1 /* Foundation.framework */; };
+		BE3998384D47007FEDBAE334 /* SaveToPhotosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36286A7FC33F8B874C4C4CED /* SaveToPhotosTests.swift */; };
 		D91952862AFE858300FD246C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91952852AFE858300FD246C /* SettingsView.swift */; };
 		D91952882B002DFC00FD246C /* RenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91952872B002DFC00FD246C /* RenderView.swift */; };
 		D91952A82B02C2DA00FD246C /* InternetImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91952A72B02C2DA00FD246C /* InternetImage.swift */; };
@@ -63,6 +64,7 @@
 
 /* Begin PBXFileReference section */
 		238A5096857BB6BB880878A1 /* ExportRenderTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExportRenderTests.swift; sourceTree = "<group>"; };
+		36286A7FC33F8B874C4C4CED /* SaveToPhotosTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SaveToPhotosTests.swift; sourceTree = "<group>"; };
 		59921367CAB6CD3078FBDA2C /* CoverResolutionTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoverResolutionTests.swift; sourceTree = "<group>"; };
 		68CB71BB8997B7668F594063 /* TopsterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TopsterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D56BEDFA2A77EB923433FFA /* CoverArchiveTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoverArchiveTests.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 			children = (
 				238A5096857BB6BB880878A1 /* ExportRenderTests.swift */,
 				7D56BEDFA2A77EB923433FFA /* CoverArchiveTests.swift */,
+				36286A7FC33F8B874C4C4CED /* SaveToPhotosTests.swift */,
 			);
 			name = TopsterUITests;
 			path = TopsterUITests;
@@ -406,6 +409,7 @@
 			files = (
 				B334FA5B82095B09DE5798EF /* ExportRenderTests.swift in Sources */,
 				97274259631D13944C99B3B1 /* CoverArchiveTests.swift in Sources */,
+				BE3998384D47007FEDBAE334 /* SaveToPhotosTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -668,7 +672,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Topster/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Topster saves your finished grid to your camera roll.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -703,7 +707,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Topster/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Topster saves your finished grid to your camera roll.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

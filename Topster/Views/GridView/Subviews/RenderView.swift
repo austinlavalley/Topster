@@ -5,6 +5,7 @@
 //  Created by Austin Lavalley on 11/11/23.
 //
 
+import Photos
 import SwiftUI
 
 
@@ -17,7 +18,9 @@ struct RenderView: View {
     
     
     @State var showLoading = true
-    @State private var showingSavedToPhotosSuccess = false
+    /// Text for the toast. Nil hides it. Holds a message rather than a flag so a
+    /// failed or denied save can say so instead of silently doing nothing.
+    @State private var saveMessage: String?
     
     
     
@@ -90,41 +93,38 @@ struct RenderView: View {
                             
                             if let snapshot = snapshot {
                                 Button("Save to Photos") {
-                                    UIImageWriteToSavedPhotosAlbum(snapshot, nil, nil, nil)
-                                    
-                                    withAnimation {
-                                        showingSavedToPhotosSuccess = true
-                                    }
-                                    
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                        withAnimation {
-                                            showingSavedToPhotosSuccess = false
-                                        }
-                                    }
-                                    
-                                    //                                presentationMode.wrappedValue.dismiss()
-                                    
+                                    saveToPhotos(snapshot)
                                 }
                                 .buttonStyle(DefaultPrimary())
+                                .accessibilityIdentifier("save-to-photos")
                             }
                         }.padding()
                     }
                 }
                 
                 
-                if showingSavedToPhotosSuccess {
+                if let saveMessage {
                     VStack {
                         Spacer()
                         Spacer()
                         Spacer()
                         
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 12).fill(Color.secondary.opacity(0.65))
-                                .frame(width: 240, height: 64)
-                                .padding()
-                            
-                            Text("Grid saved to camera roll").foregroundColor(.white).bold()
-                        }
+                        // Sized to its text rather than fixed, since the permission
+                        // message is longer than the success one. Capped so it stays a
+                        // pill instead of stretching the full width of the screen.
+                        Text(saveMessage)
+                            .foregroundColor(.white)
+                            .bold()
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 20)
+                            .frame(minWidth: 240)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color.secondary.opacity(0.65))
+                            )
+                            .frame(maxWidth: 320)
+                            .padding()
                         Spacer()
                     }
                 }
@@ -170,6 +170,38 @@ struct RenderView: View {
 
 
 extension RenderView {
+
+    /// Writes the grid to the camera roll and only then says so.
+    ///
+    /// The old call passed nil for the completion target, so nothing ever reported
+    /// back and the toast fired on the button tap. On a first save that put "Grid
+    /// saved to camera roll" underneath the permission prompt, before the user had
+    /// agreed to anything.
+    func saveToPhotos(_ image: UIImage) {
+        PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
+            guard status == .authorized || status == .limited else {
+                show("Topster needs permission to add to Photos. You can change that in Settings.")
+                return
+            }
+
+            PHPhotoLibrary.shared().performChanges {
+                PHAssetChangeRequest.creationRequestForAsset(from: image)
+            } completionHandler: { saved, _ in
+                show(saved ? "Grid saved to camera roll" : "Couldn't save the grid. Try again.")
+            }
+        }
+    }
+
+    private func show(_ message: String) {
+        DispatchQueue.main.async {
+            withAnimation { saveMessage = message }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                withAnimation { saveMessage = nil }
+            }
+        }
+    }
+
     func generateSnapshot() {
         Task {
             let renderer = ImageRenderer(content:
