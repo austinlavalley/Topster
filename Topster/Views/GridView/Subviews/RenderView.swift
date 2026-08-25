@@ -5,6 +5,7 @@
 //  Created by Austin Lavalley on 11/11/23.
 //
 
+import Photos
 import SwiftUI
 
 
@@ -17,9 +18,10 @@ struct RenderView: View {
     
     
     @State var showLoading = true
-    @State private var showingSavedToPhotosSuccess = false
+    /// Text for the toast. Nil hides it. Holds a message rather than a flag so a
+    /// failed or denied save can say so instead of silently doing nothing.
+    @State private var saveMessage: String?
     
-    @State private var showEdits = false
     
     
     var body: some View {
@@ -30,24 +32,41 @@ struct RenderView: View {
                     
                     VStack {
                         HStack {
-                            Button {
-                                showEdits.toggle()
+                            // A menu rather than a confirmation dialog: this is one
+                            // toggle, and a full modal sheet for it was heavy. Both
+                            // buttons now carry their own chrome, which they need to
+                            // read as controls against the floating bars in iOS 26.
+                            Menu {
+                                Button(vm.tempExportDarkMode ? "Light background" : "Dark background") {
+                                    vm.tempExportDarkMode.toggle()
+                                    generateSnapshot()
+                                }
                             } label: {
-                                Label(
-                                    title: { Text("") },
-                                    icon: { Image(systemName: "slider.horizontal.3").font(.title2).bold() })
+                                Image(systemName: "slider.horizontal.3")
+                                    .font(.title3.bold())
+                                    .frame(width: 44, height: 44)
+                                    .background(.regularMaterial, in: Circle())
                             }
+                            // Tint on the control rather than inside the label, so the
+                            // icons stay grey instead of picking up the accent colour.
+                            // The artwork should be the loudest thing on this sheet.
                             .foregroundStyle(.secondary)
+                            .accessibilityLabel("Background options")
+                            .accessibilityIdentifier("export-options")
 
                             Spacer()
+
                             Button {
                                 presentationMode.wrappedValue.dismiss()
                             } label: {
-                                Label(
-                                    title: { Text("") },
-                                    icon: { Image(systemName: "xmark").font(.title2) })
+                                Image(systemName: "xmark")
+                                    .font(.title3.bold())
+                                    .frame(width: 44, height: 44)
+                                    .background(.regularMaterial, in: Circle())
                             }
                             .foregroundStyle(.secondary)
+                            .accessibilityLabel("Close")
+                            .accessibilityIdentifier("export-close")
                         }
                         .padding(.horizontal, 12)
                     }.padding(.top, 24)
@@ -74,41 +93,38 @@ struct RenderView: View {
                             
                             if let snapshot = snapshot {
                                 Button("Save to Photos") {
-                                    UIImageWriteToSavedPhotosAlbum(snapshot, nil, nil, nil)
-                                    
-                                    withAnimation {
-                                        showingSavedToPhotosSuccess = true
-                                    }
-                                    
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                        withAnimation {
-                                            showingSavedToPhotosSuccess = false
-                                        }
-                                    }
-                                    
-                                    //                                presentationMode.wrappedValue.dismiss()
-                                    
+                                    saveToPhotos(snapshot)
                                 }
                                 .buttonStyle(DefaultPrimary())
+                                .accessibilityIdentifier("save-to-photos")
                             }
                         }.padding()
                     }
                 }
                 
                 
-                if showingSavedToPhotosSuccess {
+                if let saveMessage {
                     VStack {
                         Spacer()
                         Spacer()
                         Spacer()
                         
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 12).fill(Color.secondary.opacity(0.65))
-                                .frame(width: 240, height: 64)
-                                .padding()
-                            
-                            Text("Grid saved to camera roll").foregroundColor(.white).bold()
-                        }
+                        // Sized to its text rather than fixed, since the permission
+                        // message is longer than the success one. Capped so it stays a
+                        // pill instead of stretching the full width of the screen.
+                        Text(saveMessage)
+                            .foregroundColor(.white)
+                            .bold()
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 20)
+                            .frame(minWidth: 240)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color.secondary.opacity(0.65))
+                            )
+                            .frame(maxWidth: 320)
+                            .padding()
                         Spacer()
                     }
                 }
@@ -139,13 +155,7 @@ struct RenderView: View {
             })
             
             
-            .confirmationDialog("", isPresented: $showEdits) {
-                Button(vm.tempExportDarkMode ? "Light background" : "Dark background") {
-                    vm.tempExportDarkMode.toggle()
-                    generateSnapshot()
-                }
-            }
-            
+
         }
 
     }
@@ -160,6 +170,38 @@ struct RenderView: View {
 
 
 extension RenderView {
+
+    /// Writes the grid to the camera roll and only then says so.
+    ///
+    /// The old call passed nil for the completion target, so nothing ever reported
+    /// back and the toast fired on the button tap. On a first save that put "Grid
+    /// saved to camera roll" underneath the permission prompt, before the user had
+    /// agreed to anything.
+    func saveToPhotos(_ image: UIImage) {
+        PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
+            guard status == .authorized || status == .limited else {
+                show("Topster needs permission to add to Photos. You can change that in Settings.")
+                return
+            }
+
+            PHPhotoLibrary.shared().performChanges {
+                PHAssetChangeRequest.creationRequestForAsset(from: image)
+            } completionHandler: { saved, _ in
+                show(saved ? "Grid saved to camera roll" : "Couldn't save the grid. Try again.")
+            }
+        }
+    }
+
+    private func show(_ message: String) {
+        DispatchQueue.main.async {
+            withAnimation { saveMessage = message }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                withAnimation { saveMessage = nil }
+            }
+        }
+    }
+
     func generateSnapshot() {
         Task {
             let renderer = ImageRenderer(content:

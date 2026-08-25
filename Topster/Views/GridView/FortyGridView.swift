@@ -35,10 +35,13 @@ struct FortyGridView: View {
                 }
                 
                 HStack {
-                    Button("Export") {
+                    // "Export" overstated what this does. It opens a preview; the
+                    // actual saving or sharing happens on the next tap.
+                    Button("Preview") {
                         vm.showExportSheet.toggle()
                     }
                     .buttonStyle(DefaultSecondary())
+                    .accessibilityIdentifier("preview-grid")
                     .disabled(vm.FortyGridDict.allSatisfy({ $0.value == nil }))
                     
                     AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Saved", isSecondaryStyle: false)
@@ -213,17 +216,28 @@ struct AsyncAlbumSquare: View {
     let album: Album
     
     var body: some View {
-        AsyncImage(url: URL(string: album.image.first(where: { $0.size == "large"})?.text ?? "")) { phase in
+        // A nil URL leaves AsyncImage in its empty phase forever, spinning with no
+        // error to report. Last.fm has no art for a large share of albums, so that
+        // case gets answered directly instead of being handed to AsyncImage.
+        if let archived = CoverArchive.image(for: album.coverURL?.absoluteString ?? "") {
+            Image(uiImage: archived).resizable()
+        } else if let coverURL = album.coverURL {
+            loadingImage(from: coverURL)
+        } else {
+            NoCoverPlaceholder()
+        }
+    }
+
+    private func loadingImage(from coverURL: URL) -> some View {
+        AsyncImage(url: coverURL) { phase in
             if let image = phase.image {
                 image.resizable()
             } else if phase.error != nil {
-                ZStack {
-                    Rectangle().fill(.primary.opacity(0.25))
-                    VStack(spacing: 8) {
-                        Image(systemName: "exclamationmark.icloud")
-                        Text("Problem fetching cover")
-                    }.foregroundStyle(.secondary).multilineTextAlignment(.center).font(.caption)
-                }
+                // About 4% of Last.fm cover URLs are dead, and grids saved a year or
+                // two ago accumulate them. To the user that is the same situation as
+                // an album with no art, so it gets the same quiet treatment rather
+                // than an alarming error on a grid they already built.
+                NoCoverPlaceholder()
             } else {
                 ProgressView()
             }
@@ -239,7 +253,9 @@ struct AlbumSquare: View {
     
     var body: some View {
         VStack {
-            InternetImage(url: album.image.first(where: { $0.size == "large"})?.text ?? "") { image in
+            // Same helper the rest of the app uses, so this picks up the 300px art.
+            // Output dimensions are unchanged; the source is just no longer upscaled.
+            InternetImage(url: album.coverURL?.absoluteString ?? "") { image in
                 image
                     .resizable()
             }

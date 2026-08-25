@@ -10,6 +10,7 @@ import SwiftUI
 struct TopArtistsNetwork: View {
     
     @State private var topArtists: [Artist] = []
+    @State private var loadError: String?
 
     
     var body: some View {
@@ -17,29 +18,27 @@ struct TopArtistsNetwork: View {
             
             VStack {
                 Button("Fetch Top Artists") {
-                    Networker().returnTopArtists { result in
-                        
-                        switch result {
-                        case .success(let returnedArtists):
-                            self.topArtists = returnedArtists 
-                        case .failure(let error):
-                            print("Error fetching top artists: \(error)")
+                    Task {
+                        do {
+                            topArtists = try await Networker().returnTopArtists()
+                            loadError = nil
+                        } catch {
+                            loadError = error.localizedDescription
                         }
                     }
                 }
+
+                if let loadError {
+                    Text(loadError).font(.footnote).foregroundStyle(.secondary)
+                }
                 
-                List(topArtists, id: \.name) { artist in
+                List(Array(topArtists.enumerated()), id: \.offset) { _, artist in
                     Text(artist.name ?? "n/a")
                 }
             }
         }
     }
 }
-
-
-
-
-
 
 
 struct TopArtistsNetwork_Previews: PreviewProvider {

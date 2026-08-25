@@ -11,6 +11,7 @@ import SwiftUI
 struct ArtistSearchView: View {
     @State private var searchResults: [Artist] = []
     @State private var searchText: String = ""
+    @State private var searchError: String?
     
 
     var body: some View {
@@ -18,39 +19,64 @@ struct ArtistSearchView: View {
             VStack {
                 HStack {
                     TextField("Search", text: $searchText)
-                    Button("serach") {
-                        searchForArtists()
+                }
+
+                if let searchError {
+                    Text(searchError)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                } else {
+                    // Artist names are not unique and the field is optional, so results
+                    // are identified by position rather than by name.
+                    List(Array(searchResults.enumerated()), id: \.offset) { _, result in
+                        HStack {
+                            Text(result.name ?? "")
+                        }
                     }
                 }
-                List(searchResults, id: \.name) { result in
-                    HStack {
-                        Text(result.name ?? "")                        
-                    }
-                }
-                .navigationBarTitle("Search")
             }
+            .navigationBarTitle("Search")
             .padding()
         }
-        .onChange(of: searchText) {
-            searchForArtists()
+        .task(id: searchText) {
+            await runSearch()
         }
     }
     
     
-    private func searchForArtists() {
-        Networker().searchArtists(query: searchText) { result in
-            
-            switch result {
-            case .success(let returnedArtists):
-                self.searchResults = returnedArtists
-            case .failure(let error):
-                print("Error fetching top artists: \(error)")
-            }
+    private func runSearch() async {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !query.isEmpty else {
+            searchResults = []
+            searchError = nil
+            return
+        }
+
+        do {
+            try await Task.sleep(nanoseconds: 350_000_000)
+        } catch {
+            return
+        }
+
+        do {
+            let results = try await Networker().searchArtists(query: query)
+
+            guard !Task.isCancelled else { return }
+
+            searchResults = results
+            searchError = results.isEmpty ? "No artists found for \"\(query)\"." : nil
+        } catch is CancellationError {
+            return
+        } catch {
+            guard !Task.isCancelled else { return }
+
+            searchResults = []
+            searchError = error.localizedDescription
         }
     }
 }
-
-
 
 
 struct ArtistSearchView_Previews: PreviewProvider {
