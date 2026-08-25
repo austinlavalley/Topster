@@ -43,6 +43,7 @@
 		D9C8CCC02AEDC54400FF0997 /* SavedGridCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C8CCBF2AEDC54400FF0997 /* SavedGridCardView.swift */; };
 		D9C8CCC22AF582E500FF0997 /* SavedGridsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C8CCC12AF582E500FF0997 /* SavedGridsListView.swift */; };
 		EE952AB98F02DA48CBDCA5FB /* CoverArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11EC70B7F1CF42EEE85A8FD /* CoverArchive.swift */; };
+		F7D30E1E46F6DDA474C2D7BA /* StoreScreenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5E94EEE5C9DA00E6E6B6EB /* StoreScreenshots.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		68CB71BB8997B7668F594063 /* TopsterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TopsterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D56BEDFA2A77EB923433FFA /* CoverArchiveTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoverArchiveTests.swift; sourceTree = "<group>"; };
 		882E09C19C705B9D42F78BA0 /* RequestBuildingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RequestBuildingTests.swift; sourceTree = "<group>"; };
+		8F5E94EEE5C9DA00E6E6B6EB /* StoreScreenshots.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StoreScreenshots.swift; sourceTree = "<group>"; };
 		B2D0892549E0C8DF70AF79D9 /* ResponseDecodingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ResponseDecodingTests.swift; sourceTree = "<group>"; };
 		D11EC70B7F1CF42EEE85A8FD /* CoverArchive.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoverArchive.swift; sourceTree = "<group>"; };
 		D7DF645526BC4A9AF0586E36 /* TopsterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TopsterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +155,7 @@
 				238A5096857BB6BB880878A1 /* ExportRenderTests.swift */,
 				7D56BEDFA2A77EB923433FFA /* CoverArchiveTests.swift */,
 				36286A7FC33F8B874C4C4CED /* SaveToPhotosTests.swift */,
+				8F5E94EEE5C9DA00E6E6B6EB /* StoreScreenshots.swift */,
 			);
 			name = TopsterUITests;
 			path = TopsterUITests;
@@ -410,6 +413,7 @@
 				B334FA5B82095B09DE5798EF /* ExportRenderTests.swift in Sources */,
 				97274259631D13944C99B3B1 /* CoverArchiveTests.swift in Sources */,
 				BE3998384D47007FEDBAE334 /* SaveToPhotosTests.swift in Sources */,
+				F7D30E1E46F6DDA474C2D7BA /* StoreScreenshots.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
