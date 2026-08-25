@@ -234,6 +234,10 @@ class FortyScrollGridViewModel: ObservableObject {
     func addToSavedGrids(name: String? = nil) {
         EditableSavedGrids.append(GridWithType(grid: FortyGridDict, type: activeGridType, name: name))
         currentActiveGrid = savedGrids.count - 1
+
+        // Keep a local copy of the art so this grid survives Last.fm dropping a URL,
+        // and renders offline. Writes what is already cached, so no new downloads.
+        CoverArchive.archive(FortyGridDict.values.compactMap { entry in entry })
     }
     
     
@@ -250,12 +254,26 @@ class FortyScrollGridViewModel: ObservableObject {
     
     func removeFromSavedGrids(at index: Int) {
         EditableSavedGrids.remove(at: index)
+        pruneCoverArchive()
     }
     
     func deleteAllSavedGrids() {
         EditableSavedGrids = []
         clearGrid()
         currentActiveGrid = nil
+        pruneCoverArchive()
+    }
+
+    /// Drops archived covers no remaining saved grid refers to.
+    ///
+    /// Passes the full keep set rather than a delete list, so a cover shared between
+    /// two grids survives when one of them goes.
+    private func pruneCoverArchive() {
+        let keep = savedGrids
+            .flatMap { saved in saved.grid.values }
+            .compactMap { entry in entry?.coverURL?.absoluteString }
+
+        CoverArchive.prune(keeping: Set(keep))
     }
     
     func addAlbumToGrid(album: Album, at index: Int) {

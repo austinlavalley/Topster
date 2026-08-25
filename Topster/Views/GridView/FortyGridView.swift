@@ -216,7 +216,9 @@ struct AsyncAlbumSquare: View {
         // A nil URL leaves AsyncImage in its empty phase forever, spinning with no
         // error to report. Last.fm has no art for a large share of albums, so that
         // case gets answered directly instead of being handed to AsyncImage.
-        if let coverURL = album.coverURL {
+        if let archived = CoverArchive.image(for: album.coverURL?.absoluteString ?? "") {
+            Image(uiImage: archived).resizable()
+        } else if let coverURL = album.coverURL {
             loadingImage(from: coverURL)
         } else {
             NoCoverPlaceholder()

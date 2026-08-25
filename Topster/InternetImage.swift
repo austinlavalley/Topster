@@ -99,6 +99,13 @@ struct InternetImage<Content: View>: View {
         VStack {
             if let image = image {
                 content(Image(uiImage: image))
+            } else if let archived = CoverArchive.image(for: url) {
+                // Checked before the network, and before any failure state, because a
+                // saved grid's archived copy is the authoritative one. Album art does
+                // not change, so refetching gains nothing and costs a round trip that
+                // fails when offline. Being synchronous, this also means the export
+                // renders correctly on its first pass rather than its second.
+                content(Image(uiImage: archived))
             } else if resolvedURL == nil || coverIsGone || DeadCoverRegistry.isDead(url) {
                 // Either Last.fm never had art for this album, or the URL it gave us
                 // is dead. Both are permanent and both look the same to the user.
