@@ -136,7 +136,8 @@ class Networker {
     /// The old code interpolated the raw search string straight into the URL, and
     /// `searchAlbums` replaced spaces with dashes, which is not encoding and quietly
     /// changed what was being searched for.
-    private func buildURL(method: String, parameters: [String: String]) throws -> URL {
+    // Not private so the tests can check encoding without going near the network.
+    func buildURL(method: String, parameters: [String: String]) throws -> URL {
         guard !Self.apiKey.isEmpty else { throw NetworkError.missingAPIKey }
 
         var components = URLComponents(string: "https://ws.audioscrobbler.com/2.0/")

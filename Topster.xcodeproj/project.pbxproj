@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		057B4B48A70FC66518208648 /* RequestBuildingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882E09C19C705B9D42F78BA0 /* RequestBuildingTests.swift */; };
+		184A35E3D33CB7E9A369FEAA /* CoverResolutionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59921367CAB6CD3078FBDA2C /* CoverResolutionTests.swift */; };
+		257B39BD0395263395E04F7D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E27F7B6FCEF196F584F58CC1 /* Foundation.framework */; };
+		3454A3F5C81389F73633F76B /* ResponseDecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D0892549E0C8DF70AF79D9 /* ResponseDecodingTests.swift */; };
 		97274259631D13944C99B3B1 /* CoverArchiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D56BEDFA2A77EB923433FFA /* CoverArchiveTests.swift */; };
 		B334FA5B82095B09DE5798EF /* ExportRenderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238A5096857BB6BB880878A1 /* ExportRenderTests.swift */; };
 		B89CC38CA1A04CAAB9446D1E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E27F7B6FCEF196F584F58CC1 /* Foundation.framework */; };
@@ -48,11 +52,22 @@
 			remoteGlobalIDString = D92B6F0A2A9BBF9300A7CCBD;
 			remoteInfo = Topster;
 		};
+		5A7DFE3912923738197C8DB2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D92B6F032A9BBF9300A7CCBD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D92B6F0A2A9BBF9300A7CCBD;
+			remoteInfo = Topster;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		238A5096857BB6BB880878A1 /* ExportRenderTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExportRenderTests.swift; sourceTree = "<group>"; };
+		59921367CAB6CD3078FBDA2C /* CoverResolutionTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoverResolutionTests.swift; sourceTree = "<group>"; };
+		68CB71BB8997B7668F594063 /* TopsterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TopsterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D56BEDFA2A77EB923433FFA /* CoverArchiveTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoverArchiveTests.swift; sourceTree = "<group>"; };
+		882E09C19C705B9D42F78BA0 /* RequestBuildingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RequestBuildingTests.swift; sourceTree = "<group>"; };
+		B2D0892549E0C8DF70AF79D9 /* ResponseDecodingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ResponseDecodingTests.swift; sourceTree = "<group>"; };
 		D11EC70B7F1CF42EEE85A8FD /* CoverArchive.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoverArchive.swift; sourceTree = "<group>"; };
 		D7DF645526BC4A9AF0586E36 /* TopsterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TopsterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D91952852AFE858300FD246C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -103,6 +118,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FBF5376FFA5492EBA42A6567 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				257B39BD0395263395E04F7D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -139,6 +162,7 @@
 				D92B6F0C2A9BBF9300A7CCBD /* Products */,
 				1DF9FF5A6A701FC273DAE0C7 /* Frameworks */,
 				9AB95987E048E21D622646BF /* TopsterUITests */,
+				EC870BE1CA5C6ECCB585BF20 /* TopsterTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -147,6 +171,7 @@
 			children = (
 				D92B6F0B2A9BBF9300A7CCBD /* Topster.app */,
 				D7DF645526BC4A9AF0586E36 /* TopsterUITests.xctest */,
+				68CB71BB8997B7668F594063 /* TopsterTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -235,9 +260,38 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		EC870BE1CA5C6ECCB585BF20 /* TopsterTests */ = {
+			isa = PBXGroup;
+			children = (
+				59921367CAB6CD3078FBDA2C /* CoverResolutionTests.swift */,
+				882E09C19C705B9D42F78BA0 /* RequestBuildingTests.swift */,
+				B2D0892549E0C8DF70AF79D9 /* ResponseDecodingTests.swift */,
+			);
+			name = TopsterTests;
+			path = TopsterTests;
+			sourceTree = SOURCE_ROOT;
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		309E3B2181135203F6F5A8F4 /* TopsterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A887DAD4C57E0DA7AAA97432 /* Build configuration list for PBXNativeTarget "TopsterTests" */;
+			buildPhases = (
+				61A2CD1A0C42AB0DD99F0566 /* Sources */,
+				FBF5376FFA5492EBA42A6567 /* Frameworks */,
+				39496842D2027408C678E4F7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				81787A7BA3CB30C823ABEADB /* PBXTargetDependency */,
+			);
+			name = TopsterTests;
+			productName = TopsterTests;
+			productReference = 68CB71BB8997B7668F594063 /* TopsterTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		90C2FC204CA7D5B1B8C9C3A5 /* TopsterUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 18D2A37842CC58D5AD322C24 /* Build configuration list for PBXNativeTarget "TopsterUITests" */;
@@ -303,11 +357,19 @@
 			targets = (
 				D92B6F0A2A9BBF9300A7CCBD /* Topster */,
 				90C2FC204CA7D5B1B8C9C3A5 /* TopsterUITests */,
+				309E3B2181135203F6F5A8F4 /* TopsterTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		39496842D2027408C678E4F7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C54C4AAD112BD0DEE596CCFE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -328,6 +390,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		61A2CD1A0C42AB0DD99F0566 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				184A35E3D33CB7E9A369FEAA /* CoverResolutionTests.swift in Sources */,
+				057B4B48A70FC66518208648 /* RequestBuildingTests.swift in Sources */,
+				3454A3F5C81389F73633F76B /* ResponseDecodingTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		63A58F3897F331EC8FC7A7F2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -372,6 +444,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		81787A7BA3CB30C823ABEADB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Topster;
+			target = D92B6F0A2A9BBF9300A7CCBD /* Topster */;
+			targetProxy = 5A7DFE3912923738197C8DB2 /* PBXContainerItemProxy */;
+		};
 		8E1A283002A9D07D1DADDD4A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Topster;
@@ -381,6 +459,25 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		0124B1E2033F155A4553BB17 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.austinlavalley.TopsterTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Topster.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Topster";
+			};
+			name = Debug;
+		};
 		14CA9599F4862A8408A9AFD6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -397,6 +494,26 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Topster;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		611A31DC0040A4FACCEFAE56 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.austinlavalley.TopsterTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Topster.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Topster";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -616,6 +733,15 @@
 			buildConfigurations = (
 				14CA9599F4862A8408A9AFD6 /* Release */,
 				AB5BB2D5BE7FC0D41D678D02 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A887DAD4C57E0DA7AAA97432 /* Build configuration list for PBXNativeTarget "TopsterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				611A31DC0040A4FACCEFAE56 /* Release */,
+				0124B1E2033F155A4553BB17 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
