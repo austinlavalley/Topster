@@ -38,6 +38,16 @@
                ReferencedContainer = "container:Topster.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "309E3B2181135203F6F5A8F4"
+               BuildableName = "TopsterTests.xctest"
+               BlueprintName = "TopsterTests"
+               ReferencedContainer = "container:Topster.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
