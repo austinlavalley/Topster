@@ -86,24 +86,23 @@ enum CoverArchive {
 
     // MARK: - Writing
 
-    /// Keeps a copy of every cover in `albums` that is already in `URLCache`.
+    /// Keeps a copy of every cover in `albums`.
     ///
-    /// Covers that were never loaded are skipped rather than fetched. Anything on
-    /// screen when a grid is saved is in the cache by definition, and an album whose
-    /// art never loaded has nothing worth keeping.
+    /// Uses `URLCache` when the bytes are already there and fetches when they are
+    /// not. The cache alone is not enough to rely on: as of the iOS 26 SDK,
+    /// `AsyncImage` no longer writes what it loads into `URLCache.shared`, so a grid
+    /// full of covers visible on screen can sit behind a completely empty cache.
+    /// Reading only from the cache archived nothing at all on that SDK.
     static func archive(_ albums: [Album]) {
-        DispatchQueue.global(qos: .utility).async {
+        Task.detached(priority: .utility) {
             for album in albums {
                 guard let coverURL = album.coverURL else { continue }
 
-                let key = coverURL.absoluteString
-                guard let file = fileURL(for: key),
+                guard let file = fileURL(for: coverURL.absoluteString),
                       !FileManager.default.fileExists(atPath: file.path)
                 else { continue }
 
-                guard let cached = URLCache.shared.cachedResponse(for: URLRequest(url: coverURL)),
-                      let image = UIImage(data: cached.data)
-                else { continue }
+                guard let image = await sourceImage(for: coverURL) else { continue }
 
                 guard let data = downsampled(image).jpegData(compressionQuality: jpegQuality)
                 else { continue }
@@ -111,6 +110,19 @@ enum CoverArchive {
                 try? data.write(to: file, options: .atomic)
             }
         }
+    }
+
+    /// Cached bytes if there are any, otherwise a fresh download.
+    private static func sourceImage(for url: URL) async -> UIImage? {
+        let request = URLRequest(url: url)
+
+        if let cached = URLCache.shared.cachedResponse(for: request),
+           let image = UIImage(data: cached.data) {
+            return image
+        }
+
+        guard let (data, _) = try? await URLSession.shared.data(for: request) else { return nil }
+        return UIImage(data: data)
     }
 
     private static func downsampled(_ image: UIImage) -> UIImage {
