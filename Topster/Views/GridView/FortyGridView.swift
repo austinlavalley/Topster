@@ -35,10 +35,13 @@ struct FortyGridView: View {
                 }
                 
                 HStack {
-                    Button("Export") {
+                    // "Export" overstated what this does. It opens a preview; the
+                    // actual saving or sharing happens on the next tap.
+                    Button("Preview") {
                         vm.showExportSheet.toggle()
                     }
                     .buttonStyle(DefaultSecondary())
+                    .accessibilityIdentifier("preview-grid")
                     .disabled(vm.FortyGridDict.allSatisfy({ $0.value == nil }))
                     
                     AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Saved", isSecondaryStyle: false)

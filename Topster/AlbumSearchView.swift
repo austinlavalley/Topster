@@ -53,9 +53,15 @@ struct AlbumSearchView: View {
                 
                 Group {
                     HStack {
-                        TextField("Search", text: $searchText)
+                        // The view said "Search" four times: title, placeholder,
+                        // button, and the keyboard action. The field searches as you
+                        // type now, so the button was doing nothing the typing did
+                        // not already do. It comes back only as a retry when a search
+                        // actually fails.
+                        TextField("Album or artist", text: $searchText)
                             .autocorrectionDisabled()
                             .focused($isSearchFocused)
+                            .accessibilityIdentifier("album-search-field")
                             .toolbar {
                                 ToolbarItemGroup(placement: .keyboard) {
                                     Spacer()
@@ -68,11 +74,12 @@ struct AlbumSearchView: View {
 
                         if isSearching {
                             ProgressView()
-                        }
-
-                        Button("Search") {
-                            isSearchFocused = false
-                            searchNonce += 1
+                        } else if searchError != nil {
+                            Button("Try again") {
+                                isSearchFocused = false
+                                searchNonce += 1
+                            }
+                            .accessibilityIdentifier("retry-search")
                         }
                     }
                     .padding()
@@ -203,7 +210,7 @@ struct SearchHeaderView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("Search").font(.title)
+                Text("Add album").font(.title)
                 
                 if ((vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ _ in })) != nil) {
                     Text(vm.FortyGridDict[vm.selectedGridID ?? 0]?.flatMap({ alb in

@@ -43,16 +43,17 @@ final class ExportRenderTests: XCTestCase {
         Thread.sleep(forTimeInterval: 14)   // window for external capture
     }
 
+    /// Found by identifier rather than label, so renaming the button does not break
+    /// the test. It was called "Export" until the copy pass.
     private func openExport(_ app: XCUIApplication) {
-        let export = app.buttons["Export"]
-        XCTAssertTrue(export.waitForExistence(timeout: 20), "Export button never appeared")
-        export.tap()
+        let preview = app.buttons["preview-grid"]
+        XCTAssertTrue(preview.waitForExistence(timeout: 20), "preview button never appeared")
+        preview.tap()
     }
 
     private func closeExport(_ app: XCUIApplication) {
-        // The sheet's dismiss control is the only xmark image button on screen.
-        let close = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'xmark'")).firstMatch
-        if close.exists {
+        let close = app.buttons["export-close"]
+        if close.waitForExistence(timeout: 5) {
             close.tap()
         } else {
             app.swipeDown(velocity: .fast)

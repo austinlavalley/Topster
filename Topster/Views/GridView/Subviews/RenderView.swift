@@ -19,7 +19,6 @@ struct RenderView: View {
     @State var showLoading = true
     @State private var showingSavedToPhotosSuccess = false
     
-    @State private var showEdits = false
     
     
     var body: some View {
@@ -30,24 +29,41 @@ struct RenderView: View {
                     
                     VStack {
                         HStack {
-                            Button {
-                                showEdits.toggle()
+                            // A menu rather than a confirmation dialog: this is one
+                            // toggle, and a full modal sheet for it was heavy. Both
+                            // buttons now carry their own chrome, which they need to
+                            // read as controls against the floating bars in iOS 26.
+                            Menu {
+                                Button(vm.tempExportDarkMode ? "Light background" : "Dark background") {
+                                    vm.tempExportDarkMode.toggle()
+                                    generateSnapshot()
+                                }
                             } label: {
-                                Label(
-                                    title: { Text("") },
-                                    icon: { Image(systemName: "slider.horizontal.3").font(.title2).bold() })
+                                Image(systemName: "slider.horizontal.3")
+                                    .font(.title3.bold())
+                                    .frame(width: 44, height: 44)
+                                    .background(.regularMaterial, in: Circle())
                             }
+                            // Tint on the control rather than inside the label, so the
+                            // icons stay grey instead of picking up the accent colour.
+                            // The artwork should be the loudest thing on this sheet.
                             .foregroundStyle(.secondary)
+                            .accessibilityLabel("Background options")
+                            .accessibilityIdentifier("export-options")
 
                             Spacer()
+
                             Button {
                                 presentationMode.wrappedValue.dismiss()
                             } label: {
-                                Label(
-                                    title: { Text("") },
-                                    icon: { Image(systemName: "xmark").font(.title2) })
+                                Image(systemName: "xmark")
+                                    .font(.title3.bold())
+                                    .frame(width: 44, height: 44)
+                                    .background(.regularMaterial, in: Circle())
                             }
                             .foregroundStyle(.secondary)
+                            .accessibilityLabel("Close")
+                            .accessibilityIdentifier("export-close")
                         }
                         .padding(.horizontal, 12)
                     }.padding(.top, 24)
@@ -139,13 +155,7 @@ struct RenderView: View {
             })
             
             
-            .confirmationDialog("", isPresented: $showEdits) {
-                Button(vm.tempExportDarkMode ? "Light background" : "Dark background") {
-                    vm.tempExportDarkMode.toggle()
-                    generateSnapshot()
-                }
-            }
-            
+
         }
 
     }
