@@ -176,22 +176,12 @@ struct SearchAlbumSquare: View {
     let album: Album
 
     var body: some View {
-        Group {
-            if let coverURL = album.coverURL {
-                AsyncImage(url: coverURL) { phase in
-                    if let image = phase.image {
-                        image.resizable()
-                    } else if phase.error != nil {
-                        NoCoverPlaceholder(showsLabel: true)
-                    } else {
-                        ProgressView()
-                    }
-                }
-            } else {
-                // Last.fm has no art for this album. Still selectable, since plenty of
-                // records people want on a grid have no cover on file.
-                NoCoverPlaceholder(showsLabel: true)
-            }
+        // Same loader as the grid and the export. Beyond consistency, a cover fetched
+        // here is already local by the time the album is placed, so it appears on the
+        // grid immediately rather than being fetched a second time.
+        InternetImage(url: album.coverURL?.absoluteString ?? "",
+                      showsProgressWhileLoading: true) { image in
+            image.resizable()
         }
         .contentShape(Rectangle())
         .onTapGesture {
