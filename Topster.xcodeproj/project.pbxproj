@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		057B4B48A70FC66518208648 /* RequestBuildingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882E09C19C705B9D42F78BA0 /* RequestBuildingTests.swift */; };
+		0943556316F8E3F6C1D5AD89 /* CoverFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87CAF2D425052D559721E1AB /* CoverFetcher.swift */; };
+		0B52FF8B8946EFB8601EEDB8 /* CoverFetcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711240564EC6AB4165C58D10 /* CoverFetcherTests.swift */; };
 		184A35E3D33CB7E9A369FEAA /* CoverResolutionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59921367CAB6CD3078FBDA2C /* CoverResolutionTests.swift */; };
 		257B39BD0395263395E04F7D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E27F7B6FCEF196F584F58CC1 /* Foundation.framework */; };
 		3454A3F5C81389F73633F76B /* ResponseDecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D0892549E0C8DF70AF79D9 /* ResponseDecodingTests.swift */; };
@@ -70,7 +72,9 @@
 		36286A7FC33F8B874C4C4CED /* SaveToPhotosTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SaveToPhotosTests.swift; sourceTree = "<group>"; };
 		59921367CAB6CD3078FBDA2C /* CoverResolutionTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoverResolutionTests.swift; sourceTree = "<group>"; };
 		68CB71BB8997B7668F594063 /* TopsterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TopsterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		711240564EC6AB4165C58D10 /* CoverFetcherTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoverFetcherTests.swift; sourceTree = "<group>"; };
 		7D56BEDFA2A77EB923433FFA /* CoverArchiveTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoverArchiveTests.swift; sourceTree = "<group>"; };
+		87CAF2D425052D559721E1AB /* CoverFetcher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoverFetcher.swift; sourceTree = "<group>"; };
 		882E09C19C705B9D42F78BA0 /* RequestBuildingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RequestBuildingTests.swift; sourceTree = "<group>"; };
 		8F5E94EEE5C9DA00E6E6B6EB /* StoreScreenshots.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StoreScreenshots.swift; sourceTree = "<group>"; };
 		B2D0892549E0C8DF70AF79D9 /* ResponseDecodingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ResponseDecodingTests.swift; sourceTree = "<group>"; };
@@ -222,6 +226,7 @@
 				D9B8B4022AB3B41700A4613A /* TopArtistsNetwork.swift */,
 				D9B8B40D2AB8BED300A4613A /* Networker.swift */,
 				D11EC70B7F1CF42EEE85A8FD /* CoverArchive.swift */,
+				87CAF2D425052D559721E1AB /* CoverFetcher.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -275,6 +280,7 @@
 				59921367CAB6CD3078FBDA2C /* CoverResolutionTests.swift */,
 				882E09C19C705B9D42F78BA0 /* RequestBuildingTests.swift */,
 				B2D0892549E0C8DF70AF79D9 /* ResponseDecodingTests.swift */,
+				711240564EC6AB4165C58D10 /* CoverFetcherTests.swift */,
 			);
 			name = TopsterTests;
 			path = TopsterTests;
@@ -406,6 +412,7 @@
 				184A35E3D33CB7E9A369FEAA /* CoverResolutionTests.swift in Sources */,
 				057B4B48A70FC66518208648 /* RequestBuildingTests.swift in Sources */,
 				3454A3F5C81389F73633F76B /* ResponseDecodingTests.swift in Sources */,
+				0B52FF8B8946EFB8601EEDB8 /* CoverFetcherTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,6 +457,7 @@
 				D91952882B002DFC00FD246C /* RenderView.swift in Sources */,
 				D93AD4BE2AC64226001D2BA3 /* FortyScrollGridViewModel.swift in Sources */,
 				EE952AB98F02DA48CBDCA5FB /* CoverArchive.swift in Sources */,
+				0943556316F8E3F6C1D5AD89 /* CoverFetcher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

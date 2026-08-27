@@ -185,47 +185,26 @@ struct InternetImage<Content: View>: View {
     private func load() async {
         guard immediateImage == nil, let resolved = resolvedURL else { return }
 
-        let request = URLRequest(url: resolved)
         let requested = url
 
-        // One lost request used to leave a cell showing a placeholder for the rest of
-        // the session, because nothing ever tried again. Reported against the live
-        // 1.5.0 build: two covers of six failed on launch and stayed failed until the
-        // grid was reopened.
-        for attempt in 0..<3 {
-            if attempt > 0 {
-                try? await Task.sleep(nanoseconds: UInt64(attempt) * 400_000_000)
-            }
+        switch await CoverFetcher.fetch(resolved) {
+        case let .image(image, _):
+            CoverMemoryCache.store(image, for: requested)
 
-            guard !Task.isCancelled else { return }
+            // The slot may have been filled with a different album while this was in
+            // flight. Dropping a late arrival is what stops it painting over a newer
+            // cover.
+            guard !Task.isCancelled, requested == url else { return }
+            loaded = LoadedCover(url: requested, image: image)
 
-            do {
-                let (data, response) = try await URLSession.shared.data(for: request)
+        case .gone:
+            DeadCoverRegistry.mark(requested)
 
-                if let image = UIImage(data: data) {
-                    URLCache.shared.storeCachedResponse(
-                        CachedURLResponse(response: response, data: data), for: request)
-                    CoverMemoryCache.store(image, for: requested)
-
-                    // The slot may have been filled with a different album while this
-                    // was in flight. Dropping a late arrival is what stops it painting
-                    // over a newer cover.
-                    guard !Task.isCancelled, requested == url else { return }
-
-                    loaded = LoadedCover(url: requested, image: image)
-                    return
-                }
-
-                // The server answered and what came back is not an image: a 404, a
-                // 5xx, or a 200 carrying something undecodable. Retrying will not
-                // change that answer.
-                DeadCoverRegistry.mark(requested)
-                return
-
-            } catch {
-                // The request never completed at all. Worth another go.
-                continue
-            }
+        case .unreachable:
+            // Left unmarked on purpose. The URL may be perfectly good and simply
+            // unlucky, and marking it would reproduce the bug this replaced: a cover
+            // written off for the rest of the session over one lost request.
+            break
         }
     }
 }
