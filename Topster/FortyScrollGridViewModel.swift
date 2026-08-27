@@ -202,6 +202,27 @@ class FortyScrollGridViewModel: ObservableObject {
            let decodedData = try? JSONDecoder().decode([GridWithType].self, from: storedGrids) {
             savedGrids = decodedData
         }
+
+        // currentActiveGrid is an index into savedGrids, and the two are stored
+        // separately. If the grids fail to decode, or the two ever fall out of step,
+        // the index is left pointing past the end of an array the view subscripts
+        // directly, which traps on launch with no way back short of deleting the app.
+        if let active = currentActiveGrid, !savedGrids.indices.contains(active) {
+            currentActiveGrid = nil
+        }
+    }
+
+    /// The saved grid currently open, or nil.
+    ///
+    /// Use this rather than subscripting savedGrids with currentActiveGrid. The
+    /// index survives independently of the array, so a bare subscript is a crash
+    /// waiting for the two to disagree.
+    var activeGrid: GridWithType? {
+        guard let active = currentActiveGrid,
+              savedGrids.indices.contains(active)
+        else { return nil }
+
+        return savedGrids[active]
     }
     
         // main grid control, key is the grid space & value is an optional Album model

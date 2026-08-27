@@ -18,6 +18,13 @@ struct FortyGridView: View {
     @State private var showingPopover = false
     @State private var customGridName = ""
     
+    /// Reads through activeGrid, so a stale index shows "Unsaved Grid" rather than
+    /// trapping on an out of range subscript.
+    private var gridTitle: String {
+        guard let active = vm.activeGrid else { return "Unsaved Grid" }
+        return active.name ?? "Unnamed Grid \(vm.currentActiveGrid ?? 0)"
+    }
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -31,7 +38,7 @@ struct FortyGridView: View {
                         .scrollIndicators(.hidden)
                         .padding()
                         .navigationBarTitleDisplayMode(.inline)
-                        .navigationTitle((vm.currentActiveGrid != nil) ? vm.savedGrids[vm.currentActiveGrid!].name != nil ? "\(vm.savedGrids[vm.currentActiveGrid!].name ?? "BROKEN OPTIONAL")" : "Unnamed Grid \(vm.currentActiveGrid ?? 0)" : "Unsaved Grid" )
+                        .navigationTitle(gridTitle)
                 }
                 
                 HStack {
@@ -201,8 +208,8 @@ struct FortyGridView: View {
         }
         
         .onAppear {
-            if vm.currentActiveGrid != nil {
-                vm.FortyGridDict = vm.savedGrids[vm.currentActiveGrid!].grid
+            if let active = vm.activeGrid {
+                vm.FortyGridDict = active.grid
             }
         }
     }
