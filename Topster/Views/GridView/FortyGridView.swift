@@ -18,6 +18,13 @@ struct FortyGridView: View {
     @State private var showingPopover = false
     @State private var customGridName = ""
     
+    /// Reads through activeGrid, so a stale index shows "Unsaved Grid" rather than
+    /// trapping on an out of range subscript.
+    private var gridTitle: String {
+        guard let active = vm.activeGrid else { return "Unsaved Grid" }
+        return active.name ?? "Unnamed Grid \(vm.currentActiveGrid ?? 0)"
+    }
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -31,7 +38,7 @@ struct FortyGridView: View {
                         .scrollIndicators(.hidden)
                         .padding()
                         .navigationBarTitleDisplayMode(.inline)
-                        .navigationTitle((vm.currentActiveGrid != nil) ? vm.savedGrids[vm.currentActiveGrid!].name != nil ? "\(vm.savedGrids[vm.currentActiveGrid!].name ?? "BROKEN OPTIONAL")" : "Unnamed Grid \(vm.currentActiveGrid ?? 0)" : "Unsaved Grid" )
+                        .navigationTitle(gridTitle)
                 }
                 
                 HStack {
@@ -201,8 +208,8 @@ struct FortyGridView: View {
         }
         
         .onAppear {
-            if vm.currentActiveGrid != nil {
-                vm.FortyGridDict = vm.savedGrids[vm.currentActiveGrid!].grid
+            if let active = vm.activeGrid {
+                vm.FortyGridDict = active.grid
             }
         }
     }
@@ -210,37 +217,21 @@ struct FortyGridView: View {
 
 
 
-// ALBUMSQAURE FOR MAIN GRID VIEW THAT REFRESHES VIEW
+// ALBUMSQUARE FOR MAIN GRID VIEW
+//
+// Was a separate AsyncImage implementation from Nov 2023 to Aug 2026, because
+// InternetImage kept showing the previous album's cover when a slot changed.
+// InternetImage now ties its cached image to the URL it came from, so that cannot
+// happen, and the grid gets the retry AsyncImage never had: a single lost request
+// used to leave a cell placeheld for the rest of the session.
 struct AsyncAlbumSquare: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     let album: Album
-    
-    var body: some View {
-        // A nil URL leaves AsyncImage in its empty phase forever, spinning with no
-        // error to report. Last.fm has no art for a large share of albums, so that
-        // case gets answered directly instead of being handed to AsyncImage.
-        if let archived = CoverArchive.image(for: album.coverURL?.absoluteString ?? "") {
-            Image(uiImage: archived).resizable()
-        } else if let coverURL = album.coverURL {
-            loadingImage(from: coverURL)
-        } else {
-            NoCoverPlaceholder()
-        }
-    }
 
-    private func loadingImage(from coverURL: URL) -> some View {
-        AsyncImage(url: coverURL) { phase in
-            if let image = phase.image {
-                image.resizable()
-            } else if phase.error != nil {
-                // About 4% of Last.fm cover URLs are dead, and grids saved a year or
-                // two ago accumulate them. To the user that is the same situation as
-                // an album with no art, so it gets the same quiet treatment rather
-                // than an alarming error on a grid they already built.
-                NoCoverPlaceholder()
-            } else {
-                ProgressView()
-            }
+    var body: some View {
+        InternetImage(url: album.coverURL?.absoluteString ?? "",
+                      showsProgressWhileLoading: true) { image in
+            image.resizable()
         }
     }
 }
