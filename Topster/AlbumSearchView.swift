@@ -7,6 +7,13 @@
 
 import Foundation
 import SwiftUI
+import os
+
+/// One line per finished search saying what the ranking hint actually did.
+/// Read on a simulator with:
+///   xcrun simctl spawn <udid> log show --last 5m --predicate 'subsystem == "com.austinlavalley.Topster"'
+private let searchLog = Logger(subsystem: "com.austinlavalley.Topster", category: "search-ranking")
+
 
 
 /// Identity for a search run. Bumping `nonce` re-runs the task with the same text,
@@ -24,6 +31,7 @@ struct AlbumSearchView: View {
     @State private var searchResults: [Album] = []
     @State private var searchText: String = ""
     @State private var searchError: String?
+    @State private var searchNotice: String?
     @State private var isSearching = false
     @State private var searchNonce = 0
     
@@ -95,6 +103,13 @@ struct AlbumSearchView: View {
                         .padding(.top, 24)
                     Spacer()
                 } else {
+                    if let searchNotice {
+                        Text(searchNotice)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .padding(.top, 4)
+                            .accessibilityIdentifier("search-notice")
+                    }
                     ScrollView {
                         LazyVGrid(columns: threeColumnGrid) {
                             // Identified by Album.id. Keying on \.name collided constantly,
@@ -121,6 +136,8 @@ struct AlbumSearchView: View {
         
         .onAppear {
             isSearchFocused = true
+            // Handshakes happen while the user types; see warmConnections().
+            Networker().warmConnections()
         }
     }
     
@@ -132,6 +149,7 @@ struct AlbumSearchView: View {
         guard !query.isEmpty else {
             searchResults = []
             searchError = nil
+            searchNotice = nil
             return
         }
 
@@ -146,6 +164,13 @@ struct AlbumSearchView: View {
         isSearching = true
         defer { isSearching = false }
 
+        // The ranking hint fires alongside the Last.fm search, not after it, so by
+        // the time results arrive it is usually already here. `SearchRanking.value`
+        // caps how long it may keep the results waiting when it is not, and a hint
+        // that fails or misses the window degrades to plain Last.fm order.
+        let hintTask = Task { try? await Networker().deezerRanking(query: query) }
+        defer { hintTask.cancel() }
+
         do {
             let results = try await Networker().searchAlbums(query: query)
 
@@ -156,8 +181,40 @@ struct AlbumSearchView: View {
             // still reachable on the grid itself, just not offered here.
             let withArt = results.filter { album in album.coverURL != nil }
 
-            searchResults = withArt
-            searchError = withArt.isEmpty ? "No albums with cover art found for \"\(query)\"." : nil
+            let hintStart = Date()
+            let hint = await SearchRanking.value(of: hintTask)
+            let hintMs = Int(Date().timeIntervalSince(hintStart) * 1000)
+
+            guard !Task.isCancelled else { return }
+
+            let ranked = SearchRanking.rank(withArt, hint: hint ?? [])
+            let outcome = await SearchResolver.shared.resolveHead(ranked)
+
+            guard !Task.isCancelled else { return }
+
+            let final = SearchRanking.assemble(outcome.scored,
+                                               overflow: ranked.overflow, tail: ranked.tail)
+
+            let topTen = { (albums: [Album]) in
+                albums.prefix(10).map { a in "\(a.name)/\(a.artist)" }.joined(separator: " | ")
+            }
+            searchLog.notice("""
+                search "\(query, privacy: .public)": lastfm \(results.count) (\(withArt.count) with art), \
+                hint \(hint.map { h in "\(h.count) entries" } ?? "nil", privacy: .public) \
+                after \(hintMs) ms wait, head \(ranked.head.count)+\(ranked.missing.count) candidates, \
+                \(outcome.cacheHits) cached, \(outcome.scored.count) scored\
+                \(outcome.throttled ? ", THROTTLED" : "", privacy: .public)
+                """)
+            searchLog.notice("before: \(topTen(withArt), privacy: .public)")
+            searchLog.notice("after:  \(topTen(final), privacy: .public)")
+
+            searchResults = final
+            // Same voice as the rate-limit error, but this one is a note, not a
+            // failure: results are showing, just without popularity ranking.
+            searchNotice = outcome.throttled
+                ? "Too many searches at once. Results are unranked for a minute."
+                : nil
+            searchError = final.isEmpty ? "No albums with cover art found for \"\(query)\"." : nil
         } catch is CancellationError {
             return
         } catch {
@@ -188,6 +245,11 @@ struct SearchAlbumSquare: View {
             vm.addAlbumToGrid(album: album, at: vm.selectedGridID ?? 0)
             vm.hideSearchSheet()
         }
+        // Lets UI tests read the actual result order instead of eyeballing
+        // screenshots. The backlog wants identifiers for a search smoke test
+        // anyway; this is the first of them.
+        .accessibilityIdentifier("search-result")
+        .accessibilityLabel("\(album.name), \(album.artist)")
     }
 }
 

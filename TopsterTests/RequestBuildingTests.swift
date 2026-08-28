@@ -70,4 +70,31 @@ final class RequestBuildingTests: XCTestCase {
         XCTAssertTrue(url.absoluteString.contains("method=artist.search"))
         XCTAssertTrue(url.absoluteString.contains("artist=radiohead"))
     }
+
+    /// Backfill lookups go by exact artist and album, autocorrected, so Deezer's
+    /// spelling still finds Last.fm's canonical entry.
+    func testAlbumInfoRequestCarriesArtistAlbumAndAutocorrect() throws {
+        let url = try networker.buildURL(method: "album.getinfo",
+                                         parameters: ["artist": "The Rolling Stones",
+                                                      "album": "Blue & Lonesome",
+                                                      "autocorrect": "1"])
+        let q = URLComponents(url: url, resolvingAgainstBaseURL: false)?.percentEncodedQuery ?? ""
+
+        XCTAssertTrue(q.contains("method=album.getinfo"))
+        XCTAssertTrue(q.contains("artist=The%20Rolling%20Stones"), q)
+        XCTAssertTrue(q.contains("album=Blue%20%26%20Lonesome"), q)
+        XCTAssertTrue(q.contains("autocorrect=1"))
+    }
+
+    /// The ranking hint's URL. Keyless by design, and the query gets the same
+    /// encoding treatment as the Last.fm requests.
+    func testDeezerURLEncodesTheQueryAndCarriesNoAPIKey() throws {
+        let url = try networker.buildDeezerURL(query: "Simon & Garfunkel + Friends", limit: 100)
+        let q = URLComponents(url: url, resolvingAgainstBaseURL: false)?.percentEncodedQuery ?? ""
+
+        XCTAssertTrue(url.absoluteString.hasPrefix("https://api.deezer.com/search/album?"))
+        XCTAssertTrue(q.contains("q=Simon%20%26%20Garfunkel%20%2B%20Friends"), q)
+        XCTAssertTrue(q.contains("limit=100"))
+        XCTAssertFalse(q.contains("api_key"), "the Last.fm key must never reach Deezer")
+    }
 }
