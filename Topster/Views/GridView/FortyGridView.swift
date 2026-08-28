@@ -134,7 +134,7 @@ struct FortyGridView: View {
                 VStack {
                     Button {
                         withAnimation(.spring) {
-                            vm.activeGridType = .fortyTwo
+                            vm.selectLayout(.fortyTwo)
                             showNewSheet = false
                         }
                     } label: {
@@ -143,7 +143,7 @@ struct FortyGridView: View {
                     
                     Button {
                         withAnimation(.spring) {
-                            vm.activeGridType = .twentyFive
+                            vm.selectLayout(.twentyFive)
                             showNewSheet = false
                         }
                     } label: {
@@ -152,7 +152,7 @@ struct FortyGridView: View {
                     
                     Button {
                         withAnimation(.spring) {
-                            vm.activeGridType = .twenty
+                            vm.selectLayout(.twenty)
                             showNewSheet = false
                         }
                     } label: {
@@ -161,7 +161,7 @@ struct FortyGridView: View {
                     
                     Button {
                         withAnimation(.spring) {
-                            vm.activeGridType = .twentyWide
+                            vm.selectLayout(.twentyWide)
                             showNewSheet = false
                         }
                     } label: {

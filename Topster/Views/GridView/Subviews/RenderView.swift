@@ -138,8 +138,9 @@ struct RenderView: View {
             
             
             .onAppear {
+                Analytics.track(.exportPreviewed(layout: vm.activeGridType.rawValue))
                 generateSnapshot()
-                
+
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     generateSnapshot()
                     
@@ -178,6 +179,8 @@ extension RenderView {
     /// saved to camera roll" underneath the permission prompt, before the user had
     /// agreed to anything.
     func saveToPhotos(_ image: UIImage) {
+        let layout = vm.activeGridType.rawValue
+
         PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
             guard status == .authorized || status == .limited else {
                 show("Topster needs permission to add to Photos. You can change that in Settings.")
@@ -187,6 +190,9 @@ extension RenderView {
             PHPhotoLibrary.shared().performChanges {
                 PHAssetChangeRequest.creationRequestForAsset(from: image)
             } completionHandler: { saved, _ in
+                if saved {
+                    Analytics.track(.exportSaved(layout: layout))
+                }
                 show(saved ? "Grid saved to camera roll" : "Couldn't save the grid. Try again.")
             }
         }

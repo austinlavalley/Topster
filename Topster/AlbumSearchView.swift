@@ -32,6 +32,16 @@ struct AlbumSearchView: View {
     @State private var searchText: String = ""
     @State private var searchError: String?
     @State private var searchNotice: String?
+
+    /// Which of the current results were backfilled from Deezer discovery
+    /// rather than returned by Last.fm's search. Only feeds the albumPlaced
+    /// analytics event, so the ranking work can be graded by real taps.
+    @State private var backfilledIDs: Set<UUID> = []
+
+    /// One search-sheet visit's story, for the searchAbandoned event: how many
+    /// searches settled, and whether any of them ended in a placement.
+    @State private var searchesThisVisit = 0
+    @State private var placedThisVisit = false
     @State private var isSearching = false
     @State private var searchNonce = 0
     
@@ -115,8 +125,12 @@ struct AlbumSearchView: View {
                             // Identified by Album.id. Keying on \.name collided constantly,
                             // 49 of 50 results for "greatest hits" share a name, and duplicate
                             // ForEach ids make SwiftUI draw the wrong cell or none at all.
-                            ForEach(searchResults) { result in
-                                SearchAlbumSquare(album: result)
+                            ForEach(Array(searchResults.enumerated()), id: \.element.id) { index, result in
+                                SearchAlbumSquare(album: result, onPlace: {
+                                    placedThisVisit = true
+                                    Analytics.track(.albumPlaced(position: index + 1,
+                                                                 backfilled: backfilledIDs.contains(result.id)))
+                                })
                                     .frame(width: UIScreen.main.bounds.width/3.33333, height: UIScreen.main.bounds.width/3.33333)
                             }
                         }
@@ -136,8 +150,15 @@ struct AlbumSearchView: View {
         
         .onAppear {
             isSearchFocused = true
+            searchesThisVisit = 0
+            placedThisVisit = false
             // Handshakes happen while the user types; see warmConnections().
             Networker().warmConnections()
+        }
+        .onDisappear {
+            if !placedThisVisit && searchesThisVisit > 0 {
+                Analytics.track(.searchAbandoned(searches: searchesThisVisit))
+            }
         }
     }
     
@@ -209,12 +230,21 @@ struct AlbumSearchView: View {
             searchLog.notice("after:  \(topTen(final), privacy: .public)")
 
             searchResults = final
+            backfilledIDs = Set(final.map { a in a.id })
+                .subtracting(withArt.map { a in a.id })
             // Same voice as the rate-limit error, but this one is a note, not a
             // failure: results are showing, just without popularity ranking.
             searchNotice = outcome.throttled
                 ? "Too many searches at once. Results are unranked for a minute."
                 : nil
             searchError = final.isEmpty ? "No albums with cover art found for \"\(query)\"." : nil
+
+            searchesThisVisit += 1
+            Analytics.track(.searchSettled(results: final.count,
+                                           backfills: backfilledIDs.count,
+                                           hintArrived: hint != nil,
+                                           cacheHits: outcome.cacheHits,
+                                           throttled: outcome.throttled))
         } catch is CancellationError {
             return
         } catch {
@@ -231,6 +261,9 @@ struct AlbumSearchView: View {
 struct SearchAlbumSquare: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     let album: Album
+    /// Analytics live with the parent, which knows this square's position and
+    /// provenance; the square only reports that its moment happened.
+    let onPlace: () -> Void
 
     var body: some View {
         // Same loader as the grid and the export. Beyond consistency, a cover fetched
@@ -242,6 +275,7 @@ struct SearchAlbumSquare: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
+            onPlace()
             vm.addAlbumToGrid(album: album, at: vm.selectedGridID ?? 0)
             vm.hideSearchSheet()
         }

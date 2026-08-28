@@ -17,6 +17,7 @@ struct TopsterApp: App {
 
     init() {
         Self.configureImageCache()
+        Analytics.start()
     }
 
     /// Album art is ~72 KB a cover and Last.fm serves it with a ten year
