@@ -71,6 +71,52 @@ final class ResponseDecodingTests: XCTestCase {
         XCTAssertEqual(t.tracks.track.first?.artist.name, "Lady Gaga")
     }
 
+    /// Shape taken from a real Deezer `search/album` response. Only title and
+    /// artist name are read; everything else must be ignorable, not fatal.
+    func testDeezerSearchDecodes() throws {
+        let json = """
+        {"data":[{"id":355777,"title":"Blue","link":"https://www.deezer.com/album/355777",
+        "cover":"https://api.deezer.com/album/355777/image",
+        "cover_medium":"https://cdn-images.dzcdn.net/250x250.jpg",
+        "record_type":"album","explicit_lyrics":false,
+        "artist":{"id":464,"name":"Joni Mitchell","tracklist":"https://api.deezer.com/artist/464/top"},
+        "type":"album"}],"total":300,"next":"https://api.deezer.com/search/album?q=blue&index=25"}
+        """
+        let decoded = try JSONDecoder().decode(DeezerSearchResponse.self, from: Data(json.utf8))
+
+        XCTAssertEqual(decoded.data.count, 1)
+        XCTAssertEqual(decoded.data.first?.title, "Blue")
+        XCTAssertEqual(decoded.data.first?.artist.name, "Joni Mitchell")
+    }
+
+    /// `album.getInfo`, which backfills albums Last.fm's search misses. Its
+    /// `artist` is a plain string where the search shape nests an object.
+    func testAlbumInfoDecodesAndMapsToAnAlbumWithArt() throws {
+        let json = """
+        {"album":{"artist":"The Rolling Stones","mbid":"4839e1b7",
+        "name":"Blue & Lonesome","url":"https://www.last.fm/music/x",
+        "image":[{"#text":"https://example.com/174.png","size":"large"},
+                 {"#text":"https://example.com/300.png","size":"extralarge"}],
+        "listeners":"263553","playcount":"5361040"}}
+        """
+        let decoded = try JSONDecoder().decode(AlbumInfoResponse.self, from: Data(json.utf8))
+
+        XCTAssertEqual(decoded.album.name, "Blue & Lonesome")
+        XCTAssertEqual(decoded.album.artist, "The Rolling Stones")
+        XCTAssertEqual(decoded.album.image.count, 2)
+        XCTAssertEqual(decoded.album.listeners, "263553",
+                       "listeners is the ranking axis and must survive decoding")
+    }
+
+    /// Deezer signals failure with an error *object*, unlike Last.fm's flat code.
+    /// It must not decode as a successful search, so the hint comes back nil
+    /// rather than empty-but-plausible.
+    func testDeezerErrorEnvelopeDoesNotDecodeAsResults() {
+        let error = Data(#"{"error":{"type":"Exception","message":"Quota limit exceeded","code":4}}"#.utf8)
+
+        XCTAssertThrowsError(try JSONDecoder().decode(DeezerSearchResponse.self, from: error))
+    }
+
     /// Last.fm signals failure with this shape rather than the one that was asked
     /// for. Decoding it is what turns a 403 into a readable message.
     func testErrorEnvelopeIsDistinguishableFromASuccessfulResponse() throws {

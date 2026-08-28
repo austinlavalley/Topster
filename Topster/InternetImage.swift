@@ -118,6 +118,11 @@ struct InternetImage<Content: View>: View {
     /// current one makes a stale image impossible to display.
     @State private var loaded: LoadedCover?
 
+    /// Bumped when a fetch marks this cover dead, so the body re-evaluates and
+    /// the placeholder appears immediately instead of on the next unrelated
+    /// re-render. The registry itself stays the source of truth.
+    @State private var deadCoverVersion = 0
+
     @ViewBuilder var content: (Image) -> Content
 
     init(url: String,
@@ -161,11 +166,18 @@ struct InternetImage<Content: View>: View {
         return image
     }
 
+    /// Reads deadCoverVersion so the body re-evaluates when a fetch marks this
+    /// cover dead mid-flight; the registry stays the source of truth.
+    private var isConfirmedDead: Bool {
+        _ = deadCoverVersion
+        return DeadCoverRegistry.isDead(url)
+    }
+
     var body: some View {
         VStack {
             if let image = immediateImage {
                 content(Image(uiImage: image))
-            } else if resolvedURL == nil || DeadCoverRegistry.isDead(url) {
+            } else if resolvedURL == nil || isConfirmedDead {
                 NoCoverPlaceholder()
             } else if showsProgressWhileLoading {
                 ZStack {
@@ -187,24 +199,39 @@ struct InternetImage<Content: View>: View {
 
         let requested = url
 
-        switch await CoverFetcher.fetch(resolved) {
-        case let .image(image, _):
-            CoverMemoryCache.store(image, for: requested)
+        // The spinner must always mean "still trying". A cover the network
+        // cannot deliver right now is retried on a slowing schedule for as
+        // long as its cell is on screen; the task dies with the cell. Before
+        // this loop, exhausting the fetcher's attempts left the spinner up
+        // over nothing, and a cover the CDN refused for a few minutes needed
+        // force-quits and view-hopping to ever load. Observed on device
+        // 28 Aug 2026.
+        var pauseSeconds: UInt64 = 5
+        while !Task.isCancelled {
+            switch await CoverFetcher.fetch(resolved) {
+            case let .image(image, _):
+                CoverMemoryCache.store(image, for: requested)
 
-            // The slot may have been filled with a different album while this was in
-            // flight. Dropping a late arrival is what stops it painting over a newer
-            // cover.
-            guard !Task.isCancelled, requested == url else { return }
-            loaded = LoadedCover(url: requested, image: image)
+                // The slot may have been filled with a different album while
+                // this was in flight. Dropping a late arrival is what stops it
+                // painting over a newer cover.
+                guard !Task.isCancelled, requested == url else { return }
+                loaded = LoadedCover(url: requested, image: image)
+                return
 
-        case .gone:
-            DeadCoverRegistry.mark(requested)
+            case .gone:
+                // The server answered definitively that this cover does not
+                // exist; only that verdict shows the placeholder. The bump
+                // exists because marking the registry alone does not make
+                // SwiftUI re-evaluate the body.
+                DeadCoverRegistry.mark(requested)
+                deadCoverVersion += 1
+                return
 
-        case .unreachable:
-            // Left unmarked on purpose. The URL may be perfectly good and simply
-            // unlucky, and marking it would reproduce the bug this replaced: a cover
-            // written off for the rest of the session over one lost request.
-            break
+            case .unreachable:
+                try? await Task.sleep(nanoseconds: pauseSeconds * 1_000_000_000)
+                pauseSeconds = min(pauseSeconds * 2, 240)
+            }
         }
     }
 }
