@@ -156,6 +156,31 @@ final class CoverFetcherTests: XCTestCase {
         XCTAssertEqual(StubURLProtocol.requestCount, 1)
     }
 
+    /// A 5xx is the server having a bad moment, not a verdict on the cover.
+    /// Treating it as death wrote off a perfectly good cover for a whole
+    /// session over one CDN error page, observed on device 28 Aug 2026.
+    func testA503IsRetriedAndReportedUnreachableRatherThanDead() async {
+        StubURLProtocol.respond = { _, request in self.status(503, request) }
+
+        let outcome = await fetch()
+
+        XCTAssertEqual(outcome, .unreachable,
+                       "a server error must stay retryable, never a death sentence")
+        XCTAssertEqual(StubURLProtocol.requestCount, CoverFetcher.maxAttempts)
+    }
+
+    /// The recovery case that motivates the distinction: one 5xx, then fine.
+    func testACoverBehindATransient503StillLoads() async {
+        StubURLProtocol.respond = { attempt, request in
+            attempt == 1 ? self.status(503, request) : self.ok(request)
+        }
+
+        let outcome = await fetch()
+
+        XCTAssertEqual(outcome, .image(UIImage(), attempts: 2))
+        XCTAssertEqual(StubURLProtocol.requestCount, 2)
+    }
+
     // MARK: - Fixture
 
     /// A real 2x2 PNG, so `UIImage(data:)` genuinely decodes rather than being

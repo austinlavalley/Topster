@@ -72,8 +72,17 @@ enum CoverFetcher {
                     return .image(image, attempts: attempt + 1)
                 }
 
-                // A 404, a 5xx, or a 200 carrying something undecodable.
-                return .gone
+                // Only a definitive answer marks a cover dead: the resource is
+                // gone (404/410), or the server succeeded and what it served is
+                // not an image. A 5xx is the server having a bad moment, and
+                // treating it as death was observed writing off a perfectly
+                // good cover for a whole session over one CDN error page; it
+                // counts as a failed attempt instead.
+                let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+                if status == 404 || status == 410 || (200..<300).contains(status) {
+                    return .gone
+                }
+                continue
 
             } catch {
                 continue
