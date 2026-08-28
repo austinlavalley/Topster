@@ -37,6 +37,7 @@
 		D9DEE2022E5F000100AB0002 /* DeezerSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2012E5F000100AB0001 /* DeezerSearch.swift */; };
 		D9DEE2042E5F000100AB0004 /* SearchRanking.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2032E5F000100AB0003 /* SearchRanking.swift */; };
 		D9DEE2062E5F000100AB0006 /* SearchRankingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2052E5F000100AB0005 /* SearchRankingTests.swift */; };
+		D9DEE20A2E5F000100AB000A /* GridPaddingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2092E5F000100AB0009 /* GridPaddingTests.swift */; };
 		D9ADFFE52C98815A00CA2D0F /* fittingrows.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9ADFFE42C98815A00CA2D0F /* fittingrows.swift */; };
 		D9B519972BDD6CC800E703EF /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B519962BDD6CC800E703EF /* LoadingView.swift */; };
 		D9B8B4012AB3AE6600A4613A /* TopTracksNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */; };
@@ -104,6 +105,7 @@
 		D9DEE2012E5F000100AB0001 /* DeezerSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeezerSearch.swift; sourceTree = "<group>"; };
 		D9DEE2032E5F000100AB0003 /* SearchRanking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRanking.swift; sourceTree = "<group>"; };
 		D9DEE2052E5F000100AB0005 /* SearchRankingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SearchRankingTests.swift; sourceTree = "<group>"; };
+		D9DEE2092E5F000100AB0009 /* GridPaddingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GridPaddingTests.swift; sourceTree = "<group>"; };
 		D9ADFFE42C98815A00CA2D0F /* fittingrows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fittingrows.swift; sourceTree = "<group>"; };
 		D9B519962BDD6CC800E703EF /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		D9B8B4002AB3AE6600A4613A /* TopTracksNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopTracksNetwork.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 				B2D0892549E0C8DF70AF79D9 /* ResponseDecodingTests.swift */,
 				711240564EC6AB4165C58D10 /* CoverFetcherTests.swift */,
 				D9DEE2052E5F000100AB0005 /* SearchRankingTests.swift */,
+				D9DEE2092E5F000100AB0009 /* GridPaddingTests.swift */,
 			);
 			name = TopsterTests;
 			path = TopsterTests;
@@ -426,6 +429,7 @@
 				3454A3F5C81389F73633F76B /* ResponseDecodingTests.swift in Sources */,
 				0B52FF8B8946EFB8601EEDB8 /* CoverFetcherTests.swift in Sources */,
 				D9DEE2062E5F000100AB0006 /* SearchRankingTests.swift in Sources */,
+				D9DEE20A2E5F000100AB000A /* GridPaddingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

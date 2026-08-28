@@ -171,6 +171,17 @@ enum GridType: String, Codable {
     case twenty
     case twentyWide
     case twentyFive
+
+    /// How many cells this layout owns. The grid views slice the dictionary by
+    /// key, so the dictionary must actually hold this many keys or rows simply
+    /// vanish from the screen.
+    var slotCount: Int {
+        switch self {
+        case .fortyTwo: return 42
+        case .twenty, .twentyWide: return 20
+        case .twentyFive: return 25
+        }
+    }
 }
 
 class FortyScrollGridViewModel: ObservableObject {
@@ -179,11 +190,19 @@ class FortyScrollGridViewModel: ObservableObject {
     @Published var showExportSheet = false
     @Published var selectedGridID: Int?
     @Published var pressShowRemove = false
-    
+
     @Published var savedGrids: [GridWithType] = []
 
-    @Published var activeGridType = GridType.fortyTwo
-    
+    /// Persisted on change and restored in init. The grid's *contents* always
+    /// survived relaunch but this did not, so an unsaved twentyFive grid came
+    /// back displayed as fortyTwo. (didSet does not fire during init, so
+    /// restoring the value does not rewrite it.)
+    @Published var activeGridType = GridType.fortyTwo {
+        didSet { defaults.set(activeGridType.rawValue, forKey: "activeGridType") }
+    }
+
+    private let defaults: UserDefaults
+
     @Published var globalSpacing: CGFloat = 24
     
     
@@ -192,15 +211,47 @@ class FortyScrollGridViewModel: ObservableObject {
     @AppStorage("currentActiveGrid") var currentActiveGrid: Int? 
     
     
-    init() {
+    /// Restores any slot keys a stored grid is missing.
+    ///
+    /// The grid views render cells by slicing the dictionary, so a dictionary
+    /// with fewer keys than its layout silently deletes rows from the screen.
+    /// A 20-key dict labelled fortyTwo shipped exactly that way on 27 Aug 2026:
+    /// stale test state was saved once and then propagated into every grid
+    /// saved after it, with no way back from inside the app. Padding on load
+    /// makes the damage heal instead of spread.
+    static func padded(_ grid: [Int: Album?], to slotCount: Int) -> [Int: Album?] {
+        var grid = grid
+        // updateValue, not subscript assignment: through the subscript a nil
+        // means "remove the key", which is the opposite of inserting an empty
+        // slot.
+        for key in 1...slotCount where grid[key] == nil {
+            grid.updateValue(nil, forKey: key)
+        }
+        return grid
+    }
+
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+
+        // Restore the layout before the grid, because padding sizes itself by
+        // the layout.
+        if let raw = defaults.string(forKey: "activeGridType"),
+           let restored = GridType(rawValue: raw) {
+            activeGridType = restored
+        }
+
         if let savedData = storedFortyGridDict,
            let decodedData = try? JSONDecoder().decode([Int: Album?].self, from: savedData) {
-            FortyGridDict = decodedData
+            FortyGridDict = Self.padded(decodedData, to: activeGridType.slotCount)
         }
-        
+
         if let storedGrids = storedSavedGrids,
            let decodedData = try? JSONDecoder().decode([GridWithType].self, from: storedGrids) {
-            savedGrids = decodedData
+            savedGrids = decodedData.map { saved in
+                GridWithType(grid: Self.padded(saved.grid, to: saved.type.slotCount),
+                             type: saved.type,
+                             name: saved.name)
+            }
         }
 
         // currentActiveGrid is an index into savedGrids, and the two are stored
