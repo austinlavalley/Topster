@@ -201,6 +201,14 @@ class FortyScrollGridViewModel: ObservableObject {
         didSet { defaults.set(activeGridType.rawValue, forKey: "activeGridType") }
     }
 
+    /// The layout-picker path. Split from bare assignment so the analytics
+    /// event means "a person chose this", not "the app restored or opened a
+    /// grid": tracking in didSet was observed firing on every launch.
+    func selectLayout(_ type: GridType) {
+        activeGridType = type
+        Analytics.track(.layoutSelected(layout: type.rawValue))
+    }
+
     private let defaults: UserDefaults
 
     @Published var globalSpacing: CGFloat = 24
@@ -306,6 +314,7 @@ class FortyScrollGridViewModel: ObservableObject {
     func addToSavedGrids(name: String? = nil) {
         EditableSavedGrids.append(GridWithType(grid: FortyGridDict, type: activeGridType, name: name))
         currentActiveGrid = savedGrids.count - 1
+        Analytics.track(.gridSaved(layout: activeGridType.rawValue))
 
         // Keep a local copy of the art so this grid survives Last.fm dropping a URL,
         // and renders offline. Writes what is already cached, so no new downloads.
@@ -356,6 +365,7 @@ class FortyScrollGridViewModel: ObservableObject {
     func removeAlbumFromGrid(at index: Int) {
         EditableFortyGridDict.updateValue(nil, forKey: index)
         currentActiveGrid = nil
+        Analytics.track(.albumRemoved)
     }
     
     func clearGrid() {

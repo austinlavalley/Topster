@@ -195,9 +195,14 @@ struct InternetImage<Content: View>: View {
     }
 
     private func load() async {
-        guard immediateImage == nil, let resolved = resolvedURL else { return }
+        // The registry check stops a known-dead cover being refetched (and its
+        // failure re-reported) on every appearance of its cell.
+        guard immediateImage == nil,
+              !DeadCoverRegistry.isDead(url),
+              let resolved = resolvedURL else { return }
 
         let requested = url
+        var reportedUnreachable = false
 
         // The spinner must always mean "still trying". A cover the network
         // cannot deliver right now is retried on a slowing schedule for as
@@ -226,9 +231,16 @@ struct InternetImage<Content: View>: View {
                 // SwiftUI re-evaluate the body.
                 DeadCoverRegistry.mark(requested)
                 deadCoverVersion += 1
+                Analytics.track(.coverFetchFailed(confirmedDead: true))
                 return
 
             case .unreachable:
+                // Reported once per cell appearance, not once per retry, so a
+                // bad network doesn't turn into an event storm.
+                if !reportedUnreachable {
+                    reportedUnreachable = true
+                    Analytics.track(.coverFetchFailed(confirmedDead: false))
+                }
                 try? await Task.sleep(nanoseconds: pauseSeconds * 1_000_000_000)
                 pauseSeconds = min(pauseSeconds * 2, 240)
             }
