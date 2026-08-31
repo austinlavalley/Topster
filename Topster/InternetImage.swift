@@ -234,6 +234,14 @@ struct InternetImage<Content: View>: View {
                 Analytics.track(.coverFetchFailed(confirmedDead: true))
                 return
 
+            case .cancelled:
+                // The cell went away with the fetch in flight, most often because
+                // the search sheet closed on a tap while its visible covers were
+                // still arriving. That says nothing about the cover, and counting
+                // it made cover_fetch_failed rise with engagement: 353 events from
+                // two users in a day, on an app that was working fine.
+                return
+
             case .unreachable:
                 // Reported once per cell appearance, not once per retry, so a
                 // bad network doesn't turn into an event storm.

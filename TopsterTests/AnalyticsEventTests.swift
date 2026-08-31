@@ -19,9 +19,13 @@ final class AnalyticsEventTests: XCTestCase {
                        "album_placed")
         XCTAssertEqual(AnalyticsEvent.searchAbandoned(searches: 2).name, "search_abandoned")
         XCTAssertEqual(AnalyticsEvent.albumRemoved.name, "album_removed")
-        XCTAssertEqual(AnalyticsEvent.gridSaved(layout: "fortyTwo").name, "grid_saved")
+        XCTAssertEqual(AnalyticsEvent.gridSaved(layout: "fortyTwo", savedGrids: 3).name,
+                       "grid_saved")
         XCTAssertEqual(AnalyticsEvent.layoutSelected(layout: "twenty").name, "layout_selected")
-        XCTAssertEqual(AnalyticsEvent.exportPreviewed(layout: "fortyTwo").name, "export_previewed")
+        XCTAssertEqual(AnalyticsEvent.exportPreviewed(layout: "fortyTwo", filled: 12).name,
+                       "export_previewed")
+        XCTAssertEqual(AnalyticsEvent.exportSaveAttempted(layout: "fortyTwo").name,
+                       "export_save_attempted")
         XCTAssertEqual(AnalyticsEvent.exportSaved(layout: "fortyTwo").name, "export_saved")
         XCTAssertEqual(AnalyticsEvent.coverFetchFailed(confirmedDead: true).name,
                        "cover_fetch_failed")
@@ -31,8 +35,12 @@ final class AnalyticsEventTests: XCTestCase {
     func testNewEventsCarryTheirShapes() {
         XCTAssertEqual(AnalyticsEvent.searchAbandoned(searches: 3).properties["searches"] as? Int, 3)
         XCTAssertTrue(AnalyticsEvent.albumRemoved.properties.isEmpty)
-        XCTAssertEqual(AnalyticsEvent.exportPreviewed(layout: "twenty").properties["layout"] as? String,
-                       "twenty")
+        XCTAssertEqual(AnalyticsEvent.exportPreviewed(layout: "twenty", filled: 7)
+                        .properties["layout"] as? String, "twenty")
+        XCTAssertEqual(AnalyticsEvent.exportPreviewed(layout: "twenty", filled: 7)
+                        .properties["filled"] as? Int, 7)
+        XCTAssertEqual(AnalyticsEvent.gridSaved(layout: "twenty", savedGrids: 5)
+                        .properties["saved_grids"] as? Int, 5)
         XCTAssertEqual(AnalyticsEvent.coverFetchFailed(confirmedDead: false)
                         .properties["confirmed_dead"] as? Bool, false)
     }
@@ -57,8 +65,8 @@ final class AnalyticsEventTests: XCTestCase {
     }
 
     func testLayoutEventsCarryTheLayout() {
-        XCTAssertEqual(AnalyticsEvent.gridSaved(layout: "twentyFive").properties["layout"] as? String,
-                       "twentyFive")
+        XCTAssertEqual(AnalyticsEvent.gridSaved(layout: "twentyFive", savedGrids: 1)
+                        .properties["layout"] as? String, "twentyFive")
         XCTAssertEqual(AnalyticsEvent.layoutSelected(layout: "twenty").properties["layout"] as? String,
                        "twenty")
         XCTAssertEqual(AnalyticsEvent.exportSaved(layout: "fortyTwo").properties["layout"] as? String,
@@ -74,9 +82,10 @@ final class AnalyticsEventTests: XCTestCase {
             .albumPlaced(position: 1, backfilled: true),
             .searchAbandoned(searches: 2),
             .albumRemoved,
-            .gridSaved(layout: "fortyTwo"),
+            .gridSaved(layout: "fortyTwo", savedGrids: 4),
             .layoutSelected(layout: "fortyTwo"),
-            .exportPreviewed(layout: "fortyTwo"),
+            .exportPreviewed(layout: "fortyTwo", filled: 42),
+            .exportSaveAttempted(layout: "fortyTwo"),
             .exportSaved(layout: "fortyTwo"),
             .coverFetchFailed(confirmedDead: true),
         ]

@@ -35,11 +35,15 @@ enum CoverFetcher {
         case gone
         /// Every attempt failed to complete. Worth trying again later.
         case unreachable
+        /// The cell went away before an attempt finished. Nothing was learned about
+        /// the cover, so this is not a failure and callers must not report it as one.
+        case cancelled
 
         static func == (lhs: Outcome, rhs: Outcome) -> Bool {
             switch (lhs, rhs) {
             case let (.image(_, a), .image(_, b)): return a == b
-            case (.gone, .gone), (.unreachable, .unreachable): return true
+            case (.gone, .gone), (.unreachable, .unreachable), (.cancelled, .cancelled):
+                return true
             default: return false
             }
         }
@@ -61,7 +65,7 @@ enum CoverFetcher {
                 await backoff(attempt)
             }
 
-            if Task.isCancelled { return .unreachable }
+            if Task.isCancelled { return .cancelled }
 
             do {
                 let (data, response) = try await session.data(for: request)
@@ -85,6 +89,10 @@ enum CoverFetcher {
                 continue
 
             } catch {
+                // A cancelled request throws here rather than tripping the check
+                // above. Letting it fall through to .unreachable is what turned
+                // cover_fetch_failed into a measure of scrolling.
+                if Task.isCancelled { return .cancelled }
                 continue
             }
         }

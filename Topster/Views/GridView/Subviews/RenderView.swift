@@ -138,7 +138,9 @@ struct RenderView: View {
             
             
             .onAppear {
-                Analytics.track(.exportPreviewed(layout: vm.activeGridType.rawValue))
+                Analytics.track(.exportPreviewed(
+                    layout: vm.activeGridType.rawValue,
+                    filled: vm.FortyGridDict.values.compactMap { entry in entry }.count))
                 generateSnapshot()
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -180,6 +182,10 @@ extension RenderView {
     /// agreed to anything.
     func saveToPhotos(_ image: UIImage) {
         let layout = vm.activeGridType.rawValue
+
+        // Fired on the tap, before the permission prompt, so the three ways to
+        // leave the sheet without an image stay distinguishable.
+        Analytics.track(.exportSaveAttempted(layout: layout))
 
         PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
             guard status == .authorized || status == .limited else {
