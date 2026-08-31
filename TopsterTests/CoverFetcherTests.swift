@@ -181,6 +181,31 @@ final class CoverFetcherTests: XCTestCase {
         XCTAssertEqual(StubURLProtocol.requestCount, 2)
     }
 
+    // MARK: - Cancellation is not failure
+
+    /// The behaviour 1.6.1 exists for.
+    ///
+    /// A cover whose cell went away tells us nothing about that cover. Reporting it
+    /// as unreachable made cover_fetch_failed climb with engagement rather than with
+    /// CDN trouble: 353 events from two users in a day, on an app that was fine.
+    ///
+    /// Both cancellation paths land here. If cancel() beats the task body, the check
+    /// at the top of the first attempt catches it; if the request goes out first, the
+    /// stub's throw reaches the catch, which checks again. Either way the answer must
+    /// not be .unreachable.
+    func testACancelledFetchIsNotReportedAsAFailure() async {
+        StubURLProtocol.respond = { _, _ in throw URLError(.networkConnectionLost) }
+
+        let target = url
+        let task = Task { await CoverFetcher.fetch(target, backoff: { _ in }) }
+        task.cancel()
+
+        let outcome = await task.value
+
+        XCTAssertEqual(outcome, .cancelled,
+                       "a cancelled fetch is not a failed one and must not be counted as one")
+    }
+
     // MARK: - Fixture
 
     /// A real 2x2 PNG, so `UIImage(data:)` genuinely decodes rather than being

@@ -32,13 +32,28 @@ enum AnalyticsEvent {
     case searchAbandoned(searches: Int)
 
     case albumRemoved
-    case gridSaved(layout: String)
+
+    /// A grid was saved. `saved_grids` is how many the library holds afterwards,
+    /// so the spread of that number across users is what any argument about
+    /// capping saved grids has to be built on. It counts what is held rather
+    /// than what was ever created, so deleting a grid lowers the next event's
+    /// number.
+    case gridSaved(layout: String, savedGrids: Int)
     case layoutSelected(layout: String)
 
-    /// The export funnel: previewed is the sheet opening, saved is the image
-    /// actually written. The gap between them is the number that settles
-    /// whether the "Export" wording confuses people.
-    case exportPreviewed(layout: String)
+    /// The export funnel: previewed is the sheet opening, attempted is the
+    /// Save to Photos tap, saved is the image actually written.
+    ///
+    /// `filled` is how many slots held an album when the sheet opened. Previews
+    /// bunched at low fill would mean people open the sheet to find out what it
+    /// does, meet a half-empty grid and close it. That is a different problem
+    /// from the Export wording losing them, and the two were indistinguishable.
+    ///
+    /// Attempted exists because without it, never tapping Save, denying the
+    /// Photos permission, and a write that failed all look identical: the
+    /// saved event only fires on success.
+    case exportPreviewed(layout: String, filled: Int)
+    case exportSaveAttempted(layout: String)
     case exportSaved(layout: String)
 
     /// A cover fetch ended without an image. Confirmed dead means the server
@@ -55,6 +70,7 @@ enum AnalyticsEvent {
         case .gridSaved: return "grid_saved"
         case .layoutSelected: return "layout_selected"
         case .exportPreviewed: return "export_previewed"
+        case .exportSaveAttempted: return "export_save_attempted"
         case .exportSaved: return "export_saved"
         case .coverFetchFailed: return "cover_fetch_failed"
         }
@@ -74,8 +90,12 @@ enum AnalyticsEvent {
             return ["searches": searches]
         case .albumRemoved:
             return [:]
-        case let .gridSaved(layout), let .layoutSelected(layout),
-             let .exportPreviewed(layout), let .exportSaved(layout):
+        case let .exportPreviewed(layout, filled):
+            return ["layout": layout, "filled": filled]
+        case let .gridSaved(layout, savedGrids):
+            return ["layout": layout, "saved_grids": savedGrids]
+        case let .layoutSelected(layout),
+             let .exportSaveAttempted(layout), let .exportSaved(layout):
             return ["layout": layout]
         case let .coverFetchFailed(confirmedDead):
             return ["confirmed_dead": confirmedDead]

@@ -314,7 +314,8 @@ class FortyScrollGridViewModel: ObservableObject {
     func addToSavedGrids(name: String? = nil) {
         EditableSavedGrids.append(GridWithType(grid: FortyGridDict, type: activeGridType, name: name))
         currentActiveGrid = savedGrids.count - 1
-        Analytics.track(.gridSaved(layout: activeGridType.rawValue))
+        Analytics.track(.gridSaved(layout: activeGridType.rawValue,
+                                   savedGrids: savedGrids.count))
 
         // Keep a local copy of the art so this grid survives Last.fm dropping a URL,
         // and renders offline. Writes what is already cached, so no new downloads.
