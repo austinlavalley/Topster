@@ -11,6 +11,7 @@ import SwiftUI
 struct TopsterApp: App {
     @StateObject private var vm = FortyScrollGridViewModel()
     @AppStorage("appColorTheme") private var darkModeEnabled = false
+    @Environment(\.scenePhase) private var scenePhase
     
     @State var notificationsEnabled = UserDefaults.standard.bool(forKey: "notificationsEnabled")
 
@@ -37,6 +38,22 @@ struct TopsterApp: App {
                 .environmentObject(vm)
                 .environmentObject(NotificationSettings(isEnabled: notificationsEnabled))
                 .preferredColorScheme(darkModeEnabled ? .dark : .light)
+                // One session_outcome per foreground stretch. Without it the
+                // shortest sessions send nothing at all, so the people who
+                // open the app and leave are invisible rather than merely
+                // quiet. `.inactive` is ignored: a notification banner or a
+                // pull of Control Center is not the end of a session.
+                .onChange(of: scenePhase) { _, phase in
+                    switch phase {
+                    case .active:
+                        Analytics.beginSession()
+                    case .background:
+                        Analytics.endSession(
+                            gridFilled: vm.FortyGridDict.values.compactMap { entry in entry }.count)
+                    default:
+                        break
+                    }
+                }
         }
     }
 }

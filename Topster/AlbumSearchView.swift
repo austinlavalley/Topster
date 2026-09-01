@@ -39,9 +39,21 @@ struct AlbumSearchView: View {
     @State private var backfilledIDs: Set<UUID> = []
 
     /// One search-sheet visit's story, for the searchAbandoned event: how many
-    /// searches settled, and whether any of them ended in a placement.
+    /// searches settled, how many failed outright, whether anything was typed
+    /// at all, and whether any of it ended in a placement.
+    ///
+    /// `typed` and `failedThisVisit` exist because settled searches alone hid
+    /// the worst cases. A person whose every search threw, and a person who
+    /// never opened the sheet, used to look identical.
     @State private var searchesThisVisit = 0
+    @State private var failedThisVisit = 0
+    @State private var typedThisVisit = false
     @State private var placedThisVisit = false
+
+    /// The last query that settled, kept only to tell a refinement of it from
+    /// a fresh query. Never sent anywhere; only its relationship to the next
+    /// query is.
+    @State private var lastSettledQuery = ""
     @State private var isSearching = false
     @State private var searchNonce = 0
     
@@ -49,6 +61,18 @@ struct AlbumSearchView: View {
     
     
     private var threeColumnGrid = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
+
+    /// Whether the tapped slot already held an album. Swapping a cover is a
+    /// different intent from filling an empty grid, and the two were one
+    /// undifferentiated blob of sheet-opens.
+    private var selectedSlotHasAlbum: Bool {
+        guard let slot = vm.selectedGridID, let entry = vm.FortyGridDict[slot] else { return false }
+        return entry != nil
+    }
+
+    private var gridFilled: Int {
+        vm.FortyGridDict.values.compactMap { entry in entry }.count
+    }
 
     var body: some View {
         NavigationView {
@@ -129,7 +153,8 @@ struct AlbumSearchView: View {
                                 SearchAlbumSquare(album: result, onPlace: {
                                     placedThisVisit = true
                                     Analytics.track(.albumPlaced(position: index + 1,
-                                                                 backfilled: backfilledIDs.contains(result.id)))
+                                                                 backfilled: backfilledIDs.contains(result.id),
+                                                                 source: .search))
                                 })
                                     .frame(width: UIScreen.main.bounds.width/3.33333, height: UIScreen.main.bounds.width/3.33333)
                             }
@@ -151,13 +176,25 @@ struct AlbumSearchView: View {
         .onAppear {
             isSearchFocused = true
             searchesThisVisit = 0
+            failedThisVisit = 0
+            typedThisVisit = false
             placedThisVisit = false
+            lastSettledQuery = ""
+
+            Analytics.track(.searchOpened(gridFilled: gridFilled,
+                                          isReplacement: selectedSlotHasAlbum))
+
             // Handshakes happen while the user types; see warmConnections().
             Networker().warmConnections()
         }
         .onDisappear {
-            if !placedThisVisit && searchesThisVisit > 0 {
-                Analytics.track(.searchAbandoned(searches: searchesThisVisit))
+            // No settled-search floor. Closing the sheet having placed nothing
+            // is the abandonment, whether that took three searches or none,
+            // and the no-search case is the one worth seeing.
+            if !placedThisVisit {
+                Analytics.track(.searchAbandoned(searches: searchesThisVisit,
+                                                 failedSearches: failedThisVisit,
+                                                 typed: typedThisVisit))
             }
         }
     }
@@ -166,6 +203,11 @@ struct AlbumSearchView: View {
     
     private func runSearch() async {
         let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        // Set before every bail below, so a visit where the request was
+        // cancelled, threw, or never got past the debounce still reports that
+        // the person was trying to find something.
+        if !query.isEmpty { typedThisVisit = true }
 
         guard !query.isEmpty else {
             searchResults = []
@@ -240,11 +282,22 @@ struct AlbumSearchView: View {
             searchError = final.isEmpty ? "No albums with cover art found for \"\(query)\"." : nil
 
             searchesThisVisit += 1
+
+            // Shape, not content. A refinement is a query that grew out of the
+            // last one that settled, which is what separates "the ranking
+            // buried it" from "you never had it".
+            let isRefinement = !lastSettledQuery.isEmpty && query != lastSettledQuery
+                && (query.hasPrefix(lastSettledQuery) || lastSettledQuery.hasPrefix(query))
+            lastSettledQuery = query
+
             Analytics.track(.searchSettled(results: final.count,
                                            backfills: backfilledIDs.count,
                                            hintArrived: hint != nil,
                                            cacheHits: outcome.cacheHits,
-                                           throttled: outcome.throttled))
+                                           throttled: outcome.throttled,
+                                           queryLength: query.count,
+                                           wordCount: query.split(separator: " ").count,
+                                           isRefinement: isRefinement))
         } catch is CancellationError {
             return
         } catch {
@@ -252,6 +305,7 @@ struct AlbumSearchView: View {
 
             searchResults = []
             searchError = error.localizedDescription
+            failedThisVisit += 1
         }
     }
 }
