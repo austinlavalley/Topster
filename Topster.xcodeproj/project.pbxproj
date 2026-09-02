@@ -49,6 +49,10 @@
 		D9DEE2022E5F000100AB0002 /* DeezerSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2012E5F000100AB0001 /* DeezerSearch.swift */; };
 		D9DEE2042E5F000100AB0004 /* SearchRanking.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2032E5F000100AB0003 /* SearchRanking.swift */; };
 		D9DEE20C2E5F000100AB000C /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE20B2E5F000100AB000B /* Analytics.swift */; };
+		D9DEE2102E5F000100AB0010 /* UsageCounters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE20F2E5F000100AB000F /* UsageCounters.swift */; };
+		D9DEE2122E5F000100AB0012 /* SessionMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2112E5F000100AB0011 /* SessionMetrics.swift */; };
+		D9DEE2142E5F000100AB0014 /* UsageCountersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2132E5F000100AB0013 /* UsageCountersTests.swift */; };
+		D9DEE2162E5F000100AB0016 /* SessionMetricsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2152E5F000100AB0015 /* SessionMetricsTests.swift */; };
 		D9DEE20E2E5F000100AB000E /* AnalyticsEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE20D2E5F000100AB000D /* AnalyticsEventTests.swift */; };
 		D9DEE2062E5F000100AB0006 /* SearchRankingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2052E5F000100AB0005 /* SearchRankingTests.swift */; };
 		D9DEE2082E5F000100AB0008 /* SearchOrderDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2072E5F000100AB0007 /* SearchOrderDiagnostics.swift */; };
@@ -120,6 +124,10 @@
 		D9DEE2012E5F000100AB0001 /* DeezerSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeezerSearch.swift; sourceTree = "<group>"; };
 		D9DEE2032E5F000100AB0003 /* SearchRanking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRanking.swift; sourceTree = "<group>"; };
 		D9DEE20B2E5F000100AB000B /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
+		D9DEE20F2E5F000100AB000F /* UsageCounters.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UsageCounters.swift; sourceTree = "<group>"; };
+		D9DEE2112E5F000100AB0011 /* SessionMetrics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionMetrics.swift; sourceTree = "<group>"; };
+		D9DEE2132E5F000100AB0013 /* UsageCountersTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UsageCountersTests.swift; sourceTree = "<group>"; };
+		D9DEE2152E5F000100AB0015 /* SessionMetricsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionMetricsTests.swift; sourceTree = "<group>"; };
 		D9DEE20D2E5F000100AB000D /* AnalyticsEventTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AnalyticsEventTests.swift; sourceTree = "<group>"; };
 		D9DEE2052E5F000100AB0005 /* SearchRankingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SearchRankingTests.swift; sourceTree = "<group>"; };
 		D9DEE2072E5F000100AB0007 /* SearchOrderDiagnostics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SearchOrderDiagnostics.swift; sourceTree = "<group>"; };
@@ -245,6 +253,8 @@
 				87CAF2D425052D559721E1AB /* CoverFetcher.swift */,
 				D9DEE2032E5F000100AB0003 /* SearchRanking.swift */,
 				D9DEE20B2E5F000100AB000B /* Analytics.swift */,
+				D9DEE20F2E5F000100AB000F /* UsageCounters.swift */,
+				D9DEE2112E5F000100AB0011 /* SessionMetrics.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -303,6 +313,8 @@
 				D9DEE2052E5F000100AB0005 /* SearchRankingTests.swift */,
 				D9DEE2092E5F000100AB0009 /* GridPaddingTests.swift */,
 				D9DEE20D2E5F000100AB000D /* AnalyticsEventTests.swift */,
+				D9DEE2132E5F000100AB0013 /* UsageCountersTests.swift */,
+				D9DEE2152E5F000100AB0015 /* SessionMetricsTests.swift */,
 			);
 			path = TopsterTests;
 			sourceTree = SOURCE_ROOT;
@@ -440,6 +452,8 @@
 				D9DEE2062E5F000100AB0006 /* SearchRankingTests.swift in Sources */,
 				D9DEE20A2E5F000100AB000A /* GridPaddingTests.swift in Sources */,
 				D9DEE20E2E5F000100AB000E /* AnalyticsEventTests.swift in Sources */,
+				D9DEE2142E5F000100AB0014 /* UsageCountersTests.swift in Sources */,
+				D9DEE2162E5F000100AB0016 /* SessionMetricsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,6 +503,8 @@
 				D9DEE2022E5F000100AB0002 /* DeezerSearch.swift in Sources */,
 				D9DEE2042E5F000100AB0004 /* SearchRanking.swift in Sources */,
 				D9DEE20C2E5F000100AB000C /* Analytics.swift in Sources */,
+				D9DEE2102E5F000100AB0010 /* UsageCounters.swift in Sources */,
+				D9DEE2122E5F000100AB0012 /* SessionMetrics.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -729,7 +745,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.1;
+				MARKETING_VERSION = 1.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.austinlavalley.Topster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -764,7 +780,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.1;
+				MARKETING_VERSION = 1.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.austinlavalley.Topster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
