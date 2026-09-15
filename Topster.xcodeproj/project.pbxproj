@@ -57,6 +57,8 @@
 		D9DEE2062E5F000100AB0006 /* SearchRankingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2052E5F000100AB0005 /* SearchRankingTests.swift */; };
 		D9DEE2082E5F000100AB0008 /* SearchOrderDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2072E5F000100AB0007 /* SearchOrderDiagnostics.swift */; };
 		D9DEE20A2E5F000100AB000A /* GridPaddingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2092E5F000100AB0009 /* GridPaddingTests.swift */; };
+		D9E1A0022E6A0001000E0002 /* ExportLabels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E1A0012E6A0001000E0001 /* ExportLabels.swift */; };
+		D9E1A0042E6A0001000E0004 /* ExportListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E1A0032E6A0001000E0003 /* ExportListTests.swift */; };
 		EE952AB98F02DA48CBDCA5FB /* CoverArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11EC70B7F1CF42EEE85A8FD /* CoverArchive.swift */; };
 		F7D30E1E46F6DDA474C2D7BA /* StoreScreenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5E94EEE5C9DA00E6E6B6EB /* StoreScreenshots.swift */; };
 /* End PBXBuildFile section */
@@ -132,6 +134,8 @@
 		D9DEE2052E5F000100AB0005 /* SearchRankingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SearchRankingTests.swift; sourceTree = "<group>"; };
 		D9DEE2072E5F000100AB0007 /* SearchOrderDiagnostics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SearchOrderDiagnostics.swift; sourceTree = "<group>"; };
 		D9DEE2092E5F000100AB0009 /* GridPaddingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GridPaddingTests.swift; sourceTree = "<group>"; };
+		D9E1A0012E6A0001000E0001 /* ExportLabels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportLabels.swift; sourceTree = "<group>"; };
+		D9E1A0032E6A0001000E0003 /* ExportListTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExportListTests.swift; sourceTree = "<group>"; };
 		E27F7B6FCEF196F584F58CC1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
@@ -297,6 +301,7 @@
 				D9B8B4072AB4FB0800A4613A /* Artist.swift */,
 				D9B8B4092AB4FB2800A4613A /* Track.swift */,
 				D9346C682ACB7AC200CA8F70 /* Album.swift */,
+				D9E1A0012E6A0001000E0001 /* ExportLabels.swift */,
 				D99642532ABB50B6004CEA01 /* SearchResults.swift */,
 				D9DEE2012E5F000100AB0001 /* DeezerSearch.swift */,
 			);
@@ -312,6 +317,7 @@
 				711240564EC6AB4165C58D10 /* CoverFetcherTests.swift */,
 				D9DEE2052E5F000100AB0005 /* SearchRankingTests.swift */,
 				D9DEE2092E5F000100AB0009 /* GridPaddingTests.swift */,
+				D9E1A0032E6A0001000E0003 /* ExportListTests.swift */,
 				D9DEE20D2E5F000100AB000D /* AnalyticsEventTests.swift */,
 				D9DEE2132E5F000100AB0013 /* UsageCountersTests.swift */,
 				D9DEE2152E5F000100AB0015 /* SessionMetricsTests.swift */,
@@ -451,6 +457,7 @@
 				0B52FF8B8946EFB8601EEDB8 /* CoverFetcherTests.swift in Sources */,
 				D9DEE2062E5F000100AB0006 /* SearchRankingTests.swift in Sources */,
 				D9DEE20A2E5F000100AB000A /* GridPaddingTests.swift in Sources */,
+				D9E1A0042E6A0001000E0004 /* ExportListTests.swift in Sources */,
 				D9DEE20E2E5F000100AB000E /* AnalyticsEventTests.swift in Sources */,
 				D9DEE2142E5F000100AB0014 /* UsageCountersTests.swift in Sources */,
 				D9DEE2162E5F000100AB0016 /* SessionMetricsTests.swift in Sources */,
@@ -488,6 +495,7 @@
 				D91952A82B02C2DA00FD246C /* InternetImage.swift in Sources */,
 				D99642542ABB50B6004CEA01 /* SearchResults.swift in Sources */,
 				D9346C692ACB7AC200CA8F70 /* Album.swift in Sources */,
+				D9E1A0022E6A0001000E0002 /* ExportLabels.swift in Sources */,
 				D9B8B4082AB4FB0800A4613A /* Artist.swift in Sources */,
 				D9C8CCC22AF582E500FF0997 /* SavedGridsListView.swift in Sources */,
 				D92B6F0F2A9BBF9300A7CCBD /* TopsterApp.swift in Sources */,
@@ -745,7 +753,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.austinlavalley.Topster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -780,7 +788,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.austinlavalley.Topster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

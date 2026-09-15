@@ -37,7 +37,7 @@ final class AnalyticsEventTests: XCTestCase {
                        "export_previewed")
         XCTAssertEqual(AnalyticsEvent.exportSaveAttempted(layout: "fortyTwo").name,
                        "export_save_attempted")
-        XCTAssertEqual(AnalyticsEvent.exportSaved(layout: "fortyTwo").name, "export_saved")
+        XCTAssertEqual(AnalyticsEvent.exportSaved(layout: "fortyTwo", labels: "none", background: "light").name, "export_saved")
         XCTAssertEqual(AnalyticsEvent.coverFetchFailed(confirmedDead: true).name,
                        "cover_fetch_failed")
         XCTAssertEqual(AnalyticsEvent.activated(milestone: .firstAlbumPlaced,
@@ -154,8 +154,15 @@ final class AnalyticsEventTests: XCTestCase {
                         .properties["layout"] as? String, "twentyFive")
         XCTAssertEqual(AnalyticsEvent.layoutSelected(layout: "twenty").properties["layout"] as? String,
                        "twenty")
-        XCTAssertEqual(AnalyticsEvent.exportSaved(layout: "fortyTwo").properties["layout"] as? String,
+        XCTAssertEqual(AnalyticsEvent.exportSaved(layout: "fortyTwo", labels: "none", background: "light").properties["layout"] as? String,
                        "fortyTwo")
+    }
+
+    func testExportSavedCarriesTheLabelsChoice() {
+        XCTAssertEqual(AnalyticsEvent.exportSaved(layout: "fortyTwo", labels: "list", background: "dark")
+                        .properties["labels"] as? String, "list")
+        XCTAssertEqual(AnalyticsEvent.exportSaved(layout: "fortyTwo", labels: "list", background: "dark")
+                        .properties["background"] as? String, "dark")
     }
 
     /// The privacy promise, enforced: no event property may carry free text a
@@ -175,7 +182,7 @@ final class AnalyticsEventTests: XCTestCase {
             .layoutSelected(layout: "fortyTwo"),
             .exportPreviewed(layout: "fortyTwo", filled: 42),
             .exportSaveAttempted(layout: "fortyTwo"),
-            .exportSaved(layout: "fortyTwo"),
+            .exportSaved(layout: "fortyTwo", labels: "none", background: "light"),
             .coverFetchFailed(confirmedDead: true),
             .sessionOutcome(albumsPlaced: 1, gridFilled: 1, searchesOpened: 1,
                             saved: true, exported: true, seconds: 1, secondsToFirstAction: 1),
@@ -186,7 +193,9 @@ final class AnalyticsEventTests: XCTestCase {
         let layouts = Set(["fortyTwo", "twenty", "twentyWide", "twentyFive"])
         let sources = Set(["search", "onboarding", "suggestion"])
         let milestones = Set(ActivationMilestone.allCases.map { milestone in milestone.rawValue })
-        let allowedStrings = layouts.union(sources).union(milestones)
+        let labels = Set(ExportLabels.allCases.map { labels in labels.rawValue })
+        let backgrounds = Set(["light", "dark"])
+        let allowedStrings = layouts.union(sources).union(milestones).union(labels).union(backgrounds)
 
         for event in events {
             for (key, value) in event.properties {

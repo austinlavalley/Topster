@@ -134,15 +134,6 @@ struct FortyGridView: View {
                 VStack {
                     Button {
                         withAnimation(.spring) {
-                            vm.selectLayout(.fortyTwo)
-                            showNewSheet = false
-                        }
-                    } label: {
-                        GridLayoutSelectOption(title: "42 Albums", subtitle: "Dynamic, multi-sized rows", isSelected: vm.activeGridType == .fortyTwo)
-                    }.tint(.primary)
-                    
-                    Button {
-                        withAnimation(.spring) {
                             vm.selectLayout(.twentyFive)
                             showNewSheet = false
                         }
@@ -166,6 +157,17 @@ struct FortyGridView: View {
                         }
                     } label: {
                         GridLayoutSelectOption(title: "20 Albums (Wide)", subtitle: "4x5 Grid", isSelected: vm.activeGridType == .twentyWide)
+                    }.tint(.primary)
+
+                    // Last, not first: it was the default for two years and is
+                    // now the least chosen layout. Kept for the people who use it.
+                    Button {
+                        withAnimation(.spring) {
+                            vm.selectLayout(.fortyTwo)
+                            showNewSheet = false
+                        }
+                    } label: {
+                        GridLayoutSelectOption(title: "42 Albums", subtitle: "Dynamic, multi-sized rows", isSelected: vm.activeGridType == .fortyTwo)
                     }.tint(.primary)
                 }.padding()
             }

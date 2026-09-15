@@ -35,7 +35,7 @@ final class SessionMetricsTests: XCTestCase {
         session.observe(.searchOpened(gridFilled: 1, isReplacement: false))
         session.observe(.albumPlaced(position: 4, backfilled: true, source: .search))
         session.observe(.gridSaved(layout: "fortyTwo", savedGrids: 1))
-        session.observe(.exportSaved(layout: "fortyTwo"))
+        session.observe(.exportSaved(layout: "fortyTwo", labels: "none", background: "light"))
 
         XCTAssertEqual(session.albumsPlaced, 2)
         XCTAssertEqual(session.searchesOpened, 2)
@@ -94,7 +94,7 @@ final class SessionMetricsTests: XCTestCase {
     func testBeginWipesThePreviousSession() {
         var session = SessionMetrics()
         session.observe(.albumPlaced(position: 1, backfilled: false, source: .search))
-        session.observe(.exportSaved(layout: "twenty"))
+        session.observe(.exportSaved(layout: "twenty", labels: "none", background: "light"))
 
         session.begin()
 

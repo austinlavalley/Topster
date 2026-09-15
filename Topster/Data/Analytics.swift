@@ -86,7 +86,11 @@ enum AnalyticsEvent {
     /// saved event only fires on success.
     case exportPreviewed(layout: String, filled: Int)
     case exportSaveAttempted(layout: String)
-    case exportSaved(layout: String)
+    /// `labels` is the ExportLabels raw value, so a "none" majority says the
+    /// option was not found or not wanted, and the two look different from a
+    /// grid that never got saved at all. `background` is "light" or "dark",
+    /// the last export option that was not being recorded.
+    case exportSaved(layout: String, labels: String, background: String)
 
     /// A cover fetch ended without an image. Confirmed dead means the server
     /// said the art no longer exists; otherwise the attempts were exhausted
@@ -152,9 +156,10 @@ enum AnalyticsEvent {
             return ["layout": layout, "filled": filled]
         case let .gridSaved(layout, savedGrids):
             return ["layout": layout, "saved_grids": savedGrids]
-        case let .layoutSelected(layout),
-             let .exportSaveAttempted(layout), let .exportSaved(layout):
+        case let .layoutSelected(layout), let .exportSaveAttempted(layout):
             return ["layout": layout]
+        case let .exportSaved(layout, labels, background):
+            return ["layout": layout, "labels": labels, "background": background]
         case let .coverFetchFailed(confirmedDead):
             return ["confirmed_dead": confirmedDead]
         case let .activated(milestone, secondsSinceInstall, sessionNumber):

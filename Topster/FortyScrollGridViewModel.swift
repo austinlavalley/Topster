@@ -186,6 +186,13 @@ enum GridType: String, Codable {
 
 class FortyScrollGridViewModel: ObservableObject {
     @Published var tempExportDarkMode = UserDefaults.standard.bool(forKey: "appColorTheme")
+
+    /// Persisted, unlike the background choice: someone who wants names on
+    /// their export wants them on the next one too.
+    @Published var exportLabels = ExportLabels.none {
+        didSet { defaults.set(exportLabels.rawValue, forKey: "exportLabels") }
+    }
+
     @Published var showSearchSheet = false
     @Published var showExportSheet = false
     @Published var selectedGridID: Int?
@@ -197,8 +204,23 @@ class FortyScrollGridViewModel: ObservableObject {
     /// survived relaunch but this did not, so an unsaved twentyFive grid came
     /// back displayed as fortyTwo. (didSet does not fire during init, so
     /// restoring the value does not rewrite it.)
-    @Published var activeGridType = GridType.fortyTwo {
+    @Published var activeGridType = GridType.twentyFive {
         didSet { defaults.set(activeGridType.rawValue, forKey: "activeGridType") }
+    }
+
+    /// The layout a launch opens with.
+    ///
+    /// The 42 was the default from the start and is now the least chosen
+    /// layout in the analytics; the fixed grids are what people post. New
+    /// installs open on the 25. The choice was not written down before
+    /// 1.6.0, though, and every grid built before then started as a 42, so a
+    /// grid that exists without a recorded choice stays where it was built
+    /// rather than losing its last seventeen covers off the bottom.
+    static func initialLayout(stored: String?, hasPlacedAlbums: Bool) -> GridType {
+        if let stored, let restored = GridType(rawValue: stored) {
+            return restored
+        }
+        return hasPlacedAlbums ? .fortyTwo : .twentyFive
     }
 
     /// The layout-picker path. Split from bare assignment so the analytics
@@ -241,16 +263,25 @@ class FortyScrollGridViewModel: ObservableObject {
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
 
-        // Restore the layout before the grid, because padding sizes itself by
-        // the layout.
-        if let raw = defaults.string(forKey: "activeGridType"),
-           let restored = GridType(rawValue: raw) {
-            activeGridType = restored
+        // Read through the injected defaults rather than the AppStorage
+        // property, so a test suite sees its own grid and not the host app's.
+        let storedGrid = defaults.data(forKey: "FortyGridDict").flatMap { data in
+            try? JSONDecoder().decode([Int: Album?].self, from: data)
         }
 
-        if let savedData = storedFortyGridDict,
-           let decodedData = try? JSONDecoder().decode([Int: Album?].self, from: savedData) {
-            FortyGridDict = Self.padded(decodedData, to: activeGridType.slotCount)
+        // Restore the layout before the grid, because padding sizes itself by
+        // the layout.
+        activeGridType = Self.initialLayout(
+            stored: defaults.string(forKey: "activeGridType"),
+            hasPlacedAlbums: storedGrid?.values.contains { album in album != nil } ?? false)
+
+        if let raw = defaults.string(forKey: "exportLabels"),
+           let restored = ExportLabels(rawValue: raw) {
+            exportLabels = restored
+        }
+
+        if let storedGrid {
+            FortyGridDict = Self.padded(storedGrid, to: activeGridType.slotCount)
         }
 
         if let storedGrids = storedSavedGrids,
