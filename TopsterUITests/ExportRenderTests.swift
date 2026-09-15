@@ -43,6 +43,60 @@ final class ExportRenderTests: XCTestCase {
         Thread.sleep(forTimeInterval: 14)   // window for external capture
     }
 
+    /// Walks the titles option through its three states and captures each one.
+    ///
+    /// The captions and the sidebar are both drawn inside the offscreen render,
+    /// so the only way to see either is the preview image on this sheet. The
+    /// dark background is switched on for the list capture, because white text
+    /// on black is where a colour mistake in the sidebar would show.
+    func testExportTitleOptionsRender() throws {
+        let app = XCUIApplication()
+
+        if let seed = ProcessInfo.processInfo.environment["SEED_HEX"], !seed.isEmpty {
+            app.launchArguments = ["-FortyGridDict", "<\(seed)>"]
+        }
+
+        // The titles choice persists across launches, and a run that stops
+        // early leaves the simulator on whatever it last tapped. Pin the start
+        // through the argument domain so the None assertion below is about
+        // this launch, not the previous run.
+        app.launchArguments += ["-exportLabels", "none"]
+
+        // TEST_RUNNER_LAYOUT=twentyFive on the xcodebuild line opens the stored
+        // grid on that layout without touching what the simulator has saved,
+        // through the same argument-domain override the seed uses.
+        if let layout = ProcessInfo.processInfo.environment["LAYOUT"], !layout.isEmpty {
+            app.launchArguments += ["-activeGridType", layout]
+        }
+
+        app.launch()
+        Thread.sleep(forTimeInterval: 12)
+
+        openExport(app)
+        Thread.sleep(forTimeInterval: 6)
+
+        let titles = app.segmentedControls["export-titles"]
+        XCTAssertTrue(titles.waitForExistence(timeout: 5), "titles control never appeared")
+        XCTAssertTrue(titles.buttons["None"].isSelected, "titles should start at None")
+        attach(named: "03-titles-none")
+
+        titles.buttons["Overlay"].tap()
+        Thread.sleep(forTimeInterval: 4)
+        XCTAssertTrue(titles.buttons["Overlay"].isSelected)
+        attach(named: "04-titles-overlay")
+
+        app.segmentedControls["export-background"].buttons["Dark"].tap()
+        titles.buttons["List"].tap()
+        Thread.sleep(forTimeInterval: 4)
+        XCTAssertTrue(titles.buttons["List"].isSelected)
+        attach(named: "05-titles-list-dark")
+        Thread.sleep(forTimeInterval: 14)   // window for external capture
+
+        // Back to None so the persisted choice does not leak into the next run.
+        titles.buttons["None"].tap()
+        app.segmentedControls["export-background"].buttons["Light"].tap()
+    }
+
     /// Found by identifier rather than label, so renaming the button does not break
     /// the test. It was called "Export" until the copy pass.
     private func openExport(_ app: XCUIApplication) {

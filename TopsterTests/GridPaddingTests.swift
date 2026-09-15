@@ -76,7 +76,7 @@ final class GridPaddingTests: XCTestCase {
         defer { suite.removePersistentDomain(forName: "grid-layout-test") }
 
         let firstLaunch = FortyScrollGridViewModel(defaults: suite)
-        XCTAssertEqual(firstLaunch.activeGridType, .fortyTwo, "default before any choice")
+        XCTAssertEqual(firstLaunch.activeGridType, .twentyFive, "default before any choice")
 
         firstLaunch.activeGridType = .twentyFive
 
@@ -94,7 +94,34 @@ final class GridPaddingTests: XCTestCase {
         suite.set("thirteenDiagonal", forKey: "activeGridType")
 
         let vm = FortyScrollGridViewModel(defaults: suite)
+        XCTAssertEqual(vm.activeGridType, .twentyFive)
+    }
+
+    /// The choice was not persisted before 1.6.0 and every grid then started
+    /// as a 42. Moving the default must not open those grids on a 25 and hide
+    /// slots 26 to 42.
+    func testAGridBuiltBeforeTheChoiceWasRecordedStaysOnFortyTwo() throws {
+        let suite = try XCTUnwrap(UserDefaults(suiteName: "grid-layout-test"))
+        suite.removePersistentDomain(forName: "grid-layout-test")
+        defer { suite.removePersistentDomain(forName: "grid-layout-test") }
+
+        var grid: [Int: Album?] = Dictionary(
+            uniqueKeysWithValues: (1...42).map { key in (key, Album?.none) })
+        grid[40] = album("Deep in the old grid")
+        suite.set(try JSONEncoder().encode(grid), forKey: "FortyGridDict")
+
+        let vm = FortyScrollGridViewModel(defaults: suite)
         XCTAssertEqual(vm.activeGridType, .fortyTwo)
+        XCTAssertEqual(vm.FortyGridDict[40]??.name, "Deep in the old grid")
+    }
+
+    /// An empty grid without a recorded choice is a fresh install, or as good
+    /// as one, and gets the new default.
+    func testAnEmptyGridWithoutARecordedChoiceOpensOnTwentyFive() {
+        XCTAssertEqual(FortyScrollGridViewModel.initialLayout(stored: nil, hasPlacedAlbums: false),
+                       .twentyFive)
+        XCTAssertEqual(FortyScrollGridViewModel.initialLayout(stored: "twenty", hasPlacedAlbums: true),
+                       .twenty, "a recorded choice always wins")
     }
 
 
