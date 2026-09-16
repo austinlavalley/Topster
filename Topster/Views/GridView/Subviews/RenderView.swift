@@ -264,9 +264,11 @@ struct ExportWatermark: View {
     /// at the App Store listing before the build that carries it ships.
     static let domain = "topster.app"
 
-    /// 36pt on the 3366px canvas is about 11px once the image is posted at
-    /// 1080 wide, the smallest that still reads. 26pt was tried and vanished.
-    private let size: CGFloat = 36
+    /// 40pt is the ceiling inside the 72px margin: the line with its descenders
+    /// is about 48px, leaving air on both sides of it. At 1080 wide that is 13px
+    /// text. What makes it read at that size is weight and contrast, not size:
+    /// 36pt medium at 45% was tried and turned to a grey smear at post size.
+    private let size: CGFloat = 40
 
     var body: some View {
         HStack(spacing: size * 0.4) {
@@ -277,10 +279,10 @@ struct ExportWatermark: View {
                 .frame(width: size * 1.15, height: size * 1.15)
                 .clipShape(RoundedRectangle(cornerRadius: size * 0.26, style: .continuous))
             Text("Made with \(Self.domain)")
-                .font(.system(size: size, weight: .medium, design: .monospaced))
+                .font(.system(size: size, weight: .semibold, design: .monospaced))
         }
-        .foregroundStyle((vm.tempExportDarkMode ? Color.white : Color.black).opacity(0.45))
-        .padding(.bottom, 14)
+        .foregroundStyle((vm.tempExportDarkMode ? Color.white : Color.black).opacity(0.7))
+        .padding(.bottom, 12)
     }
 }
 
