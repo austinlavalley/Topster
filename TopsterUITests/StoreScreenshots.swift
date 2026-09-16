@@ -31,6 +31,24 @@ final class StoreScreenshots: XCTestCase {
             app.launchArguments = ["-FortyGridDict", "<\(seed)>"]
         }
 
+        // TEST_RUNNER_LAYOUT picks the layout the seed is shown on. Titles start
+        // off so the plain export frame is the plain export.
+        if let layout = ProcessInfo.processInfo.environment["LAYOUT"], !layout.isEmpty {
+            app.launchArguments += ["-activeGridType", layout]
+        }
+        app.launchArguments += ["-exportLabels", "none"]
+
+        // TEST_RUNNER_SAVED_HEX seeds the saved grids list the same way, so the
+        // Saved frame shows a shelf of different grids rather than whatever
+        // the simulator accumulated. TEST_RUNNER_THEME=dark runs the whole
+        // set, export included, on the dark theme.
+        if let saved = ProcessInfo.processInfo.environment["SAVED_HEX"], !saved.isEmpty {
+            app.launchArguments += ["-storedSavedGrids", "<\(saved)>"]
+        }
+        if ProcessInfo.processInfo.environment["THEME"] == "dark" {
+            app.launchArguments += ["-appColorTheme", "YES"]
+        }
+
         app.launch()
 
         // Everything has to be loaded before anything is worth photographing.
@@ -58,6 +76,19 @@ final class StoreScreenshots: XCTestCase {
             preview.tap()
             Thread.sleep(forTimeInterval: 12)
             capture("03-preview")
+
+            // The list export is the feature people asked for, so the store
+            // gets a frame of it. Switched on here and back off after, so the
+            // plain preview above stays what it was and the simulator's
+            // persisted choice is left alone.
+            let titles = app.segmentedControls["export-titles"]
+            if titles.waitForExistence(timeout: 5) {
+                titles.buttons["List"].tap()
+                Thread.sleep(forTimeInterval: 8)
+                capture("03b-preview-titles")
+                titles.buttons["None"].tap()
+                Thread.sleep(forTimeInterval: 2)
+            }
 
             let close = app.buttons["export-close"]
             if close.waitForExistence(timeout: 5) { close.tap() }
