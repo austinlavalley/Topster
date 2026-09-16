@@ -1,0 +1,12 @@
+# Cloudflare Pages redirects. Evaluated before static files.
+#
+# The root is what the export watermark prints, so it goes straight to the
+# App Store listing. Swap the target for the campaign link once it is
+# generated in App Store Connect (Analytics > Sources > Campaigns), which
+# reports downloads that came through the mark as their own line:
+#
+#   https://apps.apple.com/app/apple-store/id6499380867?pt=PROVIDER&ct=watermark&mt=8
+#
+# /support is the same page as /privacy; App Store Connect wants both URLs.
+/          https://apps.apple.com/app/id6499380867  301
+/support   /privacy                                  301

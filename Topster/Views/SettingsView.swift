@@ -48,7 +48,7 @@ struct SettingsView: View {
                     
                     Group {
                         Button("Feedback & support") {
-                            openURL(URL(string: "https://topster.austinlavalley.com")!)
+                            openURL(URL(string: "https://topster.app/privacy")!)
                         }.frame(maxWidth: .infinity, minHeight: 24)
                     }
                     .font(.subheadline).bold()
@@ -58,7 +58,7 @@ struct SettingsView: View {
                     
                     Group {
                         Button("Privacy policy") {
-                            openURL(URL(string: "https://topster.austinlavalley.com")!)
+                            openURL(URL(string: "https://topster.app/privacy")!)
                         }.frame(maxWidth: .infinity, minHeight: 24)
                     }
                     .font(.subheadline).bold()
