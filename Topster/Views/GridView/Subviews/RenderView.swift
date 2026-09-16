@@ -252,9 +252,53 @@ struct ExportView: View {
                 ExportSidebar()
             }
         }
+        .overlay(alignment: .bottom) {
+            ExportWatermark()
+        }
         // Painted here rather than inside each layout view, so the sidebar and
         // the grid share one ground with no seam between them.
         .background(vm.tempExportDarkMode ? Color.black : Color.white)
+    }
+}
+
+
+/// One small line in the bottom margin of every export.
+///
+/// Grids get posted in places that never say where they came from, so the
+/// image itself has to. Austin, 15 Sep 2026: a few pixels that unlock a
+/// distribution channel. Sized to sit inside the margin the layouts already
+/// leave, so the canvas is the same size with or without it, and muted so
+/// it reads as a signature rather than a stamp.
+///
+/// The icon and the domain, not the app's name: "Topster" on its own leads
+/// a search to the web tool, and the icon says at a glance that this came
+/// from an app. The icon is drawn at text height as a rounded square, the
+/// shape every iOS icon has, so on the light ground it reads as an app icon
+/// rather than a dark blot.
+struct ExportWatermark: View {
+    @EnvironmentObject private var vm: FortyScrollGridViewModel
+
+    /// Printed on every export, so it has to resolve. Registered and pointed
+    /// at the App Store listing before the build that carries it ships.
+    static let domain = "topster.app"
+
+    /// 36pt on the 3366px canvas is about 11px once the image is posted at
+    /// 1080 wide, the smallest that still reads. 26pt was tried and vanished.
+    private let size: CGFloat = 36
+
+    var body: some View {
+        HStack(spacing: size * 0.4) {
+            // Its own image set: the app icon's catalog name loads nil on
+            // iOS 26 with a single-size icon set.
+            Image("WatermarkIcon")
+                .resizable()
+                .frame(width: size * 1.15, height: size * 1.15)
+                .clipShape(RoundedRectangle(cornerRadius: size * 0.26, style: .continuous))
+            Text("Made with \(Self.domain)")
+                .font(.system(size: size, weight: .medium, design: .monospaced))
+        }
+        .foregroundStyle((vm.tempExportDarkMode ? Color.white : Color.black).opacity(0.45))
+        .padding(.bottom, 14)
     }
 }
 
