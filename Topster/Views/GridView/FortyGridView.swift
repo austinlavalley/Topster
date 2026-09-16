@@ -51,7 +51,7 @@ struct FortyGridView: View {
                     .accessibilityIdentifier("preview-grid")
                     .disabled(vm.FortyGridDict.allSatisfy({ $0.value == nil }))
                     
-                    AnimatedSaveButtonView(buttonText: "Save grid", buttonActionText: "Saved", isSecondaryStyle: false)
+                    AnimatedSaveButtonView()
                 }
                 .frame(maxWidth: .infinity)
                 .padding()

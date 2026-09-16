@@ -5,16 +5,19 @@
 
 import XCTest
 
-/// The success toast used to fire on the button tap rather than on the save, which
+/// The confirmation used to fire on the button tap rather than on the save, which
 /// on a first save put "Grid saved to camera roll" underneath the permission prompt
-/// before the user had agreed to anything.
+/// before the user had agreed to anything. It is now the button's own state, so
+/// the checks read the button's label. Reset Photos permission on the simulator
+/// first (`simctl privacy <sim> reset photos com.austinlavalley.Topster`) or the
+/// prompt half of this never happens.
 final class SaveToPhotosTests: XCTestCase {
 
     override func setUpWithError() throws {
         continueAfterFailure = false
     }
 
-    func testToastWaitsForTheActualSave() throws {
+    func testConfirmationWaitsForTheActualSave() throws {
         let app = XCUIApplication()
 
         if let seed = ProcessInfo.processInfo.environment["SEED_HEX"], !seed.isEmpty {
@@ -31,34 +34,52 @@ final class SaveToPhotosTests: XCTestCase {
 
         let save = app.buttons["save-to-photos"]
         XCTAssertTrue(save.waitForExistence(timeout: 15), "save button never appeared")
+        XCTAssertEqual(save.label, "Save to Photos")
+
+        // One loop watches for both the permission prompt and the confirmed
+        // label from the moment of the tap. They cannot be waited for in turn:
+        // the confirmed state lasts 1.5 seconds, and on a simulator that already
+        // has permission the save is done inside a second, so three seconds
+        // spent waiting for a prompt that never comes misses it. The earlier
+        // version of this test slept 14 seconds and then attached a screenshot
+        // without asserting anything, which is how it passed for weeks while
+        // proving nothing.
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        var sawConfirmed = false
+        var handledPrompt = false
         save.tap()
 
-        // The permission prompt should be up and the toast should not.
-        Thread.sleep(forTimeInterval: 4)
-        attach(named: "01-permission-prompt")
-
-        // Hold here so the state can also be captured from outside.
-        Thread.sleep(forTimeInterval: 10)
-
-        // Grant it, whatever the button happens to be called on this OS version.
-        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        for label in ["Allow Access to All Photos", "Allow Full Access", "Allow", "OK"] {
-            let button = springboard.buttons[label]
-            if button.exists {
-                button.tap()
-                break
+        let deadline = Date().addingTimeInterval(12)
+        while Date() < deadline && !sawConfirmed {
+            if !handledPrompt, springboard.alerts.firstMatch.exists {
+                // First save on a fresh simulator: the prompt is up and the
+                // button has not confirmed anything. Grant it, whatever the
+                // button is called on this OS version.
+                attach(named: "01-permission-prompt")
+                XCTAssertFalse(save.label.contains("Saved"), "confirmed before the save happened")
+                for label in ["Allow Access to All Photos", "Allow Full Access", "Allow", "OK"] {
+                    let button = springboard.buttons[label]
+                    if button.exists {
+                        button.tap()
+                        break
+                    }
+                }
+                handledPrompt = true
             }
+            if save.label.contains("Saved to Photos") {
+                sawConfirmed = true
+                attach(named: "02-confirmed-after-real-save")
+            }
+            Thread.sleep(forTimeInterval: 0.1)
         }
+        XCTAssertTrue(sawConfirmed, "button never confirmed the save; label is \(save.label)")
 
-        // The toast clears itself after 2 seconds, so catch it inside that window.
-        Thread.sleep(forTimeInterval: 1.5)
-        attach(named: "02-toast-after-real-save")
-
-        // And confirm it clears rather than sticking around.
-        Thread.sleep(forTimeInterval: 4)
-        attach(named: "03-toast-cleared")
-
-        Thread.sleep(forTimeInterval: 8)
+        // And it returns to normal rather than sticking.
+        let back = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "label == %@", "Save to Photos"), object: save)
+        XCTAssertEqual(XCTWaiter().wait(for: [back], timeout: 5), .completed,
+                       "button stayed confirmed; label is \(save.label)")
+        attach(named: "03-back-to-idle")
     }
 
     private func attach(named name: String) {
