@@ -1,0 +1,12 @@
+// Cloudflare Worker that serves this folder as static files. Used by the
+// Workers deploy flow (Path = web, deploy command npx wrangler deploy).
+// The Pages flow does not read this file; it takes the output directory
+// from its own form instead.
+{
+  "name": "topster",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./",
+    "not_found_handling": "404-page"
+  }
+}
