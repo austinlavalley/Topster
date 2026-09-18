@@ -11,7 +11,6 @@ import SwiftUI
 struct FortyGridView: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     
-    @State private var saveButtonText = "Save grid"
     @State private var showExportSheet = false
     @State private var showNewSheet = false
     
@@ -29,8 +28,6 @@ struct FortyGridView: View {
         NavigationStack {
             VStack {
                 
-//                Text(vm.currentActiveGrid?.description ?? "NIL")
-//                Text(vm.currentActiveGrid != nil ? (vm.savedGrids[vm.currentActiveGrid!].grid == vm.FortyGridDict ? "EQUAL" : "NOT EQUAL") : "currentActiveGrid = NIL")
                 
                 ScrollView {
                     GridContent()
@@ -227,11 +224,11 @@ struct FortyGridView: View {
 // happen, and the grid gets the retry AsyncImage never had: a single lost request
 // used to leave a cell placeheld for the rest of the session.
 struct AsyncAlbumSquare: View {
-    @EnvironmentObject private var vm: FortyScrollGridViewModel
     let album: Album
 
     var body: some View {
         InternetImage(url: album.coverURL?.absoluteString ?? "",
+                      fallbackURLs: album.coverFallbackURLs,
                       showsProgressWhileLoading: true) { image in
             image.resizable()
         }
@@ -240,7 +237,6 @@ struct AsyncAlbumSquare: View {
 
 // ALBUMSQUARE FOR ELSEWHERE IN APP
 struct AlbumSquare: View {
-    @EnvironmentObject private var vm: FortyScrollGridViewModel
     
     let album: Album
     
@@ -248,7 +244,8 @@ struct AlbumSquare: View {
         VStack {
             // Same helper the rest of the app uses, so this picks up the 300px art.
             // Output dimensions are unchanged; the source is just no longer upscaled.
-            InternetImage(url: album.coverURL?.absoluteString ?? "") { image in
+            InternetImage(url: album.coverURL?.absoluteString ?? "",
+                          fallbackURLs: album.coverFallbackURLs) { image in
                 image
                     .resizable()
             }

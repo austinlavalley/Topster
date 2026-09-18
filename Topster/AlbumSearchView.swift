@@ -324,6 +324,7 @@ struct SearchAlbumSquare: View {
         // here is already local by the time the album is placed, so it appears on the
         // grid immediately rather than being fetched a second time.
         InternetImage(url: album.coverURL?.absoluteString ?? "",
+                      fallbackURLs: album.coverFallbackURLs,
                       showsProgressWhileLoading: true) { image in
             image.resizable()
         }

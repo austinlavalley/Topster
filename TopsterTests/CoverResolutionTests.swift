@@ -67,6 +67,50 @@ final class CoverResolutionTests: XCTestCase {
         XCTAssertNil(a.coverURL)
     }
 
+    // MARK: - Fallback sizes
+
+    /// The case behind a cover showing the music note while Last.fm had art:
+    /// the 300px file 404ed and nothing else was tried.
+    func testFallbacksAreTheSmallerSizesLargestFirst() throws {
+        let a = try album(small: "https://example.com/34.png",
+                          medium: "https://example.com/64.png",
+                          large: "https://example.com/174.png",
+                          extralarge: "https://example.com/300.png")
+
+        XCTAssertEqual(a.coverFallbackURLs.map(\.absoluteString),
+                       ["https://example.com/174.png", "https://example.com/64.png"],
+                       "34px is too small to stand in for a grid cell")
+    }
+
+    func testFallbacksNeverRepeatThePrimary() throws {
+        let a = try album(medium: "https://example.com/64.png",
+                          large: "https://example.com/174.png", extralarge: "")
+
+        XCTAssertEqual(a.coverURL?.absoluteString, "https://example.com/174.png")
+        XCTAssertEqual(a.coverFallbackURLs.map(\.absoluteString), ["https://example.com/64.png"])
+    }
+
+    /// A grid cell reads this to decide whether the cover it found in memory
+    /// still needs its full-size art. Getting it wrong either strands a 174px
+    /// stand-in for the session or refetches every cover on every appearance.
+    func testTheMemoryCacheKnowsAStandInFromTheRealThing() {
+        let primary = "https://example.com/300x300/\(UUID().uuidString).png"
+        let smaller = URL(string: "https://example.com/174s/cover.png")!
+
+        XCTAssertNil(CoverMemoryCache.standInSource(for: primary), "nothing cached yet")
+
+        CoverMemoryCache.store(UIImage(), for: primary, from: smaller)
+        XCTAssertEqual(CoverMemoryCache.standInSource(for: primary), smaller)
+
+        CoverMemoryCache.store(UIImage(), for: primary)
+        XCTAssertNil(CoverMemoryCache.standInSource(for: primary),
+                     "the full-size art replaced the stand-in")
+
+        CoverMemoryCache.store(UIImage(), for: primary, from: URL(string: primary)!)
+        XCTAssertNil(CoverMemoryCache.standInSource(for: primary),
+                     "an image from its own URL is not a stand-in")
+    }
+
     /// Album names collide constantly. A "greatest hits" search returns fifty albums
     /// sharing one name, which is why ForEach cannot key on it.
     func testAlbumsWithIdenticalNamesStillHaveDistinctIdentities() throws {

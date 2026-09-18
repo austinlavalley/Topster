@@ -14,24 +14,58 @@ final class StubURLProtocol: URLProtocol {
     static var respond: ((Int, URLRequest) throws -> (HTTPURLResponse, Data))?
     static var requestCount = 0
 
-    static func reset() {
+    /// Seconds to hold a request before answering it, for racing sizes against
+    /// each other. Nil answers at once. A long delay stands in for a request
+    /// that hangs until it is cancelled.
+    static var delay: ((URLRequest) -> TimeInterval)?
+
+    /// Only requests whose URL contains this are counted and answered. A
+    /// request cancelled in one test can reach `startLoading` after the next
+    /// test has reset the count, and it bumped that count mid-test: seen once
+    /// on 18 Sep 2026 under a full run, as a fetch that succeeded on its
+    /// second attempt where the stub only allowed the third.
+    static var scope = ""
+
+    static func reset(scope: String = "") {
         respond = nil
         requestCount = 0
+        delay = nil
+        Self.scope = scope
     }
+
+    private var stopped = false
 
     override class func canInit(with request: URLRequest) -> Bool { true }
     override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
 
     override func startLoading() {
-        Self.requestCount += 1
+        guard request.url?.absoluteString.contains(Self.scope) == true else {
+            client?.urlProtocol(self, didFailWithError: URLError(.cancelled))
+            return
+        }
 
+        Self.requestCount += 1
+        let count = Self.requestCount
+
+        let wait = Self.delay?(request) ?? 0
+        guard wait > 0 else {
+            answer(count)
+            return
+        }
+        DispatchQueue.global().asyncAfter(deadline: .now() + wait) { [weak self] in
+            guard let self, !self.stopped else { return }
+            self.answer(count)
+        }
+    }
+
+    private func answer(_ count: Int) {
         guard let respond = Self.respond else {
             client?.urlProtocol(self, didFailWithError: URLError(.badServerResponse))
             return
         }
 
         do {
-            let (response, data) = try respond(Self.requestCount, request)
+            let (response, data) = try respond(count, request)
             client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
             client?.urlProtocol(self, didLoad: data)
             client?.urlProtocolDidFinishLoading(self)
@@ -40,7 +74,9 @@ final class StubURLProtocol: URLProtocol {
         }
     }
 
-    override func stopLoading() {}
+    override func stopLoading() {
+        stopped = true
+    }
 }
 
 
@@ -55,11 +91,15 @@ final class StubURLProtocol: URLProtocol {
 /// against a real server on demand.
 final class CoverFetcherTests: XCTestCase {
 
-    private let url = URL(string: "https://example.com/cover.png")!
+    /// Unique per test, since XCTest makes a fresh instance for each one. Every
+    /// URL below carries it, so a straggler from an earlier test is ignored.
+    private let run = UUID().uuidString
+
+    private var url: URL { URL(string: "https://example.com/\(run)/cover.png")! }
 
     override func setUp() {
         super.setUp()
-        StubURLProtocol.reset()
+        StubURLProtocol.reset(scope: run)
 
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [StubURLProtocol.self]
@@ -204,6 +244,148 @@ final class CoverFetcherTests: XCTestCase {
 
         XCTAssertEqual(outcome, .cancelled,
                        "a cancelled fetch is not a failed one and must not be counted as one")
+    }
+
+    // MARK: - Racing the sizes
+
+    private var large: URL { URL(string: "https://example.com/\(run)/300x300/cover.png")! }
+    private var medium: URL { URL(string: "https://example.com/\(run)/174s/cover.png")! }
+    private var small: URL { URL(string: "https://example.com/\(run)/64s/cover.png")! }
+
+    /// Every image `fetchBest` put on screen, in order.
+    @MainActor private final class Shown {
+        var urls: [URL] = []
+        nonisolated init() {}
+    }
+
+    private func fetchBest(headStart: TimeInterval,
+                           onImage: @escaping @MainActor (URL) -> Void = { _ in })
+    async -> CoverFetcher.LadderResult {
+        await CoverFetcher.fetchBest(of: [large, medium, small],
+                                     headStart: UInt64(headStart * 1_000_000_000),
+                                     backoff: { _ in }) { _, url in onImage(url) }
+    }
+
+    /// Seen on device 17 Sep 2026: Last.fm's CDN 404ed the 300px file and cached
+    /// that 404 for hours, while the 174px file for the same art loaded fine.
+    /// The head start here is a minute, so only an immediate handover passes.
+    func testA404OnTheLargeSizeHandsOverWithoutWaitingOutTheHeadStart() async {
+        StubURLProtocol.respond = { _, request in
+            request.url == self.large ? self.status(404, request) : self.ok(request)
+        }
+
+        let started = Date()
+        let result = await fetchBest(headStart: 60)
+
+        XCTAssertEqual(result.outcome, .image(UIImage(), attempts: 1),
+                       "a 300px 404 must not hide art that exists at 174px")
+        XCTAssertEqual(result.source, medium)
+        XCTAssertEqual(result.dead, [large])
+        XCTAssertEqual(StubURLProtocol.requestCount, 2, "the smallest size is never asked for")
+        XCTAssertLessThan(Date().timeIntervalSince(started), 5)
+    }
+
+    /// The three-minute spinner. A 300px request that never answers must not
+    /// keep the art off screen past its head start.
+    func testAHangingLargeSizeIsCoveredByTheNextSizeAfterItsHeadStart() async {
+        StubURLProtocol.delay = { request in request.url == self.large ? 3600 : 0 }
+        StubURLProtocol.respond = { _, request in self.ok(request) }
+
+        let shown = Shown()
+        let mediumShown = expectation(description: "174px on screen")
+        let task = Task {
+            await fetchBest(headStart: 0.05) { url in
+                shown.urls.append(url)
+                if url == self.medium { mediumShown.fulfill() }
+            }
+        }
+
+        await fulfillment(of: [mediumShown], timeout: 5)
+        task.cancel()
+        let result = await task.value
+
+        let urls = await shown.urls
+        XCTAssertEqual(urls, [medium])
+        XCTAssertEqual(result.source, medium)
+        XCTAssertEqual(StubURLProtocol.requestCount, 2, "64px never starts once 174px is showing")
+    }
+
+    /// The 300px file is slow, not gone. It keeps loading behind the stand-in
+    /// and replaces it when it arrives.
+    func testALateLargeSizeReplacesTheStandIn() async {
+        StubURLProtocol.delay = { request in request.url == self.large ? 0.4 : 0 }
+        StubURLProtocol.respond = { _, request in self.ok(request) }
+
+        let shown = Shown()
+        let result = await fetchBest(headStart: 0.05) { url in shown.urls.append(url) }
+
+        let urls = await shown.urls
+        XCTAssertEqual(urls, [medium, large])
+        XCTAssertEqual(result.source, large)
+    }
+
+    func testAnUnreachableLargeSizeHandsOverToo() async {
+        StubURLProtocol.respond = { _, request in
+            if request.url == self.large { throw URLError(.timedOut) }
+            return self.ok(request)
+        }
+
+        let result = await fetchBest(headStart: 60)
+
+        XCTAssertEqual(result.source, medium)
+        XCTAssertEqual(result.dead, [], "a timeout is not a verdict on the 300px file")
+    }
+
+    func testTheCoverIsGoneOnlyWhenEverySizeIsGone() async {
+        StubURLProtocol.respond = { _, request in self.status(404, request) }
+
+        let started = Date()
+        let result = await fetchBest(headStart: 60)
+
+        XCTAssertEqual(result.outcome, .gone)
+        XCTAssertNil(result.source)
+        XCTAssertEqual(result.dead, [large, medium, small])
+        XCTAssertLessThan(Date().timeIntervalSince(started), 5,
+                          "the placeholder must not wait on head starts with nothing left to start")
+    }
+
+    /// One size might still come back, so the loader keeps retrying rather than
+    /// drawing the placeholder.
+    func testOneDeadSizeAndOneUnreachableIsUnreachable() async {
+        StubURLProtocol.respond = { _, request in
+            if request.url == self.large { return self.status(404, request) }
+            throw URLError(.networkConnectionLost)
+        }
+
+        let result = await fetchBest(headStart: 60)
+
+        XCTAssertEqual(result.outcome, .unreachable)
+        XCTAssertEqual(result.dead, [large])
+    }
+
+    func testAWorkingLargeSizeNeverTouchesTheFallbacks() async {
+        StubURLProtocol.respond = { _, request in self.ok(request) }
+
+        let started = Date()
+        let result = await fetchBest(headStart: 1)
+
+        XCTAssertEqual(result.source, large)
+        XCTAssertEqual(StubURLProtocol.requestCount, 1)
+        XCTAssertLessThan(Date().timeIntervalSince(started), 0.9,
+                          "returns without sitting out the pending head start")
+    }
+
+    /// URLSession's default is 60 seconds of silence per attempt.
+    func testCoverRequestsGiveUpOnSilenceAfterTenSeconds() async {
+        var timeout: TimeInterval = 0
+        StubURLProtocol.respond = { _, request in
+            timeout = request.timeoutInterval
+            return self.ok(request)
+        }
+
+        _ = await fetch()
+
+        XCTAssertEqual(timeout, 10)
     }
 
     // MARK: - Fixture
