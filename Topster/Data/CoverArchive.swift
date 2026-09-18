@@ -102,7 +102,8 @@ enum CoverArchive {
                       !FileManager.default.fileExists(atPath: file.path)
                 else { continue }
 
-                guard let image = await sourceImage(for: coverURL) else { continue }
+                guard let image = await sourceImage(for: [coverURL] + album.coverFallbackURLs)
+                else { continue }
 
                 guard let data = downsampled(image).jpegData(compressionQuality: jpegQuality)
                 else { continue }
@@ -112,17 +113,34 @@ enum CoverArchive {
         }
     }
 
-    /// Cached bytes if there are any, otherwise a fresh download.
-    private static func sourceImage(for url: URL) async -> UIImage? {
-        let request = URLRequest(url: url)
-
-        if let cached = URLCache.shared.cachedResponse(for: request),
-           let image = UIImage(data: cached.data) {
+    /// The first size that yields an image, from cached bytes if there are any,
+    /// otherwise a fresh download. Filed under the primary URL whichever size
+    /// wins, because that is the key `InternetImage` looks up. A grid whose
+    /// 300px art 404ed would otherwise archive nothing for that cover.
+    ///
+    /// Anything smaller than the archive's own 174px is skipped. The archive is
+    /// never refetched, so a 64px stand-in kept here would stay blurry for good,
+    /// where leaving the cover unarchived lets a later launch get the real one.
+    private static func sourceImage(for urls: [URL]) async -> UIImage? {
+        func bigEnough(_ image: UIImage?) -> UIImage? {
+            guard let image, max(image.size.width, image.size.height) >= longestSide else { return nil }
             return image
         }
 
-        guard let (data, _) = try? await URLSession.shared.data(for: request) else { return nil }
-        return UIImage(data: data)
+        for url in urls {
+            let request = URLRequest(url: url)
+
+            if let cached = URLCache.shared.cachedResponse(for: request),
+               let image = bigEnough(UIImage(data: cached.data)) {
+                return image
+            }
+
+            if let (data, _) = try? await URLSession.shared.data(for: request),
+               let image = bigEnough(UIImage(data: data)) {
+                return image
+            }
+        }
+        return nil
     }
 
     private static func downsampled(_ image: UIImage) -> UIImage {

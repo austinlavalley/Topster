@@ -31,31 +31,6 @@ struct Album: Codable, Identifiable, Equatable {
 }
 
 
-//extension Album: Codable {
-//    // Implement init(from:) to decode additional properties
-//    init(from decoder: Decoder) throws {
-//        let container = try decoder.container(keyedBy: CodingKeys.self)
-//        name = try container.decode(String.self, forKey: .name)
-//        artist = try container.decode(String.self, forKey: .artist)
-//        url = try container.decode(String.self, forKey: .url)
-//        image = try container.decode([Image].self, forKey: .image)
-//        streamable = try container.decode(String.self, forKey: .streamable)
-//        mbid = try container.decode(String.self, forKey: .mbid)
-//    }
-//
-//    // Implement encode(to:) if needed
-//    func encode(to encoder: Encoder) throws {
-//        var container = encoder.container(keyedBy: CodingKeys.self)
-//        try container.encode(name, forKey: .name)
-//        try container.encode(artist, forKey: .artist)
-//        try container.encode(url, forKey: .url)
-//        try container.encode(image, forKey: .image)
-//        try container.encode(streamable, forKey: .streamable)
-//        try container.encode(mbid, forKey: .mbid)
-//    }
-//}
-
-
 extension Album {
 
     /// The cover art URL, or nil when Last.fm has no art on file for this album.
@@ -72,13 +47,29 @@ extension Album {
         // difference, because the wait is origin round-trip time rather than
         // transfer time. Falls back to large, though across 400 albums checked the
         // two are always present or absent together.
-        for size in ["extralarge", "large"] {
-            if let text = image.first(where: { entry in entry.size == size })?.text,
-               !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                return URL(string: text)
-            }
-        }
+        imageURL(size: "extralarge") ?? imageURL(size: "large")
+    }
 
-        return nil
+    /// Smaller sizes of the same art, tried in order when `coverURL` fails.
+    ///
+    /// Last.fm's CDN makes each size on first request. When making the 300px
+    /// one times out, it answers 404 and caches that 404 for up to ten years
+    /// (`max-age=311040000`), while the 174px and 64px files for the same
+    /// image load fine. Probed 18 Sep 2026: 74 of 555 covers from popular
+    /// searches failed on first request, and one that 404ed at 300px was
+    /// still 404ing at that edge fifteen minutes later. A soft cover beats a
+    /// placeholder over art that exists.
+    var coverFallbackURLs: [URL] {
+        guard let primary = coverURL else { return [] }
+        return [imageURL(size: "large"), imageURL(size: "medium")]
+            .compactMap { url in url }
+            .filter { url in url != primary }
+    }
+
+    private func imageURL(size: String) -> URL? {
+        guard let text = image.first(where: { entry in entry.size == size })?.text,
+              !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        else { return nil }
+        return URL(string: text)
     }
 }

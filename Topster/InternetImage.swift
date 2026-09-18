@@ -40,20 +40,48 @@ enum DeadCoverRegistry {
 /// `URLCache` once per cell per layout pass.
 enum CoverMemoryCache {
 
-    private static let cache: NSCache<NSString, UIImage> = {
-        let cache = NSCache<NSString, UIImage>()
+    /// The image plus the size it actually came from, which is not always the
+    /// URL it is filed under. See `standInSource(for:)`.
+    private final class Entry {
+        let image: UIImage
+        let source: URL?
+
+        init(image: UIImage, source: URL?) {
+            self.image = image
+            self.source = source
+        }
+    }
+
+    private static let cache: NSCache<NSString, Entry> = {
+        let cache = NSCache<NSString, Entry>()
         cache.countLimit = 150
         return cache
     }()
 
     static func image(for url: String) -> UIImage? {
         guard !url.isEmpty else { return nil }
-        return cache.object(forKey: url as NSString)
+        return cache.object(forKey: url as NSString)?.image
     }
 
-    static func store(_ image: UIImage, for url: String) {
+    /// `source` is the URL the bytes came from, when that differs from `url`.
+    static func store(_ image: UIImage, for url: String, from source: URL? = nil) {
         guard !url.isEmpty else { return }
-        cache.setObject(image, forKey: url as NSString)
+        cache.setObject(Entry(image: image, source: source), forKey: url as NSString)
+    }
+
+    /// The smaller size a cover filed under `url` really came from, or nil when
+    /// it is the full-size art or not cached at all.
+    ///
+    /// Tapping a search result closes the sheet, which cancels that cell's
+    /// 300px request. The grid cell then finds the 174px stand-in here and,
+    /// without this, would show it for the rest of the session, export
+    /// included.
+    static func standInSource(for url: String) -> URL? {
+        guard !url.isEmpty,
+              let source = cache.object(forKey: url as NSString)?.source,
+              source.absoluteString != url
+        else { return nil }
+        return source
     }
 }
 
@@ -106,6 +134,11 @@ struct InternetImage<Content: View>: View {
 
     var url: String
 
+    /// Smaller sizes of the same art, tried when `url` fails. The image they
+    /// produce is still cached and drawn under `url`, so nothing downstream,
+    /// the export included, has to know which size it got.
+    var fallbackURLs: [URL] = []
+
     /// Set true for on-screen views. The export leaves it false, because a spinner
     /// frozen mid-rotation is not something to bake into an image someone shares.
     var showsProgressWhileLoading = false
@@ -126,9 +159,11 @@ struct InternetImage<Content: View>: View {
     @ViewBuilder var content: (Image) -> Content
 
     init(url: String,
+         fallbackURLs: [URL] = [],
          showsProgressWhileLoading: Bool = false,
          @ViewBuilder content: @escaping (Image) -> Content) {
         self.url = url
+        self.fallbackURLs = fallbackURLs
         self.showsProgressWhileLoading = showsProgressWhileLoading
         self.content = content
     }
@@ -145,6 +180,12 @@ struct InternetImage<Content: View>: View {
         let trimmed = url.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return nil }
         return URL(string: trimmed)
+    }
+
+    /// Every size worth trying, largest first.
+    private var candidates: [URL] {
+        guard let primary = resolvedURL else { return [] }
+        return [primary] + fallbackURLs.filter { fallback in fallback != primary }
     }
 
     /// An image available without waiting, checked cheapest first.
@@ -166,11 +207,17 @@ struct InternetImage<Content: View>: View {
         return image
     }
 
+    /// True only when every size is dead. A 300px 404 with a 174px copy still
+    /// to try is not a missing cover.
+    ///
     /// Reads deadCoverVersion so the body re-evaluates when a fetch marks this
     /// cover dead mid-flight; the registry stays the source of truth.
     private var isConfirmedDead: Bool {
         _ = deadCoverVersion
-        return DeadCoverRegistry.isDead(url)
+        let all = candidates
+        return !all.isEmpty && all.allSatisfy { candidate in
+            DeadCoverRegistry.isDead(candidate.absoluteString)
+        }
     }
 
     var body: some View {
@@ -195,13 +242,18 @@ struct InternetImage<Content: View>: View {
     }
 
     private func load() async {
-        // The registry check stops a known-dead cover being refetched (and its
-        // failure re-reported) on every appearance of its cell.
-        guard immediateImage == nil,
-              !DeadCoverRegistry.isDead(url),
-              let resolved = resolvedURL else { return }
+        // A smaller size on screen still wants the full one. Only sizes larger
+        // than the stand-in are asked for, and while it is showing, failures
+        // are not reported: the person is looking at the art.
+        let standIn = immediateImage == nil ? nil : CoverMemoryCache.standInSource(for: url)
+        guard immediateImage == nil || standIn != nil else { return }
 
         let requested = url
+        var sizes = candidates
+        if let standIn, let index = sizes.firstIndex(of: standIn) {
+            sizes = Array(sizes[..<index])
+        }
+        let upgrading = standIn != nil
         var reportedUnreachable = false
 
         // The spinner must always mean "still trying". A cover the network
@@ -213,25 +265,44 @@ struct InternetImage<Content: View>: View {
         // 28 Aug 2026.
         var pauseSeconds: UInt64 = 5
         while !Task.isCancelled {
-            switch await CoverFetcher.fetch(resolved) {
-            case let .image(image, _):
-                CoverMemoryCache.store(image, for: requested)
+            // The registry check stops a known-dead size being refetched (and its
+            // failure re-reported) on every appearance of its cell. Once every
+            // size is dead there is nothing left to try.
+            let remaining = sizes.filter { size in !DeadCoverRegistry.isDead(size.absoluteString) }
+            guard !remaining.isEmpty else { return }
+
+            // Called once per improvement: a smaller size first when the 300px
+            // file is slow, then the 300px one if it turns up after all.
+            let result = await CoverFetcher.fetchBest(of: remaining) { image, source in
+                // Stored under the primary URL even when a smaller size won, so
+                // the export's synchronous pass finds it, with its real source
+                // so a later cell knows to keep asking for the full size.
+                CoverMemoryCache.store(image, for: requested,
+                                       from: source == sizes.first ? nil : source)
 
                 // The slot may have been filled with a different album while
                 // this was in flight. Dropping a late arrival is what stops it
                 // painting over a newer cover.
                 guard !Task.isCancelled, requested == url else { return }
                 loaded = LoadedCover(url: requested, image: image)
+            }
+            for size in result.dead {
+                DeadCoverRegistry.mark(size.absoluteString)
+            }
+
+            switch result.outcome {
+            case .image:
                 return
 
             case .gone:
-                // The server answered definitively that this cover does not
-                // exist; only that verdict shows the placeholder. The bump
+                // The server answered definitively that no size of this cover
+                // exists; only that verdict shows the placeholder. The bump
                 // exists because marking the registry alone does not make
                 // SwiftUI re-evaluate the body.
-                DeadCoverRegistry.mark(requested)
                 deadCoverVersion += 1
-                Analytics.track(.coverFetchFailed(confirmedDead: true))
+                if !upgrading {
+                    Analytics.track(.coverFetchFailed(confirmedDead: true))
+                }
                 return
 
             case .cancelled:
@@ -245,7 +316,7 @@ struct InternetImage<Content: View>: View {
             case .unreachable:
                 // Reported once per cell appearance, not once per retry, so a
                 // bad network doesn't turn into an event storm.
-                if !reportedUnreachable {
+                if !reportedUnreachable && !upgrading {
                     reportedUnreachable = true
                     Analytics.track(.coverFetchFailed(confirmedDead: false))
                 }
