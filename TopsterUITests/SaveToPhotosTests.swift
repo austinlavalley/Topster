@@ -24,6 +24,12 @@ final class SaveToPhotosTests: XCTestCase {
             app.launchArguments = ["-FortyGridDict", "<\(seed)>"]
         }
 
+        // TEST_RUNNER_EXPORT_LOG_ENDPOINT points the export log at a capture
+        // server, to check a real save sends it. Unset, debug builds send nothing.
+        if let endpoint = ProcessInfo.processInfo.environment["EXPORT_LOG_ENDPOINT"], !endpoint.isEmpty {
+            app.launchArguments += ["-ExportLogEndpoint", endpoint]
+        }
+
         app.launch()
         Thread.sleep(forTimeInterval: 14)
 

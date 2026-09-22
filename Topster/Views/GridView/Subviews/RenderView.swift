@@ -169,6 +169,12 @@ extension RenderView {
         let layout = vm.activeGridType.rawValue
         let labels = vm.exportLabels.rawValue
         let background = vm.tempExportDarkMode ? "dark" : "light"
+        // Built on the tap with the values above, before anything async, so it
+        // describes the grid that was on screen when Save was pressed.
+        let exported = ExportLog.payload(grid: vm.FortyGridDict, layout: vm.activeGridType,
+                                         labels: vm.exportLabels,
+                                         darkBackground: vm.tempExportDarkMode,
+                                         appVersion: ExportLog.appVersion)
 
         // Fired on the tap, before the permission prompt, so the three ways to
         // leave the sheet without an image stay distinguishable.
@@ -185,6 +191,9 @@ extension RenderView {
             } completionHandler: { saved, _ in
                 if saved {
                     Analytics.track(.exportSaved(layout: layout, labels: labels, background: background))
+                    // Only once the image is really in Photos. Returns at once
+                    // and never touches the button state below.
+                    ExportLog.send(exported)
                 }
                 DispatchQueue.main.async { savePhase = saved ? .confirmed : .failed }
             }

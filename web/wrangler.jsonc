@@ -1,12 +1,23 @@
-// Cloudflare Worker that serves this folder as static files. Used by the
-// Workers deploy flow (Path = web, deploy command npx wrangler deploy).
-// The Pages flow does not read this file; it takes the output directory
-// from its own form instead.
+// Cloudflare Worker for topster.app (Workers deploy, Path = web, deploy
+// command npx wrangler deploy).
+//
+// Static files and _redirects are served by the assets layer. Only the paths
+// under run_worker_first reach worker.js: the export log endpoint and the
+// private gallery. Everything else behaves as a plain static site.
 {
   "name": "topster",
+  "main": "worker.js",
   "compatibility_date": "2025-09-01",
   "assets": {
     "directory": "./",
-    "not_found_handling": "404-page"
-  }
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*", "/grids", "/grids/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "topster",
+      "database_id": "f56f9304-d04d-41eb-8b98-8eb4a872b1e5"
+    }
+  ]
 }
