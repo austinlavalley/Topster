@@ -19,11 +19,26 @@ const SECTIONS = {
   twentyWide: [1, 1, 1, 1],
   twentyFive: [1, 1, 1, 1, 1],
 };
+// The export's own measurements, in the app's canvas pixels. The gallery draws
+// everything as a fraction of these, so a card is the export to scale. Keep in
+// step with ExportCanvas, ExportSidebar and ExportWatermark in RenderView.
+const CANVAS = {
+  grid: 3366,
+  margin: 72,
+  gap: 24,
+  list: 1600,
+  listLead: 24,
+  markFont: 40,
+  markBottom: 12,
+  listFont: { fortyTwo: 36, twenty: 56, twentyWide: 56, twentyFive: 56 },
+};
 const LABELS = new Set(['none', 'overlay', 'list']);
 const BACKGROUNDS = new Set(['light', 'dark']);
 // Every placed album is a Last.fm album with Last.fm art, from these hosts.
 const COVER_HOST = /^lastfm[a-z0-9-]*\.freetls\.fastly\.net$/;
 const MAX_BODY = 32 * 1024;
+// One CSS pixel per canvas pixel at this scale, so a 3366px grid draws 720px.
+const SCALE = 720 / CANVAS.grid;
 
 export default {
   async fetch(request, env) {
@@ -95,7 +110,7 @@ function validate(body) {
   const clean = [];
   for (const entry of slots) {
     if (!entry || typeof entry !== 'object') return 'Bad slot';
-    const { slot, artist, album, cover } = entry;
+    const { slot, artist, album } = entry;
     if (!Number.isInteger(slot) || slot < 1 || slot > capacity || seen.has(slot)) {
       return 'Bad slot number';
     }
@@ -103,7 +118,7 @@ function validate(body) {
     seen.add(slot);
     // A cover that fails the host check is dropped rather than the export. If
     // Last.fm ever moves its art, the gallery shows names instead of nothing.
-    clean.push({ slot, artist, album, cover: isCover(cover) ? cover : null });
+    clean.push({ slot, artist, album, cover: isCover(entry.cover) ? entry.cover : null });
   }
   clean.sort((a, b) => a.slot - b.slot);
   return { layout, labels, background, app_version: version, slots: clean };
@@ -163,15 +178,16 @@ async function gallery(request, env) {
       .bind(limit + 1).all();
   const total = await env.DB.prepare('SELECT COUNT(*) AS n FROM exports').first('n');
   const hasOlder = results.length > limit;
+  const nonce = crypto.randomUUID();
 
-  return new Response(page(results.slice(0, limit), total, limit, hasOlder), {
+  return new Response(page(results.slice(0, limit), total, limit, hasOlder, nonce), {
     headers: {
       'Content-Type': 'text/html; charset=utf-8',
       'Cache-Control': 'no-store',
       'X-Robots-Tag': 'noindex',
       'Referrer-Policy': 'no-referrer',
-      'Content-Security-Policy':
-        "default-src 'none'; img-src https://*.freetls.fastly.net; style-src 'unsafe-inline'",
+      'Content-Security-Policy': "default-src 'none'; img-src https://*.freetls.fastly.net 'self'; "
+        + `style-src 'unsafe-inline'; script-src 'nonce-${nonce}'`,
     },
   });
 }
@@ -198,7 +214,7 @@ function authorised(request, password) {
   return crypto.subtle.timingSafeEqual(a, b);
 }
 
-function page(rows, total, limit, hasOlder) {
+function page(rows, total, limit, hasOlder, nonce) {
   const cards = rows.map(card).join('\n');
   const oldest = rows.length ? rows[rows.length - 1].id : 0;
   const older = hasOlder
@@ -215,35 +231,54 @@ function page(rows, total, limit, hasOlder) {
   * { box-sizing: border-box; }
   body { margin: 0; padding: 32px 20px 64px; background: #16181a; color: #e8e6e1;
     font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
-  header, main, .more { max-width: 1100px; margin-left: auto; margin-right: auto; }
+  header, main, .more { max-width: 1180px; margin-left: auto; margin-right: auto; }
   header h1 { font-size: 22px; letter-spacing: -0.01em; margin: 0 0 4px; }
   header p { margin: 0 0 24px; color: #9a978f; }
   /* minmax(0, 1fr), not auto: an auto column grows to its widest card and
      pushes the page sideways on a phone. */
   main { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; }
-  /* Each card is as wide as its export: the grid alone, or grid and list. */
-  .card { width: fit-content; max-width: 100%; border: 1px solid #34373a; padding: 16px; }
-  .card.light { background: #fff; color: #111; }
-  .card.dark { background: #000; color: #f2f2f2; }
-  .meta { margin: 0 0 12px; opacity: .65;
+  .card { width: fit-content; max-width: 100%; }
+  .meta { margin: 0 0 8px; opacity: .55;
     font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-  .export { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
-  .grid { width: 720px; max-width: 100%; display: grid; gap: 4px; }
-  .row { display: grid; gap: 4px; }
-  .tile { position: relative; aspect-ratio: 1; overflow: hidden; background: #8a8a8e; }
+
+  /* The sheet is the exported image to scale. Every measurement inside it is
+     a fraction of the app's canvas, through --u (one canvas pixel). */
+  .sheet { position: relative; display: flex; align-items: flex-start; max-width: 100%;
+    container-type: inline-size; border: 1px solid #34373a; }
+  .sheet.light { background: #fff; color: #111; }
+  .sheet.dark { background: #000; color: #f2f2f2; }
+  .gridblock { padding: calc(var(--u) * ${CANVAS.margin}); }
+  .grid { width: calc(var(--u) * ${CANVAS.grid}); display: grid; gap: calc(var(--u) * ${CANVAS.gap}); }
+  .row { display: grid; gap: calc(var(--u) * ${CANVAS.gap}); }
+  .tile { position: relative; aspect-ratio: 1; overflow: hidden; background: #8a8a8e;
+    container-type: inline-size; }
   .tile.blank { opacity: .45; }
   .tile img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
   /* Drawn only when the image fails, over the browser's broken-image icon. */
-  .tile img::after { content: attr(data-name); position: absolute; inset: 0; display: flex; align-items: center;
-    justify-content: center; padding: 6px; text-align: center; font-size: 11px; line-height: 1.25;
-    color: #fff; background: #8a8a8e; }
+  .tile img::after { content: attr(data-name); position: absolute; inset: 0; display: flex;
+    align-items: center; justify-content: center; padding: 4cqw; text-align: center;
+    font-size: 5cqw; line-height: 1.25; color: #fff; background: #8a8a8e; }
   .missing { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    padding: 6px; text-align: center; font-size: 11px; line-height: 1.25; color: #fff; }
-  .caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 3px 5px; background: rgba(0,0,0,.6);
-    color: #fff; font-size: 10px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .list { width: 320px; max-width: 100%; font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-  .list ol { list-style: none; margin: 0 0 14px; padding: 0; }
-  .list li span { display: inline-block; min-width: 2.4em; text-align: right; opacity: .6; }
+    padding: 4cqw; text-align: center; font-size: 5cqw; line-height: 1.25; color: #fff; }
+  .caption { position: absolute; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.6); color: #fff;
+    padding: 2.5cqw 2.75cqw; font-size: 5.5cqw; line-height: 1.2; font-weight: 500;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .listblock { padding: calc(var(--u) * ${CANVAS.margin}) calc(var(--u) * ${CANVAS.margin})
+    calc(var(--u) * ${CANVAS.margin}) calc(var(--u) * ${CANVAS.listLead}); }
+  .list { position: relative; width: calc(var(--u) * ${CANVAS.list});
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .list ol { position: absolute; left: 0; right: 0; margin: 0; padding: 0; list-style: none; }
+  .list li + li { margin-top: .35em; }
+  .list .n { display: inline-block; min-width: 2.2em; text-align: right; }
+
+  .mark { position: absolute; left: 0; right: 0; bottom: calc(var(--u) * ${CANVAS.markBottom});
+    display: flex; align-items: center; justify-content: center; opacity: .7;
+    gap: calc(var(--u) * ${CANVAS.markFont * 0.4}); font-size: calc(var(--u) * ${CANVAS.markFont});
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-weight: 600; }
+  .mark img { width: calc(var(--u) * ${CANVAS.markFont * 1.15});
+    height: calc(var(--u) * ${CANVAS.markFont * 1.15}); border-radius: calc(var(--u) * ${CANVAS.markFont * 0.3}); }
+
   .none-yet { color: #9a978f; }
   .more { display: block; margin-top: 28px; color: #8fb4ff; }
 </style>
@@ -257,12 +292,49 @@ function page(rows, total, limit, hasOlder) {
 ${cards || '<p class="none-yet">Nothing yet.</p>'}
 </main>
 ${older}
+<script nonce="${nonce}">
+// A cover that fails falls back to the next size down, the way the app races
+// them. Last.fm's 300px file 404s on first request for about one in eight.
+document.addEventListener('error', (event) => {
+  const img = event.target;
+  if (img.tagName !== 'IMG') return;
+  const rest = (img.dataset.rest || '').split(' ').filter(Boolean);
+  if (!rest.length) return;
+  img.dataset.rest = rest.slice(1).join(' ');
+  img.src = rest[0];
+}, true);
+
+// Each list section starts level with its band of rows, and the list ends at
+// the bottom of the grid: a section too tall for its band pulls up into the
+// slack above. Same rule as ExportList.groupTops in the app, which needs the
+// rendered height of each section and so has to run here.
+function packLists() {
+  for (const list of document.querySelectorAll('.list')) {
+    const grid = list.closest('.sheet').querySelector('.grid');
+    const unit = grid.getBoundingClientRect().width / ${CANVAS.grid};
+    const gap = ${CANVAS.gap} * unit;
+    const blocks = [...list.querySelectorAll('ol')];
+    const heights = blocks.map((block) => block.getBoundingClientRect().height);
+    const tops = [];
+    let ceiling = Number(list.dataset.floor) * unit;
+    for (let i = blocks.length - 1; i >= 0; i -= 1) {
+      tops[i] = Math.min(Number(blocks[i].dataset.top) * unit, ceiling - heights[i]);
+      ceiling = tops[i] - gap;
+    }
+    const overflow = tops.length && tops[0] < 0 ? -tops[0] : 0;
+    blocks.forEach((block, i) => { block.style.top = (tops[i] + overflow) + 'px'; });
+  }
+}
+addEventListener('load', packLists);
+addEventListener('resize', packLists);
+</script>
 </body>
 </html>`;
 }
 
-// One export, drawn the way the app draws it: the layout's row shape, empty
-// rows hidden on the 42, captions or the numbered list per the titles option.
+// One export, drawn as the app draws it: the layout's row shape, empty rows
+// hidden on the 42, captions or the numbered list per the titles option, the
+// watermark in the bottom margin, all to scale.
 function card(row) {
   let slots = [];
   try {
@@ -274,9 +346,13 @@ function card(row) {
   const shape = ROWS[row.layout] || [];
   const hideEmptyRows = row.layout === 'fortyTwo';
   const overlay = row.labels === 'overlay';
+  const withList = row.labels === 'list';
 
+  // Walk the rows the export draws, tracking where each one lands on the
+  // canvas so the list can line up with them.
   const drawn = [];
-  const filledByRow = [];
+  const rows = [];
+  let top = 0;
   let first = 1;
   for (const width of shape) {
     const cells = [];
@@ -286,54 +362,85 @@ function card(row) {
       if (entry) filled.push(entry);
       cells.push(tile(entry, overlay));
     }
-    filledByRow.push(filled);
-    if (!(hideEmptyRows && filled.length === 0)) {
+    const height = (CANVAS.grid - CANVAS.gap * (width - 1)) / width;
+    const visible = !(hideEmptyRows && filled.length === 0);
+    rows.push({ filled, top, height, visible });
+    if (visible) {
       drawn.push(`<div class="row" style="grid-template-columns:repeat(${width},1fr)">${cells.join('')}</div>`);
+      top += height + CANVAS.gap;
     }
     first += width;
   }
+  const floor = top > 0 ? top - CANVAS.gap : 0;
 
-  const list = row.labels === 'list'
-    ? numberedList(filledByRow, SECTIONS[row.layout] || [], hideEmptyRows)
-    : '';
+  const total = CANVAS.grid + CANVAS.margin * 2
+    + (withList ? CANVAS.listLead + CANVAS.list + CANVAS.margin : 0);
+  const style = `--u:${(100 / total).toFixed(5)}cqw;width:${Math.round(total * SCALE)}px`;
+  const list = withList ? numberedList(rows, SECTIONS[row.layout] || [], hideEmptyRows, floor, row.layout) : '';
   const meta = [
     `#${row.id}`, row.created_on, row.layout, `titles ${row.labels}`,
     row.background, `v${row.app_version}`, `${slots.length} albums`,
   ].map(escape).join(' · ');
 
-  return `<article class="card ${row.background === 'dark' ? 'dark' : 'light'}">
+  return `<article class="card">
   <p class="meta">${meta}</p>
-  <div class="export"><div class="grid">${drawn.join('')}</div>${list}</div>
+  <div class="sheet ${row.background === 'dark' ? 'dark' : 'light'}" style="${style}">
+    <div class="gridblock"><div class="grid">${drawn.join('')}</div></div>${list}
+    <div class="mark"><img src="/images/favic.png" alt=""><span>Made with topster.app</span></div>
+  </div>
 </article>`;
 }
 
-// Numbered over placed albums, not slots, one block per section, like the app.
-function numberedList(filledByRow, sections, hideEmptyRows) {
+// Numbered over placed albums, not slots, one block per section, each starting
+// level with its band of rows. The browser does the final placement.
+function numberedList(rows, sections, hideEmptyRows, floor, layout) {
   let number = 0;
   let rowIndex = 0;
   const blocks = [];
   for (const rowsInSection of sections) {
     const lines = [];
-    for (let i = 0; i < rowsInSection && rowIndex < filledByRow.length; i += 1, rowIndex += 1) {
-      for (const entry of filledByRow[rowIndex]) {
+    let sectionTop = null;
+    for (let i = 0; i < rowsInSection && rowIndex < rows.length; i += 1, rowIndex += 1) {
+      const row = rows[rowIndex];
+      if (!row.visible) continue;
+      if (sectionTop === null) sectionTop = row.top;
+      for (const entry of row.filled) {
         number += 1;
-        lines.push(`<li><span>${number}.</span> ${escape(entry.artist)} – ${escape(entry.album)}</li>`);
+        lines.push(`<li><span class="n">${number}.</span> ${escape(entry.artist)} – ${escape(entry.album)}</li>`);
       }
     }
-    if (lines.length || !hideEmptyRows) blocks.push(`<ol>${lines.join('')}</ol>`);
+    if (sectionTop === null && hideEmptyRows) continue;
+    blocks.push(`<ol data-top="${sectionTop ?? 0}">${lines.join('')}</ol>`);
   }
-  return `<div class="list">${blocks.join('')}</div>`;
+  const size = CANVAS.listFont[layout] || 56;
+  return `<div class="listblock"><div class="list" data-floor="${floor}"
+    style="font-size:calc(var(--u) * ${size});height:calc(var(--u) * ${floor})">${blocks.join('')}</div></div>`;
 }
 
-// The name always sits under the image. Last.fm's 300px file 404s on first
-// request for about one cover in eight (decisions/0003), and a failed image
-// with an empty alt draws nothing, so the name shows instead of a blank tile.
-// The CSP rules out an onerror handler, which is why it is done this way.
+// Last.fm keeps the size in the path (`/i/u/300x300/<hash>.png`), so the
+// smaller files can be named from the one the app sent. The app races these
+// same sizes because the 300px file 404s on first request for about one cover
+// in eight; see decisions/0003. Deriving them here rather than sending them
+// keeps this a web-only change and repairs rows already stored.
+function coverSizes(cover) {
+  if (!isCover(cover)) return [];
+  const sizes = [cover];
+  if (/\/i\/u\/[^/]+\//.test(cover)) {
+    for (const size of ['174s', '64s']) {
+      const smaller = cover.replace(/\/i\/u\/[^/]+\//, `/i/u/${size}/`);
+      if (!sizes.includes(smaller)) sizes.push(smaller);
+    }
+  }
+  return sizes;
+}
+
 function tile(entry, overlay) {
   if (!entry) return '<div class="tile blank"></div>';
   const name = `${entry.artist} – ${entry.album}`;
-  const art = entry.cover && isCover(entry.cover)
-    ? `<img src="${escape(entry.cover)}" alt="" data-name="${escape(name)}" loading="lazy">`
+  const covers = coverSizes(entry.cover);
+  const art = covers.length
+    ? `<img src="${escape(covers[0])}" alt="" data-name="${escape(name)}"`
+      + ` data-rest="${escape(covers.slice(1).join(' '))}" loading="lazy">`
     : '';
   const caption = overlay ? `<span class="caption">${escape(name)}</span>` : '';
   return `<div class="tile" title="${escape(name)}"><span class="missing">${escape(name)}</span>${art}${caption}</div>`;
