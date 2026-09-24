@@ -3,6 +3,7 @@
 //  TopsterTests
 //
 
+import SwiftUI
 import XCTest
 @testable import Topster
 
@@ -152,40 +153,268 @@ final class ExportListTests: XCTestCase {
         XCTAssertEqual(Int(rows[2].top), 1356, "the blank row still takes its height")
     }
 
-    /// Groups that fit their rows start exactly where their rows start.
-    func testGroupsThatFitTheirRowsStartLevelWithThem() {
-        let rowTops: [CGFloat] = [0, 678, 1356, 2034, 2712]
-        let heights: [CGFloat] = Array(repeating: 415, count: 5)
+    /// Rows inside a band stay separate so the list can gap between them. A
+    /// blank row on a fixed layout keeps its section but adds no row group.
+    func testSectionsKeepTheirRowsApart() {
+        let shape = GridType.fortyTwo.rowShape
+        let sections = ExportList.sections(
+            groups: ExportList.groups(grid: fullGrid(42), shape: shape),
+            rowHeights: ExportList.rowHeights(shape: shape, width: 3366, spacing: 24),
+            rowsPerSection: GridType.fortyTwo.rowsPerListSection,
+            hidesEmptyRows: true, spacing: 24)
 
-        let tops = ExportList.groupTops(preferred: rowTops, heights: heights, floor: 3366, gap: 24)
+        XCTAssertEqual(sections.map { section in section.rows.map(\.count) }, [[5, 5], [6, 6], [10, 10]])
 
-        XCTAssertEqual(tops, rowTops)
+        var fixed = fullGrid(25)
+        for slot in 6...10 { fixed[slot] = nil }
+        let rows = ExportList.sections(
+            groups: ExportList.groups(grid: fixed, shape: GridType.twentyFive.rowShape),
+            rowHeights: Array(repeating: 654, count: 5),
+            rowsPerSection: [1, 1, 1, 1, 1], hidesEmptyRows: false, spacing: 24)
+
+        XCTAssertEqual(rows[1].rows, [])
     }
 
-    /// The 42 layout's ten-across rows are 315px for ten lines. The rule is
-    /// that the list still ends at the grid's bottom, so the last groups pull
-    /// up into the slack under the short groups above them. Rows one and two
-    /// keep their alignment; the rest give a little each.
-    func testTallGroupsPullUpIntoTheSlackAboveRatherThanPastTheGrid() {
-        let rowTops: [CGFloat] = [0, 678, 1356, 1921, 2486, 2825]
-        let heights: [CGFloat] = [267, 267, 323, 323, 547, 547]
+    // MARK: Placement
 
-        let tops = ExportList.groupTops(preferred: rowTops, heights: heights, floor: 3140, gap: 24)
+    private func band(_ top: CGFloat, _ height: CGFloat) -> ExportListSection {
+        ExportListSection(rows: [], top: top, height: height)
+    }
 
-        XCTAssertEqual(tops, [0, 678, 1328, 1675, 2022, 2593])
-        XCTAssertEqual(tops.last! + heights.last!, 3140, "the list ends at the grid's bottom")
-        for index in 1..<tops.count {
-            XCTAssertGreaterThanOrEqual(tops[index], tops[index - 1] + heights[index - 1] + 24,
-                                        "group \(index) overlaps the one above")
+    /// Sections that fit their bands, with a blank line to spare before the
+    /// next band, start exactly where their bands start. This is the 5×5 as
+    /// it has always shipped.
+    func testSectionsThatFitStartLevelWithTheirBands() {
+        let bands = [0, 678, 1356, 2034, 2712].map { top in band(top, 654) }
+
+        let tops = ExportList.sectionTops(sections: bands, heights: Array(repeating: 430, count: 5),
+                                          floor: 3366, minGap: 86)
+
+        XCTAssertEqual(tops, [0, 678, 1356, 2034, 2712])
+    }
+
+    /// One section too tall for its band drops alignment for the whole list,
+    /// which is spread from the grid's top to its bottom with equal gaps.
+    /// The 42's shape: short first band, crowded last one.
+    func testOneSectionThatDoesNotFitSpreadsTheWholeList() {
+        let bands = [band(0, 1332), band(1356, 1106), band(2486, 654)]
+        let heights: [CGFloat] = [700, 840, 1400]
+
+        let tops = ExportList.sectionTops(sections: bands, heights: heights, floor: 3140, minGap: 70)
+
+        XCTAssertEqual(tops, [0, 800, 1740])
+        XCTAssertEqual(tops[2] + heights[2], 3140, "the list ends on the grid's bottom edge")
+        XCTAssertEqual(tops[1] - (tops[0] + heights[0]), tops[2] - (tops[1] + heights[1]),
+                       "the gaps are equal")
+    }
+
+    /// Fitting inside a band is not enough if it leaves less than a blank
+    /// line before the next band: sections that nearly touch read as one.
+    func testASectionThatCrowdsTheNextBandCountsAsNotFitting() {
+        let bands = [band(0, 654), band(678, 654)]
+
+        let tops = ExportList.sectionTops(sections: bands, heights: [650, 300], floor: 1332, minGap: 86)
+
+        XCTAssertEqual(tops, [0, 1032])
+    }
+
+    /// Blank rows on a fixed layout have no lines. When the list spreads,
+    /// they take no share of the gaps.
+    func testEmptySectionsTakeNoPartInTheSpread() {
+        let bands = [band(0, 654), band(678, 654), band(1356, 654)]
+
+        let tops = ExportList.sectionTops(sections: bands, heights: [700, 0, 700], floor: 2010, minGap: 60)
+
+        XCTAssertEqual(tops[0], 0)
+        XCTAssertEqual(tops[2], 1310, "the last section ends on the floor")
+    }
+
+    /// Text taller than the grid, which only the size floor allows, runs
+    /// past the bottom in order. It never overlaps and never starts above
+    /// the top.
+    func testTextTallerThanTheGridRunsLongRatherThanOverlapping() {
+        let bands = [band(0, 400), band(424, 400)]
+
+        let tops = ExportList.sectionTops(sections: bands, heights: [600, 600], floor: 824, minGap: 40)
+
+        XCTAssertEqual(tops, [0, 600])
+    }
+
+    // MARK: Size
+
+    /// Deterministic metrics, so the sizing rule is tested apart from fonts:
+    /// 0.6em per character, 1.2em lines, greedy wrap by characters.
+    private struct FakeTypesetter: ExportListTypesetter {
+        func advance(size: CGFloat) -> CGFloat { size * 0.6 }
+        func lineHeight(size: CGFloat) -> CGFloat { size * 1.2 }
+        func height(of text: String, size: CGFloat, width: CGFloat) -> CGFloat {
+            let perLine = max(1, Int(width / advance(size: size)))
+            let lines = min(ExportListStyle.lineLimit, max(1, (text.count + perLine - 1) / perLine))
+            return CGFloat(lines) * lineHeight(size: size)
         }
     }
 
-    /// More text than the grid is tall: the groups stay in order from the top
-    /// and the end runs past the bottom, rather than the top going negative.
-    func testAListTallerThanTheGridOverflowsFromTheTop() {
-        let tops = ExportList.groupTops(preferred: [0, 500], heights: [800, 800], floor: 1000, gap: 24)
+    private func layoutSections(_ type: GridType, grid: [Int: Album?]) -> [ExportListSection] {
+        ExportList.sections(
+            groups: ExportList.groups(grid: grid, shape: type.rowShape),
+            rowHeights: ExportList.rowHeights(shape: type.rowShape, width: ExportCanvas.width, spacing: 24),
+            rowsPerSection: type.rowsPerListSection, hidesEmptyRows: type.hidesEmptyRows, spacing: 24)
+    }
 
-        XCTAssertEqual(tops, [0, 824])
+    private func floor(_ sections: [ExportListSection]) -> CGFloat {
+        sections.last.map { section in section.top + section.height } ?? 0
+    }
+
+    /// The fixed layouts fit at the cap, so they keep 56pt.
+    func testTheFixedLayoutsKeepTheCap() {
+        for type in [GridType.twenty, .twentyWide, .twentyFive] {
+            let sections = layoutSections(type, grid: fullGrid(type.slotCount))
+            let size = ExportList.fontSize(sections: sections, floor: floor(sections), typesetter: FakeTypesetter())
+            XCTAssertEqual(size, 56, "\(type)")
+        }
+    }
+
+    /// The chosen size is the largest that fits: at it the list is inside
+    /// the grid, half a point up it is not.
+    func testTheSizeIsTheLargestThatFits() {
+        let sections = layoutSections(.fortyTwo, grid: fullGrid(42))
+        let typesetter = FakeTypesetter()
+        let size = ExportList.fontSize(sections: sections, floor: 3140, typesetter: typesetter)
+
+        XCTAssertLessThan(size, 56)
+        XCTAssertLessThanOrEqual(ExportList.listHeight(sections, size: size, typesetter: typesetter), 3140)
+        XCTAssertGreaterThan(ExportList.listHeight(sections, size: size + 0.5, typesetter: typesetter), 3140)
+    }
+
+    /// Row gaps are counted before the size is chosen, so adding them costs
+    /// size and never pushes the list past the grid.
+    func testRowGapsAreInTheHeight() {
+        let typesetter = FakeTypesetter()
+        let split = ExportListSection(rows: [[ExportListLine(number: 1, text: "a")],
+                                             [ExportListLine(number: 2, text: "b")]], top: 0, height: 0)
+        let joined = ExportListSection(rows: [[ExportListLine(number: 1, text: "a"),
+                                               ExportListLine(number: 2, text: "b")]], top: 0, height: 0)
+
+        let difference = ExportList.height(of: split, size: 40, digits: 1, typesetter: typesetter)
+            - ExportList.height(of: joined, size: 40, digits: 1, typesetter: typesetter)
+
+        XCTAssertEqual(difference, ExportListStyle.rowGap * 40, accuracy: 0.001)
+    }
+
+    /// The number column is sized for the widest number, and the title
+    /// starts one character after it.
+    func testTitlesStartAfterTheWidestNumber() {
+        let typesetter = FakeTypesetter()
+
+        XCTAssertEqual(ExportList.numberColumnWidth(digits: 2, size: 10, typesetter: typesetter), 18)
+        XCTAssertEqual(ExportList.titleWidth(digits: 2, size: 10, typesetter: typesetter), 1600 - 18 - 6)
+    }
+
+    /// An empty list has no size to find and no height.
+    func testAnEmptyListIsZeroHigh() {
+        let sections = layoutSections(.fortyTwo, grid: [:])
+
+        XCTAssertTrue(sections.isEmpty)
+        XCTAssertEqual(ExportList.listHeight(sections, size: 56, typesetter: FakeTypesetter()), 0)
+    }
+
+    // MARK: Hostile names
+
+    /// Names that have broken text layout elsewhere: no spaces to wrap at,
+    /// glyphs far wider or taller than a Latin letter, right-to-left runs,
+    /// stacked combining marks, control characters, markup, format strings.
+    static let hostileNames: [(artist: String, name: String)] = [
+        (String(repeating: "A", count: 400), String(repeating: "B", count: 400)),
+        (String(repeating: "word ", count: 120), String(repeating: "longer words ", count: 80)),
+        ("Line\nbreak", "Tab\tand\r\ncarriage\u{2028}separator"),
+        ("", ""),
+        ("   ", "\n\n\n"),
+        ("", "Only an album"),
+        ("Only an artist", ""),
+        ("👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦🏳️‍🌈🇯🇵🇧🇷", String(repeating: "🎸🥁🎹", count: 30)),
+        ("坂本龍一", String(repeating: "音楽図鑑戦場のメリークリスマス", count: 12)),
+        ("فيروز", String(repeating: "أعطني الناي وغنّ ", count: 12)),
+        ("\u{202E}reverse override", "mixed עברית and English ١٢٣ 123"),
+        ("Z̷̢̧̛̖̗̘̙̜̝̞̟̠̤̥̦̩̪̫̬̭̮̯̰̱̲̳̹̺̻̼͇͈͉͍͎̀́̂̃̄̅̆̇̈̉̊̋̌̍̎̏̐̑̒̓̔̽̾̿̀́͂̓̈́͆͊͋͌̕̚ͅ͏͓͔͕͖͙͚͐͑͒͗͛ͣͤͥͦͧͨͩͪͫͬͭͮͯ͘͜͟͢͝͞͠͡a̶l̵g̴o", "ฏ๊๊๊๊๊ ཀྵྐྵྐྵྐྵ ᄀᄀᄀ"),
+        ("﷽﷽﷽﷽", "𒐫𒐫𒐫𒐫𒐫𒐫𒐫𒐫"),
+        ("**bold** [link](https://x.y) `code`", "%@ %d %n %s {0} \\(x) \\"),
+        ("\u{0000}\u{0007}\u{FEFF}\u{200B}", "zero\u{200B}width\u{200B}joins\u{200D}everywhere"),
+        (String(repeating: "W", count: 60), String(repeating: "m", count: 60)),
+    ]
+
+    private func hostileGrid(_ count: Int) -> [Int: Album?] {
+        Dictionary(uniqueKeysWithValues: (1...count).map { key in
+            let pick = Self.hostileNames[(key - 1) % Self.hostileNames.count]
+            return (key, album(pick.artist, pick.name))
+        })
+    }
+
+    /// Every caption is one line of text, whatever the name carried in.
+    func testCaptionsCollapseWhitespaceAndDropAMissingSide() {
+        XCTAssertEqual(album("Line\nbreak", "Tab\tand\r\nmore").exportCaption, "Line break – Tab and more")
+        XCTAssertEqual(album("", "Only an album").exportCaption, "Only an album")
+        XCTAssertEqual(album("Only an artist", "").exportCaption, "Only an artist")
+        XCTAssertEqual(album("   ", "\n\n").exportCaption, "")
+        XCTAssertEqual(album("  Guitar  Slim ", " Sufferin'  Mind").exportCaption, "Guitar Slim – Sufferin' Mind")
+        XCTAssertEqual(album("\u{202E}reverse", "Album\u{2066}").exportCaption, "reverse – Album",
+                       "a bidi override would run on past the dash")
+        XCTAssertEqual(album("Bell\u{0007}\u{0000}", "Name").exportCaption, "Bell – Name")
+        XCTAssertEqual(album("👨‍👩‍👧‍👦", "zero\u{200D}joiner").exportCaption, "👨‍👩‍👧‍👦 – zero\u{200D}joiner",
+                       "joiners hold emoji together and stay")
+        for pick in Self.hostileNames {
+            let caption = album(pick.artist, pick.name).exportCaption
+            XCTAssertFalse(caption.contains(where: \.isNewline), caption)
+        }
+    }
+
+    /// With real SF Mono metrics, every layout's list fits its grid however
+    /// hostile the names, and the 42 stays readable even when every title
+    /// runs to two lines.
+    func testHostileNamesStillFitEveryLayout() {
+        let typesetter = SystemMonoTypesetter()
+        for type in [GridType.fortyTwo, .twenty, .twentyWide, .twentyFive] {
+            let sections = layoutSections(type, grid: hostileGrid(type.slotCount))
+            let size = ExportList.fontSize(sections: sections, floor: floor(sections), typesetter: typesetter)
+
+            XCTAssertLessThanOrEqual(ExportList.listHeight(sections, size: size, typesetter: typesetter),
+                                     floor(sections), "\(type)")
+            XCTAssertGreaterThanOrEqual(size, 24, "\(type) shrank to \(size)pt")
+        }
+    }
+
+    /// The model the size is chosen from and the text SwiftUI draws have to
+    /// agree, or the list overflows anyway. So this renders the real export,
+    /// list on and list off, and requires the list to add width and never
+    /// height. Checked that it can fail: pinning the size to 56 makes the 42's
+    /// list image taller than its grid.
+    @MainActor
+    func testTheRenderedListNeverMakesTheExportTaller() throws {
+        let cases: [(GridType, [Int: Album?])] = [
+            (.fortyTwo, hostileGrid(42)),
+            (.fortyTwo, fullGrid(42)),
+            (.fortyTwo, hostileGrid(12)),
+            (.twentyFive, hostileGrid(25)),
+            (.twenty, hostileGrid(20)),
+            (.twentyWide, hostileGrid(20)),
+        ]
+
+        for (type, grid) in cases {
+            let suite = "ExportListTests.\(UUID().uuidString)"
+            let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+            defer { defaults.removePersistentDomain(forName: suite) }
+
+            let vm = FortyScrollGridViewModel(defaults: defaults)
+            vm.activeGridType = type
+            vm.FortyGridDict = FortyScrollGridViewModel.padded(grid, to: type.slotCount)
+
+            vm.exportLabels = .none
+            let bare = try XCTUnwrap(ImageRenderer(content: ExportView().environmentObject(vm)).uiImage)
+            vm.exportLabels = .list
+            let listed = try XCTUnwrap(ImageRenderer(content: ExportView().environmentObject(vm)).uiImage)
+
+            XCTAssertEqual(listed.size.height, bare.size.height, "\(type), \(grid.count) albums")
+            XCTAssertGreaterThan(listed.size.width, bare.size.width, "\(type): the list did not draw")
+        }
     }
 
     /// Only the dynamic layout drops empty rows from the export. If a fixed

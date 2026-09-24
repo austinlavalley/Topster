@@ -376,37 +376,34 @@ struct ExportTile: View {
 }
 
 
-/// Stacks the sidebar sections so each starts level with its band of rows,
-/// pulling later sections up into the slack above them rather than letting
-/// the list run past the bottom of the grid. The arithmetic is
-/// `ExportList.groupTops`; this is the part that needs the rendered height of
-/// each section.
-struct RowAlignedColumn: Layout {
-    /// Where each section's band starts, in the grid's coordinate space.
-    let rowTops: [CGFloat]
+/// Places the sidebar sections from their rendered heights: level with their
+/// bands when every one fits, spread evenly down the grid when any does not.
+/// The arithmetic is `ExportList.sectionTops`; this is the part that has the
+/// real heights, so a measurement that came out slightly off when the size
+/// was chosen is corrected here rather than drawn.
+struct ExportListColumn: Layout {
+    let sections: [ExportListSection]
     /// The bottom of the grid.
     let floor: CGFloat
-    let gap: CGFloat
+    let minGap: CGFloat
 
-    private func heights(of subviews: Subviews, width: CGFloat) -> [CGFloat] {
-        subviews.map { subview in
+    private func tops(_ subviews: Subviews, width: CGFloat) -> (tops: [CGFloat], heights: [CGFloat]) {
+        let heights = subviews.map { subview in
             subview.sizeThatFits(ProposedViewSize(width: width, height: nil)).height
         }
+        let tops = ExportList.sectionTops(sections: sections, heights: heights, floor: floor, minGap: minGap)
+        return (tops, heights)
     }
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let width = proposal.width
-            ?? subviews.map { subview in subview.sizeThatFits(.unspecified).width }.max()
-            ?? 0
-        let heights = heights(of: subviews, width: width)
-        let tops = ExportList.groupTops(preferred: rowTops, heights: heights, floor: floor, gap: gap)
+        let width = proposal.width ?? ExportListStyle.columnWidth
+        let (tops, heights) = tops(subviews, width: width)
         let bottom = zip(tops, heights).map { top, height in top + height }.max() ?? 0
         return CGSize(width: width, height: bottom)
     }
 
     func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        let heights = heights(of: subviews, width: bounds.width)
-        let tops = ExportList.groupTops(preferred: rowTops, heights: heights, floor: floor, gap: gap)
+        let (tops, _) = tops(subviews, width: bounds.width)
         for (subview, top) in zip(subviews, tops) {
             subview.place(at: CGPoint(x: bounds.minX, y: bounds.minY + top),
                           anchor: .topLeading,
@@ -416,10 +413,12 @@ struct RowAlignedColumn: Layout {
 }
 
 
-/// The numbered list beside the grid, one section per band of rows, each
-/// section starting level with its band where the band has the height for it.
+/// The numbered list beside the grid, one section per band of rows, set in
+/// one size chosen so the whole list fits the grid's height.
 struct ExportSidebar: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
+
+    private let typesetter = SystemMonoTypesetter()
 
     private var sections: [ExportListSection] {
         let shape = vm.activeGridType.rowShape
@@ -437,48 +436,50 @@ struct ExportSidebar: View {
         sections.last.map { section in section.top + section.height } ?? 0
     }
 
-    /// The fixed layouts give a row of five 654px for five lines, which 56pt
-    /// clears easily, so every section sits level with its row. On the 42
-    /// the last band is 654px for twenty lines, which no readable face fits,
-    /// so `RowAlignedColumn` starts that section early and ends it on the
-    /// grid's bottom edge. The face is chosen so the section above it still
-    /// keeps a visible gap: at 36pt the twenty lines reached up and closed
-    /// it, and the three sections read as one list; at 32pt they are 969px
-    /// tall and the gap under the twelve-line section is about 240px.
-    private var fontSize: CGFloat {
-        vm.activeGridType == .fortyTwo ? 32 : 56
-    }
-
-    /// Right-aligned numbers, so "9." and "10." start their text in the same
-    /// column. Monospaced makes the padding exact.
-    private func numberWidth(of sections: [ExportListSection]) -> Int {
-        String(sections.last?.lines.last?.number ?? 0).count
-    }
-
     var body: some View {
         let sections = sections
-        let numberWidth = numberWidth(of: sections)
+        let floor = floor(of: sections)
+        let size = ExportList.fontSize(sections: sections, floor: floor, typesetter: typesetter)
+        let digits = ExportList.numberDigits(sections)
+        let advance = typesetter.advance(size: size)
+        let numberColumn = ExportList.numberColumnWidth(digits: digits, size: size, typesetter: typesetter)
 
         if sections.contains(where: { section in !section.lines.isEmpty }) {
-            RowAlignedColumn(rowTops: sections.map(\.top), floor: floor(of: sections),
-                             gap: vm.globalSpacing) {
+            ExportListColumn(sections: sections, floor: floor,
+                             minGap: ExportList.sectionGap(size: size, typesetter: typesetter)) {
                 ForEach(sections.indices, id: \.self) { index in
-                    VStack(alignment: .leading, spacing: fontSize * 0.35) {
-                        ForEach(sections[index].lines, id: \.number) { line in
-                            Text(String(repeating: " ", count: numberWidth - String(line.number).count)
-                                 + "\(line.number). \(line.text)")
-                                .font(.system(size: fontSize, design: .monospaced))
-                                .lineLimit(2)
-                                .truncationMode(.tail)
+                    VStack(alignment: .leading,
+                           spacing: (ExportListStyle.lineSpacing + ExportListStyle.rowGap) * size) {
+                        ForEach(sections[index].rows.indices, id: \.self) { row in
+                            VStack(alignment: .leading, spacing: ExportListStyle.lineSpacing * size) {
+                                ForEach(sections[index].rows[row], id: \.number) { line in
+                                    entry(line, numberColumn: numberColumn, advance: advance)
+                                }
+                            }
                         }
                     }
                 }
             }
+            .font(.system(size: size, design: .monospaced))
             .foregroundStyle(vm.tempExportDarkMode ? Color.white : Color.black)
-            .frame(width: 1600, alignment: .topLeading)
+            .frame(width: ExportListStyle.columnWidth, alignment: .topLeading)
             .padding(.leading, 24)
             .padding(.trailing, ExportCanvas.margin)
             .padding(.vertical, ExportCanvas.margin)
+        }
+    }
+
+    /// The number in its own right-aligned column and the title beside it,
+    /// so a title that wraps continues under the title, not under its
+    /// number. The two share a baseline on the first line.
+    private func entry(_ line: ExportListLine, numberColumn: CGFloat, advance: CGFloat) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: advance) {
+            Text(verbatim: "\(line.number).")
+                .frame(width: numberColumn, alignment: .trailing)
+            Text(verbatim: line.text)
+                .lineLimit(ExportListStyle.lineLimit)
+                .truncationMode(.tail)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
