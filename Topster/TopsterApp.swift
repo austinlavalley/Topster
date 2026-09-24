@@ -17,8 +17,21 @@ struct TopsterApp: App {
 
 
     init() {
+        Self.resetForUITestIfAsked()
         Self.configureImageCache()
         Analytics.start()
+    }
+
+    /// `-resetForUITest YES` starts the app as a fresh install: no grid, no
+    /// saved grids, default layout and export options. The walkthrough test
+    /// needs a new user's first launch, and deleting the app from outside the
+    /// test cannot be done from XCUITest. Debug builds only.
+    private static func resetForUITestIfAsked() {
+        #if DEBUG
+        guard UserDefaults.standard.bool(forKey: "resetForUITest"),
+              let bundle = Bundle.main.bundleIdentifier else { return }
+        UserDefaults.standard.removePersistentDomain(forName: bundle)
+        #endif
     }
 
     /// Album art is ~72 KB a cover and Last.fm serves it with a ten year

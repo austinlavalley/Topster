@@ -11,7 +11,6 @@ import SwiftUI
 struct FortyGridView: View {
     @EnvironmentObject private var vm: FortyScrollGridViewModel
     
-    @State private var showExportSheet = false
     @State private var showNewSheet = false
     
     @State private var showingPopover = false
@@ -115,6 +114,7 @@ struct FortyGridView: View {
                     } label: {
                         Label("", systemImage: "ellipsis.circle")
                     }
+                    .accessibilityIdentifier("grid-menu")
                 }
             }
             
@@ -137,6 +137,7 @@ struct FortyGridView: View {
                     } label: {
                         GridLayoutSelectOption(title: "25 Albums", subtitle: "5x5 Grid", isSelected: vm.activeGridType == .twentyFive)
                     }.tint(.primary)
+                    .accessibilityIdentifier("layout-twentyFive")
                     
                     Button {
                         withAnimation(.spring) {
@@ -146,6 +147,7 @@ struct FortyGridView: View {
                     } label: {
                         GridLayoutSelectOption(title: "20 Albums", subtitle: "5x4 Grid", isSelected: vm.activeGridType == .twenty)
                     }.tint(.primary)
+                    .accessibilityIdentifier("layout-twenty")
                     
                     Button {
                         withAnimation(.spring) {
@@ -155,6 +157,7 @@ struct FortyGridView: View {
                     } label: {
                         GridLayoutSelectOption(title: "20 Albums (Wide)", subtitle: "4x5 Grid", isSelected: vm.activeGridType == .twentyWide)
                     }.tint(.primary)
+                    .accessibilityIdentifier("layout-twentyWide")
 
                     // Last, not first: it was the default for two years and is
                     // now the least chosen layout. Kept for the people who use it.
@@ -166,6 +169,7 @@ struct FortyGridView: View {
                     } label: {
                         GridLayoutSelectOption(title: "42 Albums", subtitle: "Dynamic, multi-sized rows", isSelected: vm.activeGridType == .fortyTwo)
                     }.tint(.primary)
+                    .accessibilityIdentifier("layout-fortyTwo")
                 }.padding()
             }
             .presentationDetents([.fraction(0.6)])

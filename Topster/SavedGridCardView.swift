@@ -7,18 +7,10 @@
 
 import SwiftUI
 
-struct ScaleButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label.scaleEffect(configuration.isPressed ? 2 : 1)
-    }
-}
-
 struct SavedGridCardPreviewView: View {
-    
+
     @EnvironmentObject private var vm: FortyScrollGridViewModel
-    
-    @State private var showDeleteConfirm = false
-    
+
     let grid: GridWithType
     let currentIndex: Int
     let nonNilPairs: [Int: Album?]
@@ -29,7 +21,6 @@ struct SavedGridCardPreviewView: View {
         self.nonNilPairs = grid.grid.filter({ $0.value != nil })
     }
     
-    @GestureState private var isPressed = false
     @State private var isLongPressed = false
     
     var body: some View {
@@ -44,7 +35,6 @@ struct SavedGridCardPreviewView: View {
                         ForEach(nonNilPairs.sorted(by: {$0.key < $1.key}), id: \.key) { key, album in
                             if album != nil {
                                 VStack {
-//                                    AsyncAlbumSquare(album: album!)
                                     AlbumSquare(album: album!)
                                 }
                             }
@@ -58,8 +48,10 @@ struct SavedGridCardPreviewView: View {
             .padding()
             .background(currentIndex == vm.currentActiveGrid ? Color.blue.opacity(0.4) : .secondary.opacity(0.4))
             .clipShape(RoundedRectangle(cornerRadius: 12))
-            .scaleEffect(isPressed || isLongPressed ? 0.95 : 1)
-            .animation(.spring(response: 0.3, dampingFraction: 0.6, blendDuration: 0), value: isPressed || isLongPressed)
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier("saved-grid-\(currentIndex)")
+            .scaleEffect(isLongPressed ? 0.95 : 1)
+            .animation(.spring(response: 0.3, dampingFraction: 0.6, blendDuration: 0), value: isLongPressed)
         }
 
         .onTapGesture {
@@ -72,15 +64,6 @@ struct SavedGridCardPreviewView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                 isLongPressed.toggle()
             }
-        }
-
-        
-        .confirmationDialog("Delete this grid?", isPresented: $showDeleteConfirm) {
-            Button("Delete grid", role: .destructive) {
-                vm.removeFromSavedGrids(at: currentIndex)
-                vm.currentActiveGrid = nil
-            }
-            Button("Cancel", role: .cancel) { }
         }
     }
 }
