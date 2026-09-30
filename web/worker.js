@@ -30,8 +30,15 @@ const CANVAS = {
   listLead: 24,
   markFont: 40,
   markBottom: 12,
+  // Before 1.7.3 the list had one size per layout.
   listFont: { fortyTwo: 36, twenty: 56, twentyWide: 56, twentyFive: 56 },
+  // From 1.7.3 the size is searched for, as ExportListStyle in the app does.
+  listMax: 56,
+  listMin: 8,
+  listStep: 0.5,
 };
+// The first app version whose list is sized to fit the grid (decisions/0005).
+const FIT_LIST_FROM = [1, 7, 3];
 const LABELS = new Set(['none', 'overlay', 'list']);
 const BACKGROUNDS = new Set(['light', 'dark']);
 // Every placed album is a Last.fm album with Last.fm art, from these hosts.
@@ -271,6 +278,16 @@ function page(rows, total, limit, hasOlder, nonce) {
   .list ol { position: absolute; left: 0; right: 0; margin: 0; padding: 0; list-style: none; }
   .list li + li { margin-top: .35em; }
   .list .n { display: inline-block; min-width: 2.2em; text-align: right; }
+  /* 1.7.3 and later: rows inside a section, a wider gap between them, and
+     the number in its own column so a wrapped title hangs under the title. */
+  .fit { line-height: 1.2; }
+  .fit .sec { position: absolute; left: 0; right: 0; }
+  .fit .sec ol { position: static; }
+  .fit .sec ol + ol { margin-top: .95em; }
+  .fit li { display: grid; grid-template-columns: var(--digits) minmax(0, 1fr); column-gap: 1ch; }
+  .fit .n { min-width: 0; }
+  .fit .t { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+    overflow: hidden; overflow-wrap: anywhere; }
 
   .mark { position: absolute; left: 0; right: 0; bottom: calc(var(--u) * ${CANVAS.markBottom});
     display: flex; align-items: center; justify-content: center; opacity: .7;
@@ -304,26 +321,82 @@ document.addEventListener('error', (event) => {
   img.src = rest[0];
 }, true);
 
-// Each list section starts level with its band of rows, and the list ends at
-// the bottom of the grid: a section too tall for its band pulls up into the
-// slack above. Same rule as ExportList.groupTops in the app, which needs the
-// rendered height of each section and so has to run here.
+// Both list rules need each section's rendered height, so they run here.
 function packLists() {
   for (const list of document.querySelectorAll('.list')) {
     const grid = list.closest('.sheet').querySelector('.grid');
     const unit = grid.getBoundingClientRect().width / ${CANVAS.grid};
-    const gap = ${CANVAS.gap} * unit;
-    const blocks = [...list.querySelectorAll('ol')];
-    const heights = blocks.map((block) => block.getBoundingClientRect().height);
-    const tops = [];
-    let ceiling = Number(list.dataset.floor) * unit;
-    for (let i = blocks.length - 1; i >= 0; i -= 1) {
-      tops[i] = Math.min(Number(blocks[i].dataset.top) * unit, ceiling - heights[i]);
-      ceiling = tops[i] - gap;
-    }
-    const overflow = tops.length && tops[0] < 0 ? -tops[0] : 0;
-    blocks.forEach((block, i) => { block.style.top = (tops[i] + overflow) + 'px'; });
+    if (list.classList.contains('fit')) fitList(list, unit);
+    else bandList(list, unit);
   }
+}
+
+// 1.7.3 and later, as ExportList.fontSize and sectionTops in the app. One size
+// for the whole list: the largest at which every section plus a blank line
+// between each fits the grid's height. Then each section starts level with
+// its band if all of them fit with a blank line to spare, and the sections
+// spread evenly from the grid's top to its bottom if any does not.
+function fitList(list, unit) {
+  const sections = [...list.querySelectorAll('.sec')];
+  const floor = Number(list.dataset.floor) * unit;
+  const bands = sections.map((section) => Number(section.dataset.top) * unit);
+  const bandHeights = sections.map((section) => Number(section.dataset.height) * unit);
+  const heights = () => sections.map((section) => section.getBoundingClientRect().height);
+  // One blank line: the line box plus the spacing between titles.
+  const blank = (px) => px * (1.2 + 0.35);
+  const sizeAt = (step) => (${CANVAS.listMin} + step * ${CANVAS.listStep}) * unit;
+  const fits = (step) => {
+    const px = sizeAt(step);
+    list.style.fontSize = px + 'px';
+    const drawn = heights().filter((height) => height > 0);
+    const total = drawn.reduce((sum, height) => sum + height, 0)
+      + Math.max(0, drawn.length - 1) * blank(px);
+    // Half a pixel for rounding: the app decides in canvas pixels.
+    return total <= floor + 0.5;
+  };
+
+  let low = 0;
+  let high = Math.round((${CANVAS.listMax} - ${CANVAS.listMin}) / ${CANVAS.listStep});
+  if (fits(0)) {
+    while (low < high) {
+      const middle = Math.ceil((low + high) / 2);
+      if (fits(middle)) low = middle; else high = middle - 1;
+    }
+  }
+  const px = sizeAt(low);
+  list.style.fontSize = px + 'px';
+  const measured = heights();
+
+  const aligned = measured.every((height, i) => height <= (i + 1 < sections.length
+    ? bands[i + 1] - bands[i] - blank(px)
+    : bandHeights[i]));
+  let tops = bands;
+  if (!aligned) {
+    const drawn = measured.map((height, i) => i).filter((i) => measured[i] > 0);
+    const text = drawn.reduce((sum, i) => sum + measured[i], 0);
+    const gap = drawn.length > 1 ? Math.max(0, (floor - text) / (drawn.length - 1)) : 0;
+    tops = bands.slice();
+    let y = 0;
+    for (const i of drawn) { tops[i] = y; y += measured[i] + gap; }
+  }
+  sections.forEach((section, i) => { section.style.top = tops[i] + 'px'; });
+}
+
+// Before 1.7.3: each section starts level with its band of rows, and the list
+// ends at the bottom of the grid, a section too tall for its band pulling up
+// into the slack above. The app's old ExportList.groupTops.
+function bandList(list, unit) {
+  const gap = ${CANVAS.gap} * unit;
+  const blocks = [...list.querySelectorAll('ol')];
+  const heights = blocks.map((block) => block.getBoundingClientRect().height);
+  const tops = [];
+  let ceiling = Number(list.dataset.floor) * unit;
+  for (let i = blocks.length - 1; i >= 0; i -= 1) {
+    tops[i] = Math.min(Number(blocks[i].dataset.top) * unit, ceiling - heights[i]);
+    ceiling = tops[i] - gap;
+  }
+  const overflow = tops.length && tops[0] < 0 ? -tops[0] : 0;
+  blocks.forEach((block, i) => { block.style.top = (tops[i] + overflow) + 'px'; });
 }
 addEventListener('load', packLists);
 addEventListener('resize', packLists);
@@ -347,6 +420,7 @@ function card(row) {
   const hideEmptyRows = row.layout === 'fortyTwo';
   const overlay = row.labels === 'overlay';
   const withList = row.labels === 'list';
+  const clean = fitsList(row.app_version);
 
   // Walk the rows the export draws, tracking where each one lands on the
   // canvas so the list can line up with them.
@@ -360,7 +434,7 @@ function card(row) {
     for (let offset = 0; offset < width; offset += 1) {
       const entry = bySlot.get(first + offset);
       if (entry) filled.push(entry);
-      cells.push(tile(entry, overlay));
+      cells.push(tile(entry, overlay, clean));
     }
     const height = (CANVAS.grid - CANVAS.gap * (width - 1)) / width;
     const visible = !(hideEmptyRows && filled.length === 0);
@@ -376,7 +450,9 @@ function card(row) {
   const total = CANVAS.grid + CANVAS.margin * 2
     + (withList ? CANVAS.listLead + CANVAS.list + CANVAS.margin : 0);
   const style = `--u:${(100 / total).toFixed(5)}cqw;width:${Math.round(total * SCALE)}px`;
-  const list = withList ? numberedList(rows, SECTIONS[row.layout] || [], hideEmptyRows, floor, row.layout) : '';
+  const list = !withList ? ''
+    : clean ? fittedList(rows, SECTIONS[row.layout] || [], floor)
+      : numberedList(rows, SECTIONS[row.layout] || [], hideEmptyRows, floor, row.layout);
   const meta = [
     `#${row.id}`, row.created_on, row.layout, `titles ${row.labels}`,
     row.background, `v${row.app_version}`, `${slots.length} albums`,
@@ -417,6 +493,58 @@ function numberedList(rows, sections, hideEmptyRows, floor, layout) {
     style="font-size:calc(var(--u) * ${size});height:calc(var(--u) * ${floor})">${blocks.join('')}</div></div>`;
 }
 
+// Whether an export came from an app that sizes its list to fit the grid.
+function fitsList(version) {
+  const parts = String(version).split('.').map(Number);
+  for (let i = 0; i < FIT_LIST_FROM.length; i += 1) {
+    const part = parts[i] || 0;
+    if (part !== FIT_LIST_FROM[i]) return part > FIT_LIST_FROM[i];
+  }
+  return true;
+}
+
+// The 1.7.3 list: one block per section carrying its band's top and height,
+// one ol per row inside it, the size and placement left to fitList in the
+// browser. Numbered over placed albums, not slots.
+function fittedList(rows, sections, floor) {
+  let number = 0;
+  let rowIndex = 0;
+  const blocks = [];
+  for (const rowsInSection of sections) {
+    const groups = [];
+    let sectionTop = null;
+    let sectionBottom = 0;
+    for (let i = 0; i < rowsInSection && rowIndex < rows.length; i += 1, rowIndex += 1) {
+      const row = rows[rowIndex];
+      if (!row.visible) continue;
+      if (sectionTop === null) sectionTop = row.top;
+      sectionBottom = row.top + row.height;
+      if (!row.filled.length) continue;
+      groups.push(`<ol>${row.filled.map((entry) => {
+        number += 1;
+        return `<li><span class="n">${number}.</span><span class="t">${escape(exportCaption(entry))}</span></li>`;
+      }).join('')}</ol>`);
+    }
+    if (sectionTop === null) continue;
+    blocks.push(`<div class="sec" data-top="${sectionTop}" data-height="${sectionBottom - sectionTop}">${groups.join('')}</div>`);
+  }
+  const digits = String(number).length + 1;
+  return `<div class="listblock"><div class="list fit" data-floor="${floor}"
+    style="--digits:${digits}ch;font-size:calc(var(--u) * ${CANVAS.listMax});height:calc(var(--u) * ${floor})">${blocks.join('')}</div></div>`;
+}
+
+// Album.exportCaption: whitespace runs collapse to one space, control
+// characters and bidi overrides go, and a missing side drops the dash.
+function exportCaption(entry) {
+  return [entry.artist, entry.album]
+    .map((part) => String(part ?? '')
+      .replace(/[‪-‮⁦-⁩]/g, '')
+      .replace(/[\u0000-\u0008\u000E-\u001F\u007F-\u009F]/g, '')
+      .split(/\s+/).filter(Boolean).join(' '))
+    .filter(Boolean)
+    .join(' – ');
+}
+
 // Last.fm keeps the size in the path (`/i/u/300x300/<hash>.png`), so the
 // smaller files can be named from the one the app sent. The app races these
 // same sizes because the 300px file 404s on first request for about one cover
@@ -434,9 +562,9 @@ function coverSizes(cover) {
   return sizes;
 }
 
-function tile(entry, overlay) {
+function tile(entry, overlay, clean) {
   if (!entry) return '<div class="tile blank"></div>';
-  const name = `${entry.artist} – ${entry.album}`;
+  const name = clean ? exportCaption(entry) : `${entry.artist} – ${entry.album}`;
   const covers = coverSizes(entry.cover);
   const art = covers.length
     ? `<img src="${escape(covers[0])}" alt="" data-name="${escape(name)}"`
