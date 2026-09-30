@@ -20,9 +20,13 @@ final class SaveToPhotosTests: XCTestCase {
     func testConfirmationWaitsForTheActualSave() throws {
         let app = XCUIApplication()
 
-        if let seed = ProcessInfo.processInfo.environment["SEED_HEX"], !seed.isEmpty {
-            app.launchArguments = ["-FortyGridDict", "<\(seed)>"]
-        }
+        // Unseeded, it starts fresh and places one album itself. It used to
+        // take whatever grid the simulator held, and failed whenever that was
+        // empty, which MainFlowWalkthrough leaves it.
+        let seed = ProcessInfo.processInfo.environment["SEED_HEX"] ?? ""
+        app.launchArguments = seed.isEmpty
+            ? ["-resetForUITest", "YES"]
+            : ["-FortyGridDict", "<\(seed)>"]
 
         // TEST_RUNNER_EXPORT_LOG_ENDPOINT points the export log at a capture
         // server, to check a real save sends it. Unset, debug builds send nothing.
@@ -31,6 +35,9 @@ final class SaveToPhotosTests: XCTestCase {
         }
 
         app.launch()
+        if seed.isEmpty {
+            placeOneAlbum(app)
+        }
         Thread.sleep(forTimeInterval: 14)
 
         let preview = app.buttons["preview-grid"]
@@ -86,6 +93,24 @@ final class SaveToPhotosTests: XCTestCase {
         XCTAssertEqual(XCTWaiter().wait(for: [back], timeout: 5), .completed,
                        "button stayed confirmed; label is \(save.label)")
         attach(named: "03-back-to-idle")
+    }
+
+    private func placeOneAlbum(_ app: XCUIApplication) {
+        let slot = app.descendants(matching: .any)["slot-1"]
+        XCTAssertTrue(slot.waitForExistence(timeout: 20), "the grid never appeared")
+        slot.coordinate(withNormalizedOffset: CGVector(dx: 0.2, dy: 0.2)).tap()
+
+        let field = app.textFields["album-search-field"]
+        XCTAssertTrue(field.waitForExistence(timeout: 10), "the search sheet did not open")
+        field.tap()
+        field.typeText("In Rainbows")
+
+        let result = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "identifier == 'search-result' AND label BEGINSWITH[c] %@", "In Rainbows"))
+            .firstMatch
+        XCTAssertTrue(result.waitForExistence(timeout: 30), "no search result to place")
+        result.tap()
+        XCTAssertTrue(field.waitForNonExistence(timeout: 10), "the search sheet stayed open")
     }
 
     private func attach(named name: String) {

@@ -44,6 +44,8 @@ struct TwentyGridMasterWide: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -60,6 +62,9 @@ struct TwentyGridMasterWide: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -71,6 +76,8 @@ struct TwentyGridMasterWide: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(10).dropFirst(5), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -87,6 +94,9 @@ struct TwentyGridMasterWide: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -98,6 +108,8 @@ struct TwentyGridMasterWide: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(15).dropFirst(10), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -114,6 +126,9 @@ struct TwentyGridMasterWide: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -125,6 +140,8 @@ struct TwentyGridMasterWide: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(20).dropFirst(15), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -141,6 +158,9 @@ struct TwentyGridMasterWide: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -165,6 +185,8 @@ struct TwentyGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(4).dropFirst(0), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -181,6 +203,9 @@ struct TwentyGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -192,6 +217,8 @@ struct TwentyGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(8).dropFirst(4), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -208,6 +235,9 @@ struct TwentyGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -219,6 +249,8 @@ struct TwentyGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(12).dropFirst(8), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -235,6 +267,9 @@ struct TwentyGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -246,6 +281,8 @@ struct TwentyGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(16).dropFirst(12), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -262,6 +299,9 @@ struct TwentyGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -273,6 +313,8 @@ struct TwentyGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(20).dropFirst(16), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -289,6 +331,9 @@ struct TwentyGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -315,6 +360,8 @@ struct TwentyFiveGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -331,6 +378,9 @@ struct TwentyFiveGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -342,6 +392,8 @@ struct TwentyFiveGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(10).dropFirst(5), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -358,6 +410,9 @@ struct TwentyFiveGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -369,6 +424,8 @@ struct TwentyFiveGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(15).dropFirst(10), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -385,6 +442,9 @@ struct TwentyFiveGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -396,6 +456,8 @@ struct TwentyFiveGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(20).dropFirst(15), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -412,6 +474,9 @@ struct TwentyFiveGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -423,6 +488,8 @@ struct TwentyFiveGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(25).dropFirst(20), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -439,6 +506,9 @@ struct TwentyFiveGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -465,6 +535,8 @@ struct FortyTwoGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(5).dropFirst(0), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -481,6 +553,9 @@ struct FortyTwoGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 120, height: 120)
@@ -492,6 +567,8 @@ struct FortyTwoGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(10).dropFirst(5), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -508,6 +585,9 @@ struct FortyTwoGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 120, height: 120)
@@ -521,6 +601,8 @@ struct FortyTwoGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(16).dropFirst(10), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -537,6 +619,9 @@ struct FortyTwoGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -548,6 +633,8 @@ struct FortyTwoGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(22).dropFirst(16), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -564,6 +651,9 @@ struct FortyTwoGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 96, height: 96)
@@ -578,6 +668,8 @@ struct FortyTwoGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(32).dropFirst(22), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -594,6 +686,9 @@ struct FortyTwoGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 64, height: 64)
@@ -606,6 +701,8 @@ struct FortyTwoGridMaster: View {
                     ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(42).dropFirst(32), id: \.key) { key, album in
                         if album != nil {
                             AsyncAlbumSquare(album: album!)
+                                .accessibilityIdentifier("slot-\(key)")
+                                .accessibilityLabel("\(album!.name), \(album!.artist)")
                                 .onTapGesture {
                                     vm.selectedGridID = key
                                     vm.toggleSheet()
@@ -622,6 +719,9 @@ struct FortyTwoGridMaster: View {
                                 Image(systemName: "plus").bold().foregroundColor(.secondary)
                             }
                             .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityIdentifier("slot-\(key)")
+                            .accessibilityLabel("Empty slot")
                         }
                     }
                     .frame(width: 64, height: 64)
@@ -678,6 +778,8 @@ struct FortyGridMaster: View {
             ForEach(vm.FortyGridDict.sorted(by: { $0.key < $1.key }).prefix(end).dropFirst(start), id: \.key) { key, album in
                 if album != nil {
                     AsyncAlbumSquare(album: album!)
+                        .accessibilityIdentifier("slot-\(key)")
+                        .accessibilityLabel("\(album!.name), \(album!.artist)")
                         .onTapGesture {
                             vm.selectedGridID = key
                             vm.toggleSheet()
@@ -694,6 +796,9 @@ struct FortyGridMaster: View {
                         Image(systemName: "plus").bold().foregroundColor(.secondary)
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 6))
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityIdentifier("slot-\(key)")
+                    .accessibilityLabel("Empty slot")
                 }
             }
             .frame(width: size, height: size)

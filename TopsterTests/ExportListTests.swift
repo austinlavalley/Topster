@@ -417,6 +417,76 @@ final class ExportListTests: XCTestCase {
         }
     }
 
+    /// 1.7.1 and 1.7.2 crashed here (two App Store reports, 22 Sep 2026): the
+    /// number padding took its width from the last section, which on a fixed
+    /// layout is an empty section when the bottom row is empty, so "10." asked
+    /// `String(repeating:count:)` for -1 spaces and trapped. This renders the
+    /// real export with the list on for every layout and the partial fills
+    /// that reach that state: empty bottom rows, gaps, a lone high slot. Each
+    /// label mode and background is drawn too, because the export is the one
+    /// flow that has to work for every grid a user can build.
+    /// Checked that it can fail: the 1.7.2 padding traps on the 25 filled to 20.
+    @MainActor
+    func testEveryExportRendersForPartlyFilledGrids() throws {
+        for type in [GridType.twentyFive, .twenty, .twentyWide, .fortyTwo] {
+            let slots = type.slotCount
+            let lastRow = type.rowShape.last ?? 1
+            let fills: [String: [Int]] = [
+                "one album": [1],
+                "nine": Array(1...9),
+                "ten": Array(1...10),
+                "all but the bottom row": Array(1...(slots - lastRow)),
+                "all but the last slot": Array(1..<slots),
+                "only the last slot": [slots],
+                "every other slot": Array(stride(from: 1, through: slots, by: 2)),
+                "first and last": [1, slots],
+                "top row and the last slot": Array(1...type.rowShape[0]) + [slots],
+            ]
+
+            for (name, keys) in fills.sorted(by: { lhs, rhs in lhs.key < rhs.key }) {
+                let suite = "ExportListTests.\(UUID().uuidString)"
+                let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+                defer { defaults.removePersistentDomain(forName: suite) }
+
+                let grid = Dictionary(uniqueKeysWithValues: keys.map { key in
+                    (key, Optional(album("A \(key)", "B \(key)")))
+                })
+                let vm = FortyScrollGridViewModel(defaults: defaults)
+                vm.activeGridType = type
+                vm.FortyGridDict = FortyScrollGridViewModel.padded(grid, to: slots)
+
+                for dark in [false, true] {
+                    vm.tempExportDarkMode = dark
+                    var widths: [ExportLabels: CGFloat] = [:]
+                    for labels in ExportLabels.allCases {
+                        vm.exportLabels = labels
+                        let image = try XCTUnwrap(ImageRenderer(content: ExportView().environmentObject(vm)).uiImage,
+                                                  "\(type), \(name), \(labels), dark \(dark)")
+                        widths[labels] = image.size.width
+                    }
+
+                    XCTAssertGreaterThan(widths[.list] ?? 0, widths[.none] ?? 0,
+                                         "\(type), \(name), dark \(dark): the list did not draw")
+                }
+            }
+        }
+    }
+
+    /// The number column is sized from the highest number drawn, not from
+    /// the last section, which can be empty on a fixed layout.
+    func testNumberDigitsIgnoreAnEmptyLastSection() {
+        let shape = GridType.twentyFive.rowShape
+        let sections = ExportList.sections(
+            groups: ExportList.groups(grid: FortyScrollGridViewModel.padded(fullGrid(20), to: 25), shape: shape),
+            rowHeights: ExportList.rowHeights(shape: shape, width: 3366, spacing: 24),
+            rowsPerSection: GridType.twentyFive.rowsPerListSection,
+            hidesEmptyRows: GridType.twentyFive.hidesEmptyRows,
+            spacing: 24)
+
+        XCTAssertEqual(sections.last?.lines.isEmpty, true, "the bottom row should be an empty section")
+        XCTAssertEqual(ExportList.numberDigits(sections), 2)
+    }
+
     /// Only the dynamic layout drops empty rows from the export. If a fixed
     /// layout ever starts hiding them, the sidebar has to know.
     func testOnlyTheDynamicLayoutHidesEmptyRows() {
