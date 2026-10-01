@@ -65,6 +65,11 @@ enum AnalyticsEvent {
 
     case albumRemoved
 
+    /// An album was dragged from one slot to another. `swapped` is true when
+    /// the slot it landed on held an album, which traded places with it, and
+    /// false when it moved into an empty slot.
+    case albumMoved(swapped: Bool)
+
     /// A grid was saved. `saved_grids` is how many the library holds afterwards,
     /// so the spread of that number across users is what any argument about
     /// capping saved grids has to be built on. It counts what is held rather
@@ -117,6 +122,7 @@ enum AnalyticsEvent {
         case .albumPlaced: return "album_placed"
         case .searchAbandoned: return "search_abandoned"
         case .albumRemoved: return "album_removed"
+        case .albumMoved: return "album_moved"
         case .gridSaved: return "grid_saved"
         case .layoutSelected: return "layout_selected"
         case .exportPreviewed: return "export_previewed"
@@ -152,6 +158,8 @@ enum AnalyticsEvent {
                     "typed": typed]
         case .albumRemoved:
             return [:]
+        case let .albumMoved(swapped):
+            return ["swapped": swapped]
         case let .exportPreviewed(layout, filled):
             return ["layout": layout, "filled": filled]
         case let .gridSaved(layout, savedGrids):

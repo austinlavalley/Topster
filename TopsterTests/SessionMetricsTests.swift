@@ -91,6 +91,17 @@ final class SessionMetricsTests: XCTestCase {
         XCTAssertNotNil(session.secondsToFirstAction)
     }
 
+    /// Dragging an album to another slot is someone arranging their grid, so
+    /// it stops the first-action clock. It places nothing new, so it must not
+    /// count toward albums_placed.
+    func testMovingAnAlbumIsAnActionButNotAPlacement() {
+        var session = SessionMetrics()
+        session.observe(.albumMoved(swapped: true))
+
+        XCTAssertNotNil(session.secondsToFirstAction)
+        XCTAssertEqual(session.albumsPlaced, 0)
+    }
+
     func testBeginWipesThePreviousSession() {
         var session = SessionMetrics()
         session.observe(.albumPlaced(position: 1, backfilled: false, source: .search))

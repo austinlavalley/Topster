@@ -1,3 +1,6 @@
 Secrets.plist
 Topster/Secrets.plist
 web/.wrangler/
+
+# Holds this machine's agent worktrees.
+.claude/

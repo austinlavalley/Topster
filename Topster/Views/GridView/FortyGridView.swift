@@ -16,6 +16,8 @@ struct FortyGridView: View {
     @State private var showingPopover = false
     @State private var customGridName = ""
     
+    @State private var coverHeld = false
+
     /// Reads through activeGrid, so a stale index shows "Unsaved Grid" rather than
     /// trapping on an out of range subscript.
     private var gridTitle: String {
@@ -35,6 +37,12 @@ struct FortyGridView: View {
                         .padding()
                         .navigationBarTitleDisplayMode(.inline)
                         .navigationTitle(gridTitle)
+                }
+                // A cover held on the grid owns the finger, so the page does
+                // not scroll under a vertical drag between rows.
+                .scrollDisabled(coverHeld)
+                .onPreferenceChange(SlotHeldKey.self) { held in
+                    coverHeld = held
                 }
                 
                 HStack {

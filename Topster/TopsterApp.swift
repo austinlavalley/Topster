@@ -18,6 +18,7 @@ struct TopsterApp: App {
 
     init() {
         Self.resetForUITestIfAsked()
+        Self.seedColorThemeIfFresh()
         Self.configureImageCache()
         Analytics.start()
     }
@@ -32,6 +33,32 @@ struct TopsterApp: App {
               let bundle = Bundle.main.bundleIdentifier else { return }
         UserDefaults.standard.removePersistentDomain(forName: bundle)
         #endif
+    }
+
+    /// A fresh install starts with the dark mode toggle matching the phone's
+    /// appearance, then forces that theme like any other choice. Runs before
+    /// the view model reads the key for its export background default.
+    private static func seedColorThemeIfFresh() {
+        let defaults = UserDefaults.standard
+        // Presence, not `as? Bool`: a `-appColorTheme YES` launch argument is
+        // a string, and it must count as set.
+        let stored = defaults.object(forKey: "appColorTheme") == nil
+            ? nil : defaults.bool(forKey: "appColorTheme")
+        let seed = seededDarkMode(stored: stored,
+                                  hasGrid: defaults.data(forKey: "FortyGridDict") != nil,
+                                  systemStyle: UIScreen.main.traitCollection.userInterfaceStyle)
+        if let seed {
+            defaults.set(seed, forKey: "appColorTheme")
+        }
+    }
+
+    /// The value to write to `appColorTheme`, or nil to leave it alone. Only a
+    /// fresh install gets one: no stored choice and no grid. An existing user
+    /// who never touched the toggle has a grid and keeps light.
+    static func seededDarkMode(stored: Bool?, hasGrid: Bool,
+                               systemStyle: UIUserInterfaceStyle) -> Bool? {
+        guard stored == nil, !hasGrid else { return nil }
+        return systemStyle == .dark
     }
 
     /// Album art is ~72 KB a cover and Last.fm serves it with a ten year

@@ -30,6 +30,7 @@ final class AnalyticsEventTests: XCTestCase {
         XCTAssertEqual(AnalyticsEvent.searchAbandoned(searches: 2, failedSearches: 0, typed: true).name,
                        "search_abandoned")
         XCTAssertEqual(AnalyticsEvent.albumRemoved.name, "album_removed")
+        XCTAssertEqual(AnalyticsEvent.albumMoved(swapped: true).name, "album_moved")
         XCTAssertEqual(AnalyticsEvent.gridSaved(layout: "fortyTwo", savedGrids: 3).name,
                        "grid_saved")
         XCTAssertEqual(AnalyticsEvent.layoutSelected(layout: "twenty").name, "layout_selected")
@@ -77,6 +78,13 @@ final class AnalyticsEventTests: XCTestCase {
         let swap = AnalyticsEvent.searchOpened(gridFilled: 18, isReplacement: true).properties
         XCTAssertEqual(swap["grid_filled"] as? Int, 18)
         XCTAssertEqual(swap["is_replacement"] as? Bool, true)
+    }
+
+    /// A drag onto another album is a swap; onto an empty slot, a move.
+    func testAlbumMovedSeparatesSwapsFromMoves() {
+        XCTAssertEqual(AnalyticsEvent.albumMoved(swapped: true).properties["swapped"] as? Bool, true)
+        XCTAssertEqual(AnalyticsEvent.albumMoved(swapped: false).properties["swapped"] as? Bool, false)
+        XCTAssertEqual(AnalyticsEvent.albumMoved(swapped: true).properties.count, 1)
     }
 
     func testSearchSettledCarriesItsCounts() {
@@ -178,6 +186,8 @@ final class AnalyticsEventTests: XCTestCase {
             .albumPlaced(position: 1, backfilled: false, source: .suggestion),
             .searchAbandoned(searches: 2, failedSearches: 2, typed: true),
             .albumRemoved,
+            .albumMoved(swapped: true),
+            .albumMoved(swapped: false),
             .gridSaved(layout: "fortyTwo", savedGrids: 4),
             .layoutSelected(layout: "fortyTwo"),
             .exportPreviewed(layout: "fortyTwo", filled: 42),
