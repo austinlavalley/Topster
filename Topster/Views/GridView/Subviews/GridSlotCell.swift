@@ -63,16 +63,13 @@ struct GridSlotCell: View {
         case .album(let album, let ghost):
             cover(album, ghost: ghost)
         case .empty:
-            ZStack {
-                Rectangle()
-                    .foregroundColor(.secondary)
-                    .onTapGesture { select() }
-
-                Image(systemName: "plus").bold().foregroundColor(.secondary)
-                    .opacity(state?.isPlusHidden == true ? 0 : 1)
+            // A Button for the press-down, so an empty slot gives way under the
+            // finger like the app's other controls. A drag that starts here
+            // still scrolls the row.
+            Button { select() } label: {
+                EmptySlotFace(isPlusHidden: state?.isPlusHidden == true)
             }
-            .clipShape(RoundedRectangle(cornerRadius: 6))
-            .accessibilityElement(children: .ignore)
+            .buttonStyle(PressScale())
             .accessibilityIdentifier("slot-\(key)")
             .accessibilityLabel("Empty slot")
         }
@@ -85,9 +82,8 @@ struct GridSlotCell: View {
             // The empty square a ghost clears to, faded in under it after a
             // move. Invisible otherwise, and behind an opaque cover.
             .background {
-                Rectangle()
-                    .foregroundColor(.secondary)
-                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                // Plus held back here; it fades in once the cell is empty.
+                EmptySlotFace(isPlusHidden: true)
                     .opacity(isClearing ? 1 : 0)
             }
             // VoiceOver's way to move an album, since it cannot drag: one slot
@@ -168,6 +164,24 @@ struct GridSlotCell: View {
         default:
             break
         }
+    }
+}
+
+/// The empty slot, and the square a ghost clears to after a move, so the two
+/// always match. Tertiary fill and label are Apple's own colours for empty
+/// controls and adapt to light and dark grounds. The old `.secondary` fill
+/// was judged too loud next to covers on 30 Sep 2026.
+private struct EmptySlotFace: View {
+    let isPlusHidden: Bool
+
+    var body: some View {
+        ZStack {
+            Rectangle()
+                .foregroundColor(Color(uiColor: .tertiarySystemFill))
+            Image(systemName: "plus").bold().foregroundColor(Color(uiColor: .tertiaryLabel))
+                .opacity(isPlusHidden ? 0 : 1)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 }
 
