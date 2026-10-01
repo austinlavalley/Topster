@@ -60,6 +60,7 @@
 		D9DEE2162E5F000100AB0016 /* SessionMetricsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2152E5F000100AB0015 /* SessionMetricsTests.swift */; };
 		D9DEE20E2E5F000100AB000E /* AnalyticsEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE20D2E5F000100AB000D /* AnalyticsEventTests.swift */; };
 		D9E1A0082E6A0001000E0008 /* ExportLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E1A0072E6A0001000E0007 /* ExportLogTests.swift */; };
+		D9F7A0022E8E0001000F0002 /* ThemeSeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F7A0012E8E0001000F0001 /* ThemeSeedTests.swift */; };
 		D9DEE2062E5F000100AB0006 /* SearchRankingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2052E5F000100AB0005 /* SearchRankingTests.swift */; };
 		D9DEE2082E5F000100AB0008 /* SearchOrderDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2072E5F000100AB0007 /* SearchOrderDiagnostics.swift */; };
 		D9DEE20A2E5F000100AB000A /* GridPaddingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DEE2092E5F000100AB0009 /* GridPaddingTests.swift */; };
@@ -144,6 +145,7 @@
 		D9DEE2152E5F000100AB0015 /* SessionMetricsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionMetricsTests.swift; sourceTree = "<group>"; };
 		D9DEE20D2E5F000100AB000D /* AnalyticsEventTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AnalyticsEventTests.swift; sourceTree = "<group>"; };
 		D9E1A0072E6A0001000E0007 /* ExportLogTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExportLogTests.swift; sourceTree = "<group>"; };
+		D9F7A0012E8E0001000F0001 /* ThemeSeedTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ThemeSeedTests.swift; sourceTree = "<group>"; };
 		D9DEE2052E5F000100AB0005 /* SearchRankingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SearchRankingTests.swift; sourceTree = "<group>"; };
 		D9DEE2072E5F000100AB0007 /* SearchOrderDiagnostics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SearchOrderDiagnostics.swift; sourceTree = "<group>"; };
 		D9DEE2092E5F000100AB0009 /* GridPaddingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GridPaddingTests.swift; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 				D9E1A0032E6A0001000E0003 /* ExportListTests.swift */,
 				D9DEE20D2E5F000100AB000D /* AnalyticsEventTests.swift */,
 				D9E1A0072E6A0001000E0007 /* ExportLogTests.swift */,
+				D9F7A0012E8E0001000F0001 /* ThemeSeedTests.swift */,
 				D9DEE2132E5F000100AB0013 /* UsageCountersTests.swift */,
 				D9DEE2152E5F000100AB0015 /* SessionMetricsTests.swift */,
 			);
@@ -482,6 +485,7 @@
 				D9E1A0042E6A0001000E0004 /* ExportListTests.swift in Sources */,
 				D9DEE20E2E5F000100AB000E /* AnalyticsEventTests.swift in Sources */,
 				D9E1A0082E6A0001000E0008 /* ExportLogTests.swift in Sources */,
+				D9F7A0022E8E0001000F0002 /* ThemeSeedTests.swift in Sources */,
 				D9DEE2142E5F000100AB0014 /* UsageCountersTests.swift in Sources */,
 				D9DEE2162E5F000100AB0016 /* SessionMetricsTests.swift in Sources */,
 			);
