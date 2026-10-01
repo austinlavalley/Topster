@@ -48,7 +48,9 @@ struct SessionMetrics {
             saved = true
         case .exportSaved:
             exported = true
-        case .searchSettled, .searchAbandoned, .albumRemoved, .layoutSelected,
+        // A move rearranges what is already placed, so it stops the
+        // first-action clock without counting as a placement.
+        case .searchSettled, .searchAbandoned, .albumRemoved, .albumMoved, .layoutSelected,
              .exportPreviewed, .exportSaveAttempted:
             break
         case .coverFetchFailed, .activated, .sessionOutcome:

@@ -86,6 +86,12 @@ struct SettingsView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 24))
                     }
                     .padding(.vertical)
+
+                    Text("Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?")")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                        .accessibilityIdentifier("app-build")
                          
                     VStack {
                         Text("data provided by").italic()
