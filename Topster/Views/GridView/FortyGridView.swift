@@ -31,6 +31,14 @@ struct FortyGridView: View {
                 
                 
                 ScrollView {
+                    // Inline rather than a popover anchored to the first
+                    // row: a popover over the grid covers the covers the
+                    // tip is asking the person to hold, and only an inline
+                    // tip takes the custom style with the illustration.
+                    // It takes no height until two albums are down, and
+                    // none once closed or retired.
+                    SwapTipRow()
+
                     GridContent()
                         .frame(maxHeight: .infinity)
                         .scrollIndicators(.hidden)

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import TipKit
 
 struct GridWithType: Codable {
     var grid: [Int: Album?]
@@ -149,6 +150,9 @@ class FortyScrollGridViewModel: ObservableObject {
         if let active = currentActiveGrid, !savedGrids.indices.contains(active) {
             currentActiveGrid = nil
         }
+
+        // didSet does not run during init, so a restored grid counts here.
+        Self.updateSwapTip(FortyGridDict)
     }
 
     /// The saved grid currently open, or nil.
@@ -167,7 +171,18 @@ class FortyScrollGridViewModel: ObservableObject {
         // main grid control, key is the grid space & value is an optional Album model
         @Published var FortyGridDict: [Int: Album?] = [
             1: nil, 2: nil, 3: nil, 4: nil, 5: nil, 6: nil, 7: nil, 8: nil, 9: nil, 10: nil, 11: nil, 12: nil, 13: nil, 14: nil, 15: nil, 16: nil, 17: nil, 18: nil, 19: nil, 20: nil, 21: nil, 22: nil, 23: nil, 24: nil, 25: nil, 26: nil, 27: nil, 28: nil, 29: nil, 30: nil, 31: nil, 32: nil, 33: nil, 34: nil, 35: nil, 36: nil, 37: nil, 38: nil, 39: nil, 40: nil, 41: nil, 42: nil
-        ]
+        ] {
+            didSet { Self.updateSwapTip(FortyGridDict) }
+        }
+
+    /// Keeps the swap tip's album count current. Written only when it
+    /// changes, since every placement passes through here.
+    static func updateSwapTip(_ grid: [Int: Album?]) {
+        let placed = grid.values.compactMap { entry in entry }.count
+        if SwapTip.placedAlbums != placed {
+            SwapTip.placedAlbums = placed
+        }
+    }
 
     
     var EditableFortyGridDict: [Int: Album?] {
@@ -263,6 +278,8 @@ class FortyScrollGridViewModel: ObservableObject {
         EditableFortyGridDict = grid
         currentActiveGrid = nil
         Analytics.track(.albumMoved(swapped: displaced != nil))
+        // The swap tip retires from the caller: `SlotDrag` once the covers
+        // have landed, the VoiceOver move straight away.
     }
 
     func removeAlbumFromGrid(at index: Int) {

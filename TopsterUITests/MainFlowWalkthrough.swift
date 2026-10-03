@@ -34,6 +34,8 @@ final class MainFlowWalkthrough: XCTestCase {
     func testANewUserBuildsExportsAndSavesAGrid() throws {
         app = XCUIApplication()
         app.launchArguments = ["-resetForUITest", "YES"]
+        // Tips have their own suite; here they would cover the steps.
+        app.launchArguments += ["-hideAllTips", "YES"]
         app.launch()
 
         step("a fresh launch opens an empty 25") {

@@ -150,6 +150,8 @@ final class GridSwapTests: XCTestCase {
                                "-storedSavedGrids", "<5b5d>",
                                "-activeGridType", layout,
                                "-exportLabels", "none"]
+        // Tips have their own suite; here they would cover the steps.
+        app.launchArguments += ["-hideAllTips", "YES"]
         app.launch()
         XCTAssertTrue(slot(1).waitForExistence(timeout: 20), "the grid never appeared")
     }
@@ -202,7 +204,8 @@ final class GridSwapTests: XCTestCase {
     ]
 
     /// The stored grid's JSON shape, hex-encoded for the launch argument.
-    private static var seedHex: String {
+    /// `FeatureTipTests` seeds its grid with it too.
+    static var seedHex: String {
         var grid: [String: Any] = [:]
         for key in 1...42 {
             guard let cover = covers[key] else {

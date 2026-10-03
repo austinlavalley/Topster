@@ -51,7 +51,7 @@ struct SessionMetrics {
         // A move rearranges what is already placed, so it stops the
         // first-action clock without counting as a placement.
         case .searchSettled, .searchAbandoned, .albumRemoved, .albumMoved, .layoutSelected,
-             .exportPreviewed, .exportSaveAttempted:
+             .exportPreviewed, .exportSaveAttempted, .featureTip:
             break
         case .coverFetchFailed, .activated, .sessionOutcome:
             return

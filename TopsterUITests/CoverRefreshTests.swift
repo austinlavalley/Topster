@@ -32,6 +32,8 @@ final class CoverRefreshTests: XCTestCase {
         }
 
         app.launchArguments = args
+        // Tips have their own suite; here they would cover the steps.
+        app.launchArguments += ["-hideAllTips", "YES"]
         app.launch()
     }
 

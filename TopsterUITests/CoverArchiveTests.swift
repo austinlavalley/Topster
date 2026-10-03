@@ -24,6 +24,8 @@ final class CoverArchiveTests: XCTestCase {
             app.launchArguments = ["-FortyGridDict", "<\(seed)>"]
         }
 
+        // Tips have their own suite; here they would cover the steps.
+        app.launchArguments += ["-hideAllTips", "YES"]
         app.launch()
 
         // Covers must finish loading, otherwise there is nothing cached to archive.
@@ -43,6 +45,8 @@ final class CoverArchiveTests: XCTestCase {
     /// covers are coming off disk rather than being refetched.
     func testRendersFromArchiveAlone() throws {
         let app = XCUIApplication()
+        // Tips have their own suite; here they would cover the steps.
+        app.launchArguments += ["-hideAllTips", "YES"]
         app.launch()
 
         // Short on purpose. A cold network fetch takes 0.3 to 7.6 seconds, so

@@ -122,6 +122,10 @@ final class SlotDrag {
     /// Reduce Motion's replacement for all of the above.
     static let fade = Animation.easeOut(duration: 0.2)
 
+    /// How long after a drop's covers have landed the swap tip retires, so
+    /// it leaves once the grid is still rather than over the flying covers.
+    static let swapTipRetireDelay: TimeInterval = 0.35
+
     /// Edge scrolling: within this distance of a row's side, the row scrolls
     /// under a held cover, from 0 at the zone's inner edge up to this speed
     /// at the row's edge.
@@ -181,6 +185,8 @@ final class SlotDrag {
     @ObservationIgnored private var inFlight: Set<Int> = []
     /// On a move, the origin, which clears softly once the cover has landed.
     @ObservationIgnored private var clearsAfterLanding: Int?
+    /// A drop changed the grid, so the swap counts once the covers land.
+    @ObservationIgnored private var swappedOnLanding = false
     @ObservationIgnored private var origin: CGPoint = .zero
     @ObservationIgnored private var finger: CGPoint?
     @ObservationIgnored private var heldLoop: Task<Void, Never>?
@@ -279,6 +285,7 @@ final class SlotDrag {
 
         if let landing {
             landings += 1
+            swappedOnLanding = true
             fly(from: source, to: landing, grid: grid)
         } else {
             flyBack(to: source)
@@ -463,6 +470,13 @@ final class SlotDrag {
         }
 
         if let clearing { clearGhost(clearing) }
+
+        if swappedOnLanding {
+            swappedOnLanding = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + Self.swapTipRetireDelay) {
+                FeatureTips.acted(.swap)
+            }
+        }
     }
 
     /// The ghost fades to nothing over the grey square, the cell becomes the

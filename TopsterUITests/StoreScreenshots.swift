@@ -49,6 +49,8 @@ final class StoreScreenshots: XCTestCase {
             app.launchArguments += ["-appColorTheme", "YES"]
         }
 
+        // Tips have their own suite; here they would cover the steps.
+        app.launchArguments += ["-hideAllTips", "YES"]
         app.launch()
 
         // Everything has to be loaded before anything is worth photographing.

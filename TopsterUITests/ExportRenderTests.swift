@@ -26,6 +26,8 @@ final class ExportRenderTests: XCTestCase {
             app.launchArguments = ["-FortyGridDict", "<\(seed)>"]
         }
 
+        // Tips have their own suite; here they would cover the steps.
+        app.launchArguments += ["-hideAllTips", "YES"]
         app.launch()
         Thread.sleep(forTimeInterval: 12)
 
@@ -69,6 +71,8 @@ final class ExportRenderTests: XCTestCase {
             app.launchArguments += ["-activeGridType", layout]
         }
 
+        // Tips have their own suite; here they would cover the steps.
+        app.launchArguments += ["-hideAllTips", "YES"]
         app.launch()
         Thread.sleep(forTimeInterval: 12)
 

@@ -34,6 +34,8 @@ final class SaveToPhotosTests: XCTestCase {
             app.launchArguments += ["-ExportLogEndpoint", endpoint]
         }
 
+        // Tips have their own suite; here they would cover the steps.
+        app.launchArguments += ["-hideAllTips", "YES"]
         app.launch()
         if seed.isEmpty {
             placeOneAlbum(app)
