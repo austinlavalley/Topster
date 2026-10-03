@@ -32,7 +32,7 @@ final class FeatureTipTests: XCTestCase {
         app.launchArguments = ["-resetForUITest", "YES", "-showAllTips", "YES"]
         app.launch()
 
-        let swapTip = app.staticTexts["Hold an album to move it."]
+        let swapTip = app.staticTexts["Hold an album to move it"]
         XCTAssertTrue(swapTip.waitForExistence(timeout: 20), "the swap tip never appeared over the grid")
         closeSwapTip()
         XCTAssertTrue(swapTip.waitForNonExistence(timeout: 5), "the swap tip stayed after its close")
@@ -55,7 +55,7 @@ final class FeatureTipTests: XCTestCase {
                                "-FortyGridDict", "<\(GridSwapTests.seedHex)>"]
         app.launch()
 
-        let swapTip = app.staticTexts["Hold an album to move it."]
+        let swapTip = app.staticTexts["Hold an album to move it"]
         XCTAssertTrue(swapTip.waitForExistence(timeout: 20), "the swap tip never appeared over a grid with albums")
         closeSwapTip()
         XCTAssertTrue(swapTip.waitForNonExistence(timeout: 5), "the swap tip stayed after its close")

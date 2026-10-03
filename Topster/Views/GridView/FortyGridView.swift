@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 
 
 struct FortyGridView: View {
@@ -38,10 +37,7 @@ struct FortyGridView: View {
                     // tip takes the custom style with the illustration.
                     // It takes no height until two albums are down, and
                     // none once closed or retired.
-                    TipView(SwapTip())
-                        .tipViewStyle(SwapTipStyle())
-                        .featureTipTracking(SwapTip(), as: .swap)
-                        .padding(.horizontal)
+                    SwapTipRow()
 
                     GridContent()
                         .frame(maxHeight: .infinity)

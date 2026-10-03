@@ -278,8 +278,8 @@ class FortyScrollGridViewModel: ObservableObject {
         EditableFortyGridDict = grid
         currentActiveGrid = nil
         Analytics.track(.albumMoved(swapped: displaced != nil))
-        // The swap tip has done its job once someone has swapped.
-        FeatureTips.acted(.swap)
+        // The swap tip retires from the caller: `SlotDrag` once the covers
+        // have landed, the VoiceOver move straight away.
     }
 
     func removeAlbumFromGrid(at index: Int) {

@@ -135,6 +135,7 @@ struct GridSlotCell: View {
     /// the focused slot when its album changes and would talk over it.
     private func move(to neighbour: Int) {
         vm.swapSlots(key, neighbour)
+        FeatureTips.acted(.swap)
         let announcement = SlotStep.announcement(movedTo: neighbour)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             UIAccessibility.post(notification: .announcement, argument: announcement)

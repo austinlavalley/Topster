@@ -14,7 +14,7 @@ struct SwapTip: Tip {
     /// Set by the first swap, which also retires the tip.
     @Parameter static var hasSwapped: Bool = false
 
-    var title: Text { Text("Hold an album to move it.") }
+    var title: Text { Text("Hold an album to move it") }
 
     var rules: [Rule] {
         [

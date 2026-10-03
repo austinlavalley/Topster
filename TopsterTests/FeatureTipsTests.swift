@@ -45,15 +45,29 @@ final class FeatureTipsTests: XCTestCase {
         XCTAssertEqual(SwapTip.placedAlbums, 2)
     }
 
-    /// The first swap retires the tip. Mutation: a `swapSlots` that does not
-    /// report the swap leaves `hasSwapped` false.
-    func testASwapRetiresTheSwapTip() {
+    /// The grid's write leaves the tip up: it retires once the covers have
+    /// landed, from `SlotDrag`, so it does not leave over flying covers.
+    /// Mutation: `swapSlots` reporting the swap itself sets `hasSwapped`.
+    func testTheSwapWriteLeavesTheSwapTipUp() {
         let vm = FortyScrollGridViewModel(defaults: defaults)
         vm.addAlbumToGrid(album: album("One"), at: 1)
         SwapTip.hasSwapped = false
 
         vm.swapSlots(1, 2)
 
+        XCTAssertFalse(SwapTip.hasSwapped)
+    }
+
+    /// Acting on the tip retires it and marks the `acted` event as sent, so
+    /// later swaps send nothing. Mutation: an `acted` that does not set
+    /// `hasSwapped`; one that does not remember it has reported.
+    func testActingRetiresTheSwapTipOnce() {
+        SwapTip.hasSwapped = false
+
+        FeatureTips.acted(.swap, defaults: defaults)
+
         XCTAssertTrue(SwapTip.hasSwapped)
+        XCTAssertTrue(defaults.bool(forKey: "featureTip.acted.swap"))
+        SwapTip.hasSwapped = false
     }
 }
