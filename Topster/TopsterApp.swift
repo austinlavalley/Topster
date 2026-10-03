@@ -18,6 +18,7 @@ struct TopsterApp: App {
 
     init() {
         Self.resetForUITestIfAsked()
+        FeatureTips.configure()
         Self.seedColorThemeIfFresh()
         Self.configureImageCache()
         Analytics.start()

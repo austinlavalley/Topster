@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 
 struct FortyGridView: View {
@@ -31,6 +32,17 @@ struct FortyGridView: View {
                 
                 
                 ScrollView {
+                    // Inline rather than a popover anchored to the first
+                    // row: a popover over the grid covers the covers the
+                    // tip is asking the person to hold, and only an inline
+                    // tip takes the custom style with the illustration.
+                    // It takes no height until two albums are down, and
+                    // none once closed or retired.
+                    TipView(SwapTip())
+                        .tipViewStyle(SwapTipStyle())
+                        .featureTipTracking(SwapTip(), as: .swap)
+                        .padding(.horizontal)
+
                     GridContent()
                         .frame(maxHeight: .infinity)
                         .scrollIndicators(.hidden)

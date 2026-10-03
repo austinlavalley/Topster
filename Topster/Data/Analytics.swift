@@ -16,6 +16,20 @@ enum PlacementSource: String {
     case suggestion
 }
 
+/// The features that have a tip. Raw values are the `feature` property on
+/// `feature_tip`.
+enum FeatureTipName: String, CaseIterable {
+    case swap
+}
+
+/// What happened to a tip: it appeared, the person closed it, or the person
+/// did the thing it describes.
+enum FeatureTipAction: String, CaseIterable {
+    case shown
+    case dismissed
+    case acted
+}
+
 
 /// Every analytics event the app can emit, typed so call sites cannot invent
 /// names or misspell properties, and so the entire taxonomy is reviewable in
@@ -115,6 +129,10 @@ enum AnalyticsEvent {
                         saved: Bool, exported: Bool,
                         seconds: Int, secondsToFirstAction: Int?)
 
+    /// A feature tip was shown, closed with its own close control, or made
+    /// moot by the person doing what it describes. See `FeatureTips`.
+    case featureTip(feature: FeatureTipName, action: FeatureTipAction)
+
     var name: String {
         switch self {
         case .searchOpened: return "search_opened"
@@ -131,6 +149,7 @@ enum AnalyticsEvent {
         case .coverFetchFailed: return "cover_fetch_failed"
         case .activated: return "activated"
         case .sessionOutcome: return "session_outcome"
+        case .featureTip: return "feature_tip"
         }
     }
 
@@ -188,6 +207,8 @@ enum AnalyticsEvent {
                 props["seconds_to_first_action"] = secondsToFirstAction
             }
             return props
+        case let .featureTip(feature, action):
+            return ["feature": feature.rawValue, "action": action.rawValue]
         }
     }
 }

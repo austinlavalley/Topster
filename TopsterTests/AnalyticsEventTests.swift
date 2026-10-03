@@ -48,6 +48,19 @@ final class AnalyticsEventTests: XCTestCase {
                                                      saved: false, exported: false,
                                                      seconds: 12, secondsToFirstAction: nil).name,
                        "session_outcome")
+        XCTAssertEqual(AnalyticsEvent.featureTip(feature: .swap, action: .shown).name, "feature_tip")
+    }
+
+    /// Feature and action as fixed values, nothing else. The raw values are
+    /// what the dashboard charts, so they are pinned one by one.
+    func testFeatureTipCarriesFeatureAndAction() {
+        let props = AnalyticsEvent.featureTip(feature: .swap, action: .dismissed).properties
+
+        XCTAssertEqual(props["feature"] as? String, "swap")
+        XCTAssertEqual(props["action"] as? String, "dismissed")
+        XCTAssertEqual(props.count, 2)
+        XCTAssertEqual(FeatureTipName.allCases.map { name in name.rawValue }, ["swap"])
+        XCTAssertEqual(FeatureTipAction.allCases.map { action in action.rawValue }, ["shown", "dismissed", "acted"])
     }
 
     /// The abandonment counterpart to albumPlaced, and the cover-weather flag.
@@ -199,15 +212,21 @@ final class AnalyticsEventTests: XCTestCase {
         ] + ActivationMilestone.allCases.map { milestone in
             AnalyticsEvent.activated(milestone: milestone, secondsSinceInstall: 1, sessionNumber: 1)
         }
+        // Every tip and action, one event each.
+        let tips: [AnalyticsEvent] = FeatureTipName.allCases.flatMap { feature in
+            FeatureTipAction.allCases.map { action in AnalyticsEvent.featureTip(feature: feature, action: action) }
+        }
 
         let layouts = Set(["fortyTwo", "twenty", "twentyWide", "twentyFive"])
         let sources = Set(["search", "onboarding", "suggestion"])
         let milestones = Set(ActivationMilestone.allCases.map { milestone in milestone.rawValue })
         let labels = Set(ExportLabels.allCases.map { labels in labels.rawValue })
         let backgrounds = Set(["light", "dark"])
+        let tipValues = Set(["swap", "shown", "dismissed", "acted"])
         let allowedStrings = layouts.union(sources).union(milestones).union(labels).union(backgrounds)
+            .union(tipValues)
 
-        for event in events {
+        for event in events + tips {
             for (key, value) in event.properties {
                 if let text = value as? String {
                     XCTAssertTrue(allowedStrings.contains(text),

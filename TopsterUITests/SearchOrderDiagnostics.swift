@@ -22,6 +22,8 @@ final class SearchOrderDiagnostics: XCTestCase {
             .split(separator: ",").map(String.init)
 
         let app = XCUIApplication()
+        // Tips have their own suite; here they would cover the steps.
+        app.launchArguments += ["-hideAllTips", "YES"]
         app.launch()
 
         Thread.sleep(forTimeInterval: 10)
